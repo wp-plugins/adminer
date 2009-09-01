@@ -19,7 +19,7 @@ Stable tag: 0.1
 1. Unpack the download-package
 1. Upload the file to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Menu `Tools` -> Àdminer`
+1. Menu `Tools` -> `Adminer`
 1. Klick button `Start Adminer` for view the database
 
 == Screenshots ==
