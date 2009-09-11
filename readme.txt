@@ -1,7 +1,7 @@
 === Adminer ===
 Contributors: Bueltge
 Donate link: http://bueltge.de/wunschliste/
-Tags: debug, sql, analyse, tuning, performance, database, queries, query 
+Tags: debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
 Tested up to: 2.9-rare
 Stable tag: 0.1
