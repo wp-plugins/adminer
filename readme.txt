@@ -11,6 +11,10 @@ Stable tag: 0.1
 == Description ==
 [Adminer](http://www.adminer.org/ "Adminer") is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 
+= Localizations =
+* Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
+* Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
+
 == Installation ==
 = Requirements =
 * WordPress version 2.7 and later (tested at 2.9-rare)
@@ -31,6 +35,7 @@ Stable tag: 0.1
 == Other Notes ==
 = Acknowledgements =
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
+* Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
