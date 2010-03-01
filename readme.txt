@@ -3,7 +3,7 @@ Contributors: Bueltge
 Donate link: http://bueltge.de/wunschliste/
 Tags: debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 2.9-rare
+Tested up to: 3.0-alpha
 Stable tag: 0.1
 
 [Adminer](http://www.adminer.org/ "Adminer") (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
@@ -44,6 +44,11 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
+= v0.2.3 (03/01/2010) =
+* include new Adminer version 2.3.0
+* Small changes on css-file
+* see [changelog](http://adminer.svn.sourceforge.net/viewvc/adminer/trunk/changes.txt "Adminer changelog") of Adminer for more informations about changes
+
 = v0.2 (21/09/2009) =
 * Include new Adminer version 2.1.0
 

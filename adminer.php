@@ -10,10 +10,10 @@ Plugin Name: Adminer
 Plugin URI: http://bueltge.de/
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 0.2
+Version: 0.2.3
 Author URI: http://bueltge.de/
 License: Apache License
-Last change: 20.09.2009 21:21:37
+Last change: 01.03.2010 20:04:08
 */ 
 
 /**

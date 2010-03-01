@@ -73,8 +73,8 @@ background-color: #BCD;
 fieldset { 
 display: inline; 
 vertical-align: top; 
-padding: 8px 12px; 
-margin: 0 8px 12px 0; 
+padding: 2px 12px; 
+margin: 5px 12px 12px 0; 
 border: none;
 background-color: #F1F1F1;
 border: 1px solid #E3E3E3;
@@ -91,8 +91,8 @@ legend {
 font-weight: 900; 
 color: #000;
 position: absolute;
-top: -.666em;
-left: .666em;
+top: -1.666em;
+left: -1em;
 padding: 0 4px;
 }
 input[name='limit'], input[name*='length'] {
