@@ -10,10 +10,10 @@ Plugin Name: Adminer
 Plugin URI: http://bueltge.de/
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 0.2.3
+Version: 0.2.4
 Author URI: http://bueltge.de/
 License: Apache License
-Last change: 01.03.2010 20:04:08
+Last change: 14.04.2010 17:15:05
 */ 
 
 /**
@@ -92,11 +92,10 @@ if ( !class_exists('AdminerForWP') ) {
 		
 		function on_admin_menu() {
 			
-			if( !current_user_can('unfiltered_html') )
-				wp_die( __('Cheatin&#8217; uh?') );
-			
-			$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), __( 'Adminer', FB_ADM_TEXTDOMAIN ), 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page'), '' );
-			add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			if( current_user_can('unfiltered_html') ) {
+				$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), __( 'Adminer', FB_ADM_TEXTDOMAIN ), 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page'), '' );
+				add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			}
 		}
 		
 		function on_show_page() {
