@@ -15,7 +15,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
-* Thanks for ukrainian language files to [Förderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
+* Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
 
 == Installation ==
 = Requirements =
@@ -39,7 +39,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
-* Thanks for ukrainian language files to [Förderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
+* Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
