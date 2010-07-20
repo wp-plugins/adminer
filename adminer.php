@@ -2,25 +2,26 @@
 /**
  * @package Adminer
  * @author Frank B&uuml;ltge
- * @version 0.2.5
  */
 
 /*
 Plugin Name: Adminer
 Plugin URI: http://bueltge.de/adminer-fuer-wordpress/1014/
+Text Domain: adminer
+Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 0.2.5
+Version: 0.2.6
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 23.04.2010 08:24:15
+Last change: 20.07.2010 12:10:59
 */ 
 
 /**
 License:
 ==============================================================================
-Copyright 2009 Frank Bueltge  (email : frank@bueltge.de)
+Copyright 2009/2010 Frank Bueltge  (email : frank@bueltge.de)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,29 +49,29 @@ if ( !function_exists('add_action') ) {
 	exit();
 }
 
-if ( function_exists('add_action') ) {
-	//WordPress definitions
-	if ( !defined('WP_CONTENT_URL') )
-		define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-	if ( !defined('WP_CONTENT_DIR') )
-		define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
-	if ( !defined('WP_PLUGIN_URL') )
-		define('WP_PLUGIN_URL', WP_CONTENT_URL.'/plugins');
-	if ( !defined('WP_PLUGIN_DIR') )
-		define('WP_PLUGIN_DIR', WP_CONTENT_DIR.'/plugins');
-	if ( !defined('PLUGINDIR') )
-		define( 'PLUGINDIR', 'wp-content/plugins' ); // Relative to ABSPATH.  For back compat.
-	if ( !defined('WP_LANG_DIR') )
-		define('WP_LANG_DIR', WP_CONTENT_DIR . '/languages');
-
-	// plugin definitions
-	define( 'FB_ADM_BASENAME', plugin_basename(__FILE__) );
-	define( 'FB_ADM_BASEDIR', dirname( plugin_basename(__FILE__) ) );
-	define( 'FB_ADM_TEXTDOMAIN', 'adminer' );
-}
-
-
 if ( !class_exists('AdminerForWP') ) {
+	
+	if ( function_exists('add_action') ) {
+		//WordPress definitions
+		if ( !defined('WP_CONTENT_URL') )
+			define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
+		if ( !defined('WP_CONTENT_DIR') )
+			define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
+		if ( !defined('WP_PLUGIN_URL') )
+			define('WP_PLUGIN_URL', WP_CONTENT_URL.'/plugins');
+		if ( !defined('WP_PLUGIN_DIR') )
+			define('WP_PLUGIN_DIR', WP_CONTENT_DIR.'/plugins');
+		if ( !defined('PLUGINDIR') )
+			define( 'PLUGINDIR', 'wp-content/plugins' ); // Relative to ABSPATH.  For back compat.
+		if ( !defined('WP_LANG_DIR') )
+			define('WP_LANG_DIR', WP_CONTENT_DIR . '/languages');
+	
+		// plugin definitions
+		define( 'FB_ADM_BASENAME', plugin_basename(__FILE__) );
+		define( 'FB_ADM_BASEDIR', dirname( plugin_basename(__FILE__) ) );
+		define( 'FB_ADM_TEXTDOMAIN', 'adminer' );
+	}
+	
 	class AdminerForWP {
 		
 		function AdminerForWP() {
@@ -138,7 +139,7 @@ if ( !class_exists('AdminerForWP') ) {
 						viewportheight = document.getElementsByTagName('body')[0].clientHeight
 					}
 					//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>');
-					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/index.php?username=<?php echo DB_USER; ?>&?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&width='+viewportwidth+'" class="thickbox button">Start Adminer</a>');
+					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/index.php?username=<?php echo DB_USER; ?>&?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&width='+viewportwidth+'" class="thickbox button"><?php _e( 'Start Adminer', FB_ADM_TEXTDOMAIN ); ?></a>');
 					//-->
 				</script>
 				<p>&nbsp;</p>
@@ -179,6 +180,12 @@ if ( !class_exists('AdminerForWP') ) {
 		
 	}
 	
-	$AdminerForWP = new AdminerForWP();
+	
+	function AdminerForWP_start() {
+	
+		new AdminerForWP();
+	}
+	
+	add_action( 'plugins_loaded', 'AdminerForWP_start' );
 }
 ?>

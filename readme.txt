@@ -16,6 +16,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
 * Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
+* Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
 
 == Installation ==
 = Requirements =
@@ -40,6 +41,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
 * Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
+* Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
@@ -48,6 +50,12 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
+= v.0.2.6 (07/20/2010) =
+* change string to multilanguage
+* small changes on source
+* include now, when hook start to load plugins
+* add chez language files
+
 = v0.2.5 (04/23/2010) =
 * New Adminer Version 2.3.2 include
 * see [changelog](http://adminer.svn.sourceforge.net/viewvc/adminer/trunk/changes.txt "Adminer changelog") of Adminer for more informations about changes
