@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Adminer v0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2010-07-16 20:38+0100\n"
+"PO-Revision-Date: 2010-07-20 15:31+0100\n"
 "Last-Translator: Peter Kahoun <kahi.cz@gmail.com>\n"
 "Language-Team: Peter Kahoun\n"
 "MIME-Version: 1.0\n"
@@ -19,63 +19,72 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
+#: adminer.php:12
+msgid "<a href=\"http://www.adminer.org/en/\">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database."
+msgstr "<a href=\"http://www.adminer.org/cs/\">Adminer</a> (dříve phpMinAdmin) je plně vybavený nástroj pro správu databáze MySQL napsaný v PHP. Na rozdíl od nástroje phpMyAdmin obsahuje jediný soubor, který je připraven pro nahrání na cílový server."
+
 #: adminer.php:95
 msgid "Cheatin&#8217; uh?"
 msgstr "Podvádíte, co?!"
 
-#@ adminer
+# @ adminer
 #: adminer.php:97
 msgid "Adminer"
 msgstr "Adminer"
 
-#@ adminer
+# @ adminer
 #: adminer.php:105
 #: adminer.php:110
 msgid "empty"
 msgstr "prázdné"
 
-#@ adminer
+# @ adminer
 #: adminer.php:116
 msgid "Adminer for WordPress"
 msgstr "Adminer pro WordPress"
 
-#@ adminer
+# @ adminer
 #: adminer.php:118
 msgid "(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server."
 msgstr "(dříve phpMinAdmin) je plně vybavený nástroj pro správu databáze MySQL napsaný v PHP. Na rozdíl od nástroje phpMyAdmin obsahuje jediný soubor, který je připraven pro nahrání na cílový server."
 
-#@ adminer
+# @ adminer
 #: adminer.php:151
 msgid "Your Datebase data"
 msgstr "Přístupové údaje k databázi"
 
-#@ adminer
+# @ adminer
 #: adminer.php:161
 msgid "Server"
 msgstr "Server"
 
-#@ adminer
+# @ adminer
 #: adminer.php:165
 msgid "User"
 msgstr "Uživatelské jméno"
 
-#@ adminer
+# @ adminer
 #: adminer.php:169
 msgid "Password"
 msgstr "Heslo"
 
-#@ adminer
+# @ adminer
 #: adminer.php:147
 msgid "Your browser does not support embedded frames."
 msgstr "Váš prohlížeč nepodporuje rámy."
 
-#@ adminer
+# @ adminer
 #: adminer.php:155
 msgid "Typ"
 msgstr "Údaj"
 
-#@ adminer
+# @ adminer
 #: adminer.php:156
 msgid "Value"
 msgstr "Hodnota"
+
+# @ adminer
+#: adminer.php:142
+msgid "Start Adminer"
+msgstr "Spustit Adminer"
 
