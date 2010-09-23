@@ -6,7 +6,7 @@ Requires at least: 2.7
 Tested up to: 3.1-alpha
 Stable tag: 0.1
 
-Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
+Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
 == Description ==
 Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPres.
