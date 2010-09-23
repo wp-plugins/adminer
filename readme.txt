@@ -1,15 +1,15 @@
 === Adminer ===
 Contributors: Bueltge
 Donate link: http://bueltge.de/wunschliste/
-Tags: debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
+Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 3.0
+Tested up to: 3.1-alpha
 Stable tag: 0.1
 
 Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 
 == Description ==
-[Adminer](http://www.adminer.org/ "Adminer") is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
+Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPres.
 
 = Localizations =
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
@@ -24,7 +24,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 
 = Installation =
 1. Unpack the download-package
-1. Upload the file to the `/wp-content/plugins/` directory
+1. Upload the file to the `/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Menu `Tools` -> `Adminer`
 1. Klick button `Start Adminer` for view the database
@@ -50,7 +50,14 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
-= v.0.2.6 (07/20/2010) =
+= v0.2.7 (09/23/2010) =
+* feature: icons on menu and settings page
+* feature: view in new tab
+* feature: help in contextual help
+* bugfix: view in thickbox; iframe blocks in Adminer
+* maintenance: language file updated
+
+= v0.2.6 (07/20/2010) =
 * change string to multilanguage
 * small changes on source
 * include now, when hook start to load plugins

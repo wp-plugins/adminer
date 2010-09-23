@@ -3,6 +3,7 @@
  * Changes for WP
  * is_mail() --> is_ad_email()
  * <body --> no javascript; only onload="bodyLoad();"
+ * line 237: remove: header("X-Frame-Options: deny");
  */
  
 /** Adminer - Compact MySQL management
@@ -234,7 +235,7 @@ navigation($ac){global$qb,$d;echo'<h1>
 tablesPrint($gc){echo"<p id='tables'>\n";foreach($gc
 as$n){echo'<a href="'.h(ME).'select='.urlencode($n).'">'.bold(lang(36),$_GET["select"]==$n).'</a> ','<a href="'.h(ME).'table='.urlencode($n).'">'.bold($this->tableName(array("Name"=>$n)),$_GET["table"]==$n)."</a><br>\n";}}}$p=(function_exists('adminer_object')?adminer_object():new
 Adminer);function
-page_header($wd,$o="",$nc=array(),$nd=""){global$qa,$qb,$p,$d;header("Content-Type: text/html; charset=utf-8");header("X-Frame-Options: deny");$Ld=$wd.($nd!=""?": ".h($nd):"");echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+page_header($wd,$o="",$nc=array(),$nd=""){global$qa,$qb,$p,$d;header("Content-Type: text/html; charset=utf-8");$Ld=$wd.($nd!=""?": ".h($nd):"");echo'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="',$qa,'">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">

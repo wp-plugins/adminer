@@ -13,77 +13,133 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
 "X-Poedit-Basepath: ../\n"
-"X-Textdomain-Support: yes\n"
+"X-Poedit-Bookmarks: \n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
 
-#: adminer.php:12
+#. translators: plugin header field 'Description'
+#: adminer.php:0
+#@ adminer
 msgid "<a href=\"http://www.adminer.org/en/\">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database."
 msgstr "<a href=\"http://www.adminer.org/en/\">Adminer</a> (vorher phpMinAdmin) ist ein MySQL Verwaltungs-Werkzeug mit umfangreichen Funktionen, geschrieben in PHP. Im Gegensatz zu phpMyAdmin ist es eine einzige Datei für die Verwendung auf dem Server."
 
-#: adminer.php:95
+#: inc/index.php:5
+#@ default
 msgid "Cheatin&#8217; uh?"
 msgstr "Cheatin&#8217; uh?"
 
+#. translators: plugin header field 'Name'
+#: adminer.php:0
+#: adminer.php:117
+#: adminer.php:118
 #@ adminer
-#: adminer.php:97
 msgid "Adminer"
 msgstr "Adminer"
 
+#: adminer.php:144
+#: adminer.php:149
 #@ adminer
-#: adminer.php:105
-#: adminer.php:110
 msgid "empty"
 msgstr "leer"
 
+#: adminer.php:156
 #@ adminer
-#: adminer.php:116
 msgid "Adminer for WordPress"
 msgstr "Adminer für WordPress"
 
+#: adminer.php:158
 #@ adminer
-#: adminer.php:118
 msgid "(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server."
 msgstr "(vorher phpMinAdmin) ist ein MySQL Verwaltungs-Werkzeug mit umfangreichen Funktionen, geschrieben in PHP. Im Gegensatz zu phpMyAdmin ist es eine einzige Datei für die Verwendung auf dem Server."
 
+#: adminer.php:194
 #@ adminer
-#: adminer.php:151
 msgid "Your Datebase data"
 msgstr "Deine Datenbankdaten"
 
+#: adminer.php:204
 #@ adminer
-#: adminer.php:161
 msgid "Server"
 msgstr "Server"
 
+#: adminer.php:208
 #@ adminer
-#: adminer.php:165
 msgid "User"
 msgstr "User"
 
+#: adminer.php:212
 #@ adminer
-#: adminer.php:169
 msgid "Password"
 msgstr "Passwort"
 
+#: adminer.php:190
 #@ adminer
-#: adminer.php:147
 msgid "Your browser does not support embedded frames."
 msgstr "Sie lassen kein JavaScript zu und Ihr Browser kann leider keine eingebetteten Frames anzeigen."
 
+#: adminer.php:198
 #@ adminer
-#: adminer.php:155
 msgid "Typ"
 msgstr "Typ"
 
+#: adminer.php:199
 #@ adminer
-#: adminer.php:156
 msgid "Value"
 msgstr "Wert"
 
+#. translators: plugin header field 'PluginURI'
+#: adminer.php:0
 #@ adminer
-#: adminer.php:142
-msgid "Start Adminer"
-msgstr "Starte Adminer"
+msgid "http://bueltge.de/adminer-fuer-wordpress/1014/"
+msgstr ""
+
+#. translators: plugin header field 'Author'
+#: adminer.php:0
+#@ adminer
+msgid "Frank B&uuml;ltge"
+msgstr ""
+
+#. translators: plugin header field 'AuthorURI'
+#: adminer.php:0
+#@ adminer
+msgid "http://bueltge.de/"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: adminer.php:0
+#@ adminer
+msgid "0.2.7"
+msgstr ""
+
+#: adminer.php:130
+#@ adminer
+msgid "Start the Thickbox inside the Adminer-tool with the button &rsaquo;<em>Start Adminer inside</em>&lsaquo;."
+msgstr "Starte das Werkzeug innerhalb dieser Seite mit dem Button &rsaquo;<em>Starte Adminer Inside</em>&lsaquo;."
+
+#: adminer.php:132
+#@ adminer
+msgid "Alternatively, you can use the button for use &rsaquo;<em>Adminer in a new Tab</em>&lsaquo;."
+msgstr "Alternativ nutze den Button &rsaquo;<em>Starte Adminer in einem neuen Tab</em>&lsaquo;."
+
+#: adminer.php:134
+#@ adminer
+msgid "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Documentation on Plugin Directory</a></p>"
+msgstr "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Dokumentation im Plugin Directory</a></p>"
+
+#: adminer.php:135
+#@ adminer
+msgid "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
+msgstr "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
+
+#: adminer.php:181
+#@ adminer
+msgid "Start Adminer inside"
+msgstr "Starte Adminer Inside"
+
+#: adminer.php:184
+#@ adminer
+msgid "Start Adminer in a new tab"
+msgstr "Starte Adminer in einem neuen Tab"
 
