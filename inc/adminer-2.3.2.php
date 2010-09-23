@@ -3,6 +3,7 @@
  * Changes for WP
  * is_mail() --> is_ad_email()
  * <body --> no javascript; only onload="bodyLoad();"
+ * line 29: no sourceforge-url, change: in var jushRoot=''
  * line 237: remove: header("X-Frame-Options: deny");
  */
  
@@ -26,7 +27,7 @@ el=el.firstChild.firstChild;el.click&&el.click();el.onclick&&el.onclick();}
 function selectAddRow(field){var row=field.parentNode.cloneNode(true);var selects=row.getElementsByTagName('select');for(var i=0;i<selects.length;i++){selects[i].name=selects[i].name.replace(/[a-z]\[[0-9]+/,'$&1');selects[i].selectedIndex=0;}
 var inputs=row.getElementsByTagName('input');if(inputs.length){inputs[0].name=inputs[0].name.replace(/[a-z]\[[0-9]+/,'$&1');inputs[0].value='';inputs[0].className='';}
 field.parentNode.parentNode.appendChild(row);field.onchange=function(){};}
-function bodyLoad(version){var jushRoot='https://jush.svn.sourceforge.net/svnroot/jush/trunk/';var script=document.createElement('script');script.src=jushRoot+'jush.js';script.onload=function(){if(window.jush){jush.create_links=' target="_blank"';jush.urls.sql[0]='http://dev.mysql.com/doc/refman/'+version+'/en/$key';jush.urls.sqlset[0]=jush.urls.sql[0];jush.urls.sqlstatus[0]=jush.urls.sql[0];jush.style(jushRoot+'jush.css');jush.highlight_tag('pre',0);jush.highlight_tag('code');}};script.onreadystatechange=function(){if(/^(loaded|complete)$/.test(script.readyState)){script.onload();}};document.body.appendChild(script);}
+function bodyLoad(version){var jushRoot='';var script=document.createElement('script');script.src=jushRoot+'jush.js';script.onload=function(){if(window.jush){jush.create_links=' target="_blank"';jush.urls.sql[0]='http://dev.mysql.com/doc/refman/'+version+'/en/$key';jush.urls.sqlset[0]=jush.urls.sql[0];jush.urls.sqlstatus[0]=jush.urls.sql[0];jush.style(jushRoot+'jush.css');jush.highlight_tag('pre',0);jush.highlight_tag('code');}};script.onreadystatechange=function(){if(/^(loaded|complete)$/.test(script.readyState)){script.onload();}};document.body.appendChild(script);}
 function selectValue(select){return select.value||select.options[select.selectedIndex].text;}
 function formField(form,name){for(var i=0;i<form.length;i++){if(form[i].name==name){return form[i];}}}
 function typePassword(el,disable){try{el.type=(disable?'text':'password');}catch(e){}}
