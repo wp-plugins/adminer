@@ -62,8 +62,8 @@ border-bottom: 1px #BBB solid;
 thead tr:hover td, thead tr:hover th {
 background-color: #DDD !important;
 }
-tr:nth-child(2n) td, tr:nth-child(2n) th, .odd td, .odd th {
-background-color: #F9F9F9;
+tr:nth-child(2n) td, tr:nth-child(2n) th, .odd td, .odd th, tr.odd {
+background-color: #F1F1F1;
 }
 tr:hover td, tr:hover th {
 background-color: #BCD;
@@ -74,7 +74,7 @@ fieldset {
 display: inline; 
 vertical-align: top; 
 padding: 2px 12px; 
-margin: 5px 12px 12px 0; 
+margin: 25px 12px 12px 0; 
 border: none;
 background-color: #F1F1F1;
 border: 1px solid #E3E3E3;
@@ -244,7 +244,7 @@ border-bottom: none;
 }
 #menu form p {
 padding-left: 0;
-text-align: center;
+text-align: left;
 }
 h1 .h1:hover {
 text-decoration: underline;
