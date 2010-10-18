@@ -36,5 +36,5 @@ function adminer_object() {
 	return new AdminerUser;
 }
 
-include('adminer-3.0.0.php');
+include('adminer-3.0.1.php');
 ?>

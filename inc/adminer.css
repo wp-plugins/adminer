@@ -20,6 +20,10 @@ font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
 font-size: 12px;
 }
 
+p {
+margin: 0.8em 20px 0 5px
+}
+
 a { 
 color: #21759B;
 }
@@ -33,9 +37,10 @@ color: #D54E21;
 
 form {
 margin: 0;
+padding: 0 0 0 5px;
 }
-table { 
-margin: 0 12px 12px 0; 
+table, thead, tbody { 
+margin: 10px 12px 0 0;
 border: 1px #BBB solid;
 font-size: 90%;
 }
@@ -191,16 +196,17 @@ color: red;
 padding: 2px 4px;
 margin-right: 4px;
 outline: 1px #BBB dashed;
-font-size: 9pt;
+font-size: 11px;
 }
 
 #content { 
-margin: 2px 0 0 260px; 
+margin: 2px 0 0 270px; 
 padding: 10px 20px 20px 0;
 }
-#lang { 
+#lang {
+font-size:10px;
 height: 23px;
-width: 250px;
+width: 255px;
 display: block; 
 padding: 1px 0; 
 position: absolute; 
@@ -212,7 +218,7 @@ border: 1px solid #E3E3E3;
 line-height: 1.25em;
 }
 #lang select {
-font-size: 8pt;
+font-size: 10px;
 }
 #breadcrumb { 
 margin: 0; 
@@ -220,7 +226,7 @@ height: 21px;
 display: block; 
 position: absolute; 
 top: 0; 
-left: 260px;
+left: 270px;
 background-color: #f1f1f1;
 border: 1px solid #E3E3E3;
 padding: 2px 12px;
@@ -230,7 +236,7 @@ position: absolute;
 margin: 0;
 top: 28px; 
 left: 0; 
-width: 250px; 
+width: 255px; 
 background-color: #f1f1f1;
 border: 1px solid #E3E3E3;
 }
@@ -245,6 +251,9 @@ border-bottom: none;
 #menu form p {
 padding-left: 0;
 text-align: left;
+}
+#menu h1 {
+padding: 1px 1px 1px 10px;
 }
 h1 .h1:hover {
 text-decoration: underline;
@@ -266,10 +275,9 @@ font-size: 12px;
 h2 {
 padding: 22px 0 0 10px;
 }
-h3 { 
-margin: 40px 0 0;
-font-weight: 400; 
-font-size: 130%;
+h3 {
+font: normal normal normal 18px/22px Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+margin: 20px 0 0 5px;
 }
 #schema { 
 margin: 1.5em 0 0 220px;
@@ -302,7 +310,7 @@ color: #333;
 code {
 background: transparent;
 }
-fieldset, legend, h2, table, .error, .message {
+fieldset, legend, h2, table, thead, tbody, .error, .message {
 -moz-border-radius: 5px;
 -khtml-border-radius: 5px;
 -webkit-border-radius: 5px;
