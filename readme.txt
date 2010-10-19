@@ -4,7 +4,7 @@ Donate link: http://bueltge.de/wunschliste/
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
 Tested up to: 3.1-alpha
-Stable tag: 1.0.0
+Stable tag: trunk
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
