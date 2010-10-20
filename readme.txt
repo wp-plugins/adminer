@@ -12,6 +12,7 @@ Adminer is a full-featured MySQL management tool written in PHP. This plugin inc
 Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPres.
 
 = Localizations =
+* Thanks for german language file to [myself](http://bueltge.de/ "Frank B&uuml;ltge") ;)
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
@@ -50,6 +51,11 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
+= v1.0.2 (10/20/2010) =
+* bugfix: adminer-js onload fixed
+* maintenance: remove older versions of adminer in /inc/
+* maintenance: change stable tag in readme.txt to trunk; all versions if this plugin is/was stable ;)
+
 = v1.0.1 (10/18/2010) =
 * maintenance: include Adminer version 3.0.1, see [changelog](http://adminer.git.sourceforge.net/git/gitweb.cgi?p=adminer/adminer;a=blob_plain;f=changes.txt;hb=HEAD) of Adminer 
 * maintenance: changes on stylesheet

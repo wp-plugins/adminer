@@ -11,11 +11,11 @@ Text Domain: adminer
 Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 18.10.2010 14:51:06
+Last change: 20.10.2010 11:37:04
 */ 
 
 /**
