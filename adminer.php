@@ -11,11 +11,11 @@ Text Domain: adminer
 Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 1.0.2
+Version: 1.0.3
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 20.10.2010 11:37:04
+Last change: 25.10.2010 12:18:21
 */ 
 
 /**
@@ -108,16 +108,15 @@ if ( !class_exists('AdminerForWP') ) {
 		
 		function on_admin_menu() {
 			
-			if ( !current_user_can('unfiltered_html') )
-				return FALSE;
-			
-			wp_enqueue_style( 'adminer-menu' );
-			
-			$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
-			$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
-			$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
-			
-			add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			if ( current_user_can('unfiltered_html') ) {
+				wp_enqueue_style( 'adminer-menu' );
+				
+				$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
+				$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
+				$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
+				
+				add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			}
 		}
 		
 		function contextual_help($contextual_help, $screen_id, $screen) {
