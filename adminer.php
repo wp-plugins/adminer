@@ -108,15 +108,13 @@ if ( !class_exists('AdminerForWP') ) {
 		
 		function on_admin_menu() {
 			
-			if ( current_user_can('unfiltered_html') ) {
-				wp_enqueue_style( 'adminer-menu' );
-				
-				$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
-				$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
-				$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
-				
-				add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
-			}
+			wp_enqueue_style( 'adminer-menu' );
+			
+			$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
+			$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
+			$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
+			
+			add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
 		}
 		
 		function contextual_help($contextual_help, $screen_id, $screen) {
@@ -137,6 +135,10 @@ if ( !class_exists('AdminerForWP') ) {
 		}
 		
 		function on_show_page() {
+			
+			if ( !current_user_can('unfiltered_html') )
+				return;
+			
 			global $wpdb;
 			
 			if ( DB_USER == '' )
