@@ -3,7 +3,7 @@ Contributors: Bueltge
 Donate link: http://bueltge.de/wunschliste/
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 3.1-alpha
+Tested up to: 3.1
 Stable tag: 1.0.2
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
@@ -18,6 +18,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
 * Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
 * Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
+* Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 
 == Installation ==
 = Requirements =
@@ -38,11 +39,13 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 
 == Other Notes ==
 = Acknowledgements =
+* Thanks for german language file to [myself](http://bueltge.de/ "Frank B&uuml;ltge") ;)
 * Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
 * Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
 * Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
 * Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
+* Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
