@@ -15,7 +15,7 @@ Version: 1.0.3
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 25.10.2010 12:18:21
+Last change: 02.02.2010 12:35:21
 */ 
 
 /**
@@ -78,46 +78,48 @@ if ( !class_exists('AdminerForWP') ) {
 	
 	class AdminerForWP {
 		
-		function __construct() {
+		public function __construct() {
 			
 			if ( !is_admin() )
 				return FALSE;
 				
-			add_action( 'init', array(&$this, 'text_domain') );
+			add_action( 'admin_init', array(&$this, 'text_domain') );
 			add_action( 'init', array(&$this, 'register_styles') );
 			add_action( 'admin_menu', array( &$this, 'on_admin_menu' ) );
 		}
 		
-		function text_domain() {
+		public function text_domain() {
 			
 			load_plugin_textdomain( FB_ADM_TEXTDOMAIN, false, FB_ADM_BASEDIR . '/languages' );
 		}
 		
-		function register_styles() {
+		public function register_styles() {
 			
 			wp_register_style( 'adminer-menu', plugins_url( 'css/menu.css', __FILE__ ) );
 			wp_register_style( 'adminer-settings', plugins_url( 'css/settings.css', __FILE__ ) );
 		}
 		
-		function on_load_page() {
+		public function on_load_page() {
 			
 			add_thickbox();
 			wp_enqueue_style( 'adminer-settings' );
 			add_action( 'contextual_help', array(&$this, 'contextual_help'), 10, 3 );
 		}
 		
-		function on_admin_menu() {
+		public function on_admin_menu() {
 			
-			wp_enqueue_style( 'adminer-menu' );
-			
-			$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
-			$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
-			$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
-			
-			add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			if ( current_user_can('unfiltered_html') ) {
+				wp_enqueue_style( 'adminer-menu' );
+				
+				$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
+				$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
+				$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
+				
+				add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+			}
 		}
 		
-		function contextual_help($contextual_help, $screen_id, $screen) {
+		public function contextual_help($contextual_help, $screen_id, $screen) {
 			global $my_plugin_hook;
 			
 			if ($screen_id == $my_plugin_hook)
@@ -134,11 +136,7 @@ if ( !class_exists('AdminerForWP') ) {
 			return $contextual_help;
 		}
 		
-		function on_show_page() {
-			
-			if ( !current_user_can('unfiltered_html') )
-				return;
-			
+		public function on_show_page() {
 			global $wpdb;
 			
 			if ( DB_USER == '' )
@@ -227,7 +225,6 @@ if ( !class_exists('AdminerForWP') ) {
 	
 		new AdminerForWP();
 	}
-	
 	add_action( 'plugins_loaded', 'AdminerForWP_start' );
 }
 ?>

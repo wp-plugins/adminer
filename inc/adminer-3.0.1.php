@@ -2,8 +2,8 @@
 /**
  * Changes for WP
  * is_mail() --> is_ad_email()
- * line 983: <body --> no javascript; only onload="bodyLoad();"
- * line 39:  no sourceforge-url, change: in var jushRoot=''
+ * <body --> no javascript; only <body>
+ * line 39: no sourceforge-url, change: in var jushRoot=''
  * line 897: remove: header("X-Frame-Options: deny");
  * Change String Optimisieren to Optimieren
  */
@@ -980,7 +980,7 @@ page_header($ne,$n="",$ic=array(),$me=""){global$Wa,$Vb,$r,$g,$ja;header("Conten
 <link rel="stylesheet" type="text/css" href="',h(preg_replace("~\\?.*~","",$_SERVER["REQUEST_URI"]))."?file=default.css&amp;version=3.0.1";echo'">
 ';if(file_exists("adminer.css")){echo'<link rel="stylesheet" type="text/css" href="adminer.css">
 ';}echo'
-<body onload="bodyLoad();">
+<body>
 <script type="text/javascript" src="',h(preg_replace("~\\?.*~","",$_SERVER["REQUEST_URI"]))."?file=functions.js&amp;version=3.0.1",'"></script>
 
 <div id="content">
