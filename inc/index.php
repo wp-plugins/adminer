@@ -1,7 +1,7 @@
 <?php
 require_once('../../../../wp-load.php');
 
-if( !current_user_can('unfiltered_html') )
+if ( !current_user_can('unfiltered_html') )
 	wp_die( __('Cheatin&#8217; uh?') );
 
 function adminer_object() {
@@ -36,5 +36,5 @@ function adminer_object() {
 	return new AdminerUser;
 }
 
-include('adminer-3.2.1.php');
+include('adminer-3.2.2.php');
 ?>

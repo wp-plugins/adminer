@@ -11,11 +11,11 @@ Text Domain: adminer
 Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 1.0.4
+Version: 1.0.5
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 24.03.2011 10:35:21
+Last change: 13.06.2011
 */ 
 
 /**
@@ -80,11 +80,11 @@ if ( !class_exists('AdminerForWP') ) {
 		
 		public function __construct() {
 			
-			if ( !is_admin() )
+			if ( ! is_admin() )
 				return FALSE;
 				
-			add_action( 'admin_init', array(&$this, 'text_domain') );
-			add_action( 'init', array(&$this, 'register_styles') );
+			add_action( 'admin_init', array( &$this, 'text_domain' ) );
+			add_action( 'init', array( &$this, 'register_styles' ) );
 			add_action( 'admin_menu', array( &$this, 'on_admin_menu' ) );
 		}
 		
@@ -122,7 +122,7 @@ if ( !class_exists('AdminerForWP') ) {
 		public function contextual_help($contextual_help, $screen_id, $screen) {
 			global $my_plugin_hook;
 			
-			if ($screen_id == $my_plugin_hook)
+			if ( $screen_id == $my_plugin_hook )
 				return FALSE;
 			
 			$contextual_help  = '<p>';
@@ -139,19 +139,19 @@ if ( !class_exists('AdminerForWP') ) {
 		public function on_show_page() {
 			global $wpdb;
 			
-			if ( DB_USER == '' )
+			if ( '' == DB_USER )
 				$db_user = __( 'empty', FB_ADM_TEXTDOMAIN );
 			else
 				$db_user = DB_USER;
 				
-			if ( DB_PASSWORD == '' )
+			if ( '' == DB_PASSWORD )
 				$db_password = __( 'empty', FB_ADM_TEXTDOMAIN );
 			else
 				$db_password = DB_PASSWORD;
 			?>
 			<div class="wrap">
 				<?php //screen_icon('tools'); ?>
-				<?php screen_icon('adminer-settings'); ?>
+				<?php screen_icon( 'adminer-settings' ); ?>
 				<h2><?php _e( 'Adminer for WordPress', FB_ADM_TEXTDOMAIN ); ?></h2>
 				<img class="alignright" src="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/images/logo.png" alt="Adminer Logo" />
 				<p><a href="http://www.adminer.org/">Adminer</a> <?php _e( '(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server.', FB_ADM_TEXTDOMAIN ); ?></p>
