@@ -1100,7 +1100,7 @@ var areYouSure = \'',lang(56),'\';
 <script type="text/javascript" src="',h(preg_replace("~\\?.*~","",ME))."?file=functions.js&amp;version=3.2.2",'"></script>
 ';if($o->head()&&file_exists("adminer.css")){echo'<link rel="stylesheet" type="text/css" href="adminer.css">
 ';}echo'
-<body>
+<body class="',lang(55),' nojs" onclick="return bodyClick(event, \'',js_ad_escape(DB),'\', \'',js_ad_escape($_GET["ns"]),'\');"';?>>
 <script type="text/javascript">
 document.body.className = document.body.className.replace(/(^|\s)nojs(\s|$)/, '$1js$2');
 </script>
