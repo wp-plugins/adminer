@@ -66,7 +66,7 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 == Changelog ==
 = v1.1.0 (09/15/2011) =
 * exclude the minified version of Adminer
-* include open source files for dont use code
+* include open source files for dont use obfuscated code
 * fix for use sql-strings with magic quotes, see [bug description in forum](http://wordpress.org/support/topic/plugin-adminer-sql-command-doesnt-work)
 * add fucntion to search and include the wp-load.php
 * Test in WP 3.3-aortic-dissection
