@@ -25,66 +25,66 @@ msgstr ""
 msgid "<a href=\"http://www.adminer.org/en/\">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database."
 msgstr "<a href=\"http://www.adminer.org/en/\">Adminer</a> (vorher phpMinAdmin) ist ein MySQL Verwaltungs-Werkzeug mit umfangreichen Funktionen, geschrieben in PHP. Im Gegensatz zu phpMyAdmin ist es eine einzige Datei für die Verwendung auf dem Server."
 
-#: inc/index.php:5
+#: inc/adminer/loader.php:30
 #@ default
 msgid "Cheatin&#8217; uh?"
 msgstr "Cheatin&#8217; uh?"
 
 #. translators: plugin header field 'Name'
 #: adminer.php:0
+#: adminer.php:115
 #: adminer.php:117
-#: adminer.php:118
 #@ adminer
 msgid "Adminer"
 msgstr "Adminer"
 
-#: adminer.php:144
 #: adminer.php:149
+#: adminer.php:154
 #@ adminer
 msgid "empty"
 msgstr "leer"
 
-#: adminer.php:156
+#: adminer.php:161
 #@ adminer
 msgid "Adminer for WordPress"
 msgstr "Adminer für WordPress"
 
-#: adminer.php:158
+#: adminer.php:163
 #@ adminer
 msgid "(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server."
 msgstr "(vorher phpMinAdmin) ist ein MySQL Verwaltungs-Werkzeug mit umfangreichen Funktionen, geschrieben in PHP. Im Gegensatz zu phpMyAdmin ist es eine einzige Datei für die Verwendung auf dem Server."
 
-#: adminer.php:194
+#: adminer.php:199
 #@ adminer
 msgid "Your Datebase data"
 msgstr "Deine Datenbankdaten"
 
-#: adminer.php:204
+#: adminer.php:209
 #@ adminer
 msgid "Server"
 msgstr "Server"
 
-#: adminer.php:208
+#: adminer.php:213
 #@ adminer
 msgid "User"
 msgstr "User"
 
-#: adminer.php:212
+#: adminer.php:217
 #@ adminer
 msgid "Password"
 msgstr "Passwort"
 
-#: adminer.php:190
+#: adminer.php:195
 #@ adminer
 msgid "Your browser does not support embedded frames."
 msgstr "Sie lassen kein JavaScript zu und Ihr Browser kann leider keine eingebetteten Frames anzeigen."
 
-#: adminer.php:198
+#: adminer.php:203
 #@ adminer
 msgid "Typ"
 msgstr "Typ"
 
-#: adminer.php:199
+#: adminer.php:204
 #@ adminer
 msgid "Value"
 msgstr "Wert"
@@ -107,39 +107,49 @@ msgstr ""
 msgid "http://bueltge.de/"
 msgstr ""
 
-#. translators: plugin header field 'Version'
-#: adminer.php:0
-#@ adminer
-msgid "0.2.7"
-msgstr ""
-
-#: adminer.php:130
+#: adminer.php:134
 #@ adminer
 msgid "Start the Thickbox inside the Adminer-tool with the button &rsaquo;<em>Start Adminer inside</em>&lsaquo;."
 msgstr "Starte das Werkzeug innerhalb dieser Seite mit dem Button &rsaquo;<em>Starte Adminer Inside</em>&lsaquo;."
 
-#: adminer.php:132
+#: adminer.php:136
 #@ adminer
 msgid "Alternatively, you can use the button for use &rsaquo;<em>Adminer in a new Tab</em>&lsaquo;."
 msgstr "Alternativ nutze den Button &rsaquo;<em>Starte Adminer in einem neuen Tab</em>&lsaquo;."
 
-#: adminer.php:134
-#@ adminer
-msgid "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Documentation on Plugin Directory</a></p>"
-msgstr "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Dokumentation im Plugin Directory</a></p>"
-
-#: adminer.php:135
+#: adminer.php:140
 #@ adminer
 msgid "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
 msgstr "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
 
-#: adminer.php:181
+#: adminer.php:186
 #@ adminer
 msgid "Start Adminer inside"
 msgstr "Starte Adminer Inside"
 
-#: adminer.php:184
+#: adminer.php:189
 #@ adminer
 msgid "Start Adminer in a new tab"
 msgstr "Starte Adminer in einem neuen Tab"
+
+#. translators: plugin header field 'Version'
+#: adminer.php:0
+#@ adminer
+msgid "1.1.0"
+msgstr ""
+
+#: adminer.php:138
+#@ adminer
+msgid "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Documentation on Plugin Directory</a>"
+msgstr "<a href=\\\"http://wordpress.org/extend/plugins/adminer/\\\">Dokumentation im Plugin Directory</a>"
+
+#: adminer.php:139
+#@ adminer
+msgid "<a href=\"http://bueltge.de/\">Blog of Plugin author</a>"
+msgstr "<a href=\\\"http://bueltge.de/\\\">Blog des Pluginautors</a>"
+
+#: adminer.php:163
+#@ adminer
+msgid "Current used version of Plugin"
+msgstr "Aktuell genutzte Version des Plugins"
 
