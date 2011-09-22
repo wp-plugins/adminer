@@ -1,28 +1,36 @@
 <?php
 // search and include wp-load.php
 // require_once('../../../../../wp-load.php');
-$thispath = dirname( __FILE__ );
-$path_seperator = '/';
-$path_to_load = explode( $path_seperator, $thispath );
-if ( count ( $path_to_load ) < 2 ) { //try windows folderlist style
-	$path_seperator = '\\';
-	$path_to_load   = explode( $path_seperator , $thispath );
-}
-
-$found = FALSE;
-$length = count( $path_to_load );
-$count = 0;
-while( $found == FALSE && $count < 10 ) {
-	$count ++;
-	array_pop( $path_to_load );
-	$wploadpath = implode( $path_seperator, $path_to_load) . $path_seperator . 'wp-load.php';
-	if ( file_exists( $wploadpath ) ) {
-		require_once( $wploadpath );
-		if ( ABSPATH != '' ) { //WP successfully loaded
-			$path_wp_include = get_option( 'siteurl' ) . '/' . WPINC;
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
-			require_once( ABSPATH . 'wp-includes/pluggable.php' );
+function get_wp_root ( $directory ) {
+	global $wp_root;
+	
+	foreach( glob( $directory . "/*" ) as $f ) {
+		
+		if ( 'wp-load.php' == basename($f) ) {
+			$wp_root = str_replace( "\\", "/", dirname($f) );
+			return TRUE;
 		}
+		
+		if ( is_dir($f) )
+			$newdir = dirname( dirname($f) );
+	}
+	
+	if ( isset($newdir) && $newdir != $directory ) {
+		if ( get_wp_root ( $newdir ) )
+			return FALSE;
+	}
+	
+	return FALSE;
+} // end function to find wp-load.php
+
+if ( ! function_exists('add_action') ) {
+
+	get_wp_root ( dirname( dirname(__FILE__) ) );
+	if ( $wp_root ) {
+		include_once $wp_root . '/wp-load.php';
+	} else {
+		die( 'Cheatin&#8217; uh?');
+		exit;
 	}
 }
 

@@ -11,17 +11,17 @@ Text Domain: adminer
 Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 1.0.5
+Version: 1.1.1
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
-Last change: 13.06.2011
+Last change: 22.09.2011
 */ 
 
 /**
 License:
 ==============================================================================
-Copyright 2009/2010 Frank Bueltge  (email : frank@bueltge.de)
+Copyright 2009/2011 Frank Bueltge  (email : frank@bueltge.de)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,33 +43,33 @@ This plugin requires WordPress >= 2.7 and tested with PHP Interpreter >= 5.2.9
 */
 
 //avoid direct calls to this file, because now WP core and framework has been used
-if ( !function_exists('add_action') ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
+if ( ! function_exists( 'add_action' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
-} elseif ( version_compare(phpversion(), '5.0.0', '<') ) {
+} elseif ( version_compare( phpversion(), '5.0.0', '<' ) ) {
 	$exit_msg = 'The plugin require PHP 5 or newer';
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit($exit_msg);
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
+	exit( $exit_msg );
 }
 
 
-if ( !class_exists('AdminerForWP') ) {
+if ( ! class_exists('AdminerForWP' ) ) {
 	
 	//WordPress definitions
-	if ( !defined('WP_CONTENT_URL') )
-		define('WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-	if ( !defined('WP_CONTENT_DIR') )
-		define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
-	if ( !defined('WP_PLUGIN_URL') )
-		define('WP_PLUGIN_URL', WP_CONTENT_URL.'/plugins');
-	if ( !defined('WP_PLUGIN_DIR') )
-		define('WP_PLUGIN_DIR', WP_CONTENT_DIR.'/plugins');
-	if ( !defined('PLUGINDIR') )
+	if ( ! defined('WP_CONTENT_URL' ) )
+		define( 'WP_CONTENT_URL', get_option('siteurl' ) . '/wp-content' );
+	if ( ! defined('WP_CONTENT_DIR' ) )
+		define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+	if ( ! defined('WP_PLUGIN_URL' ) )
+		define( 'WP_PLUGIN_URL', WP_CONTENT_URL.'/plugins' );
+	if ( ! defined('WP_PLUGIN_DIR' ) )
+		define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR.'/plugins' );
+	if ( ! defined('PLUGINDIR' ) )
 		define( 'PLUGINDIR', 'wp-content/plugins' ); // Relative to ABSPATH.  For back compat.
-	if ( !defined('WP_LANG_DIR') )
-		define('WP_LANG_DIR', WP_CONTENT_DIR . '/languages');
+	if ( ! defined('WP_LANG_DIR' ) )
+		define( 'WP_LANG_DIR', WP_CONTENT_DIR . '/languages' );
 	
 	// plugin definitions
 	define( 'FB_ADM_BASENAME', plugin_basename(__FILE__) );
@@ -82,9 +82,9 @@ if ( !class_exists('AdminerForWP') ) {
 			
 			if ( ! is_admin() )
 				return FALSE;
-				
+			
+			add_action( 'init',       array( &$this, 'register_styles' ) );
 			add_action( 'admin_init', array( &$this, 'text_domain' ) );
-			add_action( 'init', array( &$this, 'register_styles' ) );
 			add_action( 'admin_menu', array( &$this, 'on_admin_menu' ) );
 		}
 		
@@ -103,26 +103,31 @@ if ( !class_exists('AdminerForWP') ) {
 			
 			add_thickbox();
 			wp_enqueue_style( 'adminer-settings' );
-			add_action( 'contextual_help', array(&$this, 'contextual_help'), 10, 3 );
+			add_action( 'contextual_help', array(&$this, 'contextual_help' ), 10, 3 );
 		}
 		
 		public function on_admin_menu() {
 			
-			if ( current_user_can('unfiltered_html') ) {
+			if ( current_user_can('unfiltered_html' ) ) {
 				wp_enqueue_style( 'adminer-menu' );
 				
 				$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
 				$menutitle .= __( 'Adminer', FB_ADM_TEXTDOMAIN );
-				$this->pagehook = add_management_page( __( 'Adminer', FB_ADM_TEXTDOMAIN ), $menutitle, 'unfiltered_html', FB_ADM_BASENAME, array(&$this, 'on_show_page') );
+				$this->pagehook = add_management_page( 
+					__( 'Adminer', FB_ADM_TEXTDOMAIN ), 
+					$menutitle, 
+					'unfiltered_html', 
+					FB_ADM_BASENAME, 
+					array( &$this, 'on_show_page' )
+				);
 				
-				add_action( 'load-' . $this->pagehook, array(&$this, 'on_load_page') );
+				add_action( 'load-' . $this -> pagehook, array( &$this, 'on_load_page' ) );
 			}
 		}
 		
-		public function contextual_help($contextual_help, $screen_id, $screen) {
-			global $my_plugin_hook;
+		public function contextual_help( $contextual_help, $screen_id, $screen ) {
 			
-			if ( $screen_id == $my_plugin_hook )
+			if ( 'tools_page_adminer/adminer' !== $screen_id )
 				return FALSE;
 			
 			$contextual_help  = '<p>';
@@ -130,8 +135,9 @@ if ( !class_exists('AdminerForWP') ) {
 			$contextual_help .= '<br />';
 			$contextual_help .= __( 'Alternatively, you can use the button for use &rsaquo;<em>Adminer in a new Tab</em>&lsaquo;.', FB_ADM_TEXTDOMAIN );
 			$contextual_help .= '</p>' . "\n";
-			$contextual_help .= '<p>' . __( '<a href="http://wordpress.org/extend/plugins/adminer/">Documentation on Plugin Directory</a></p>', FB_ADM_TEXTDOMAIN );
-			$contextual_help .= '<p>' . __( '<a href="http://www.adminer.org/">Adminer website</a></p>', FB_ADM_TEXTDOMAIN );
+			$contextual_help .= '<p>' . __( '<a href="http://wordpress.org/extend/plugins/adminer/">Documentation on Plugin Directory</a>', FB_ADM_TEXTDOMAIN );
+			$contextual_help .=  ' &middot; ' .__( '<a href="http://bueltge.de/">Blog of Plugin author</a>', FB_ADM_TEXTDOMAIN );
+			$contextual_help .= ' &middot; ' . __( '<a href="http://www.adminer.org/">Adminer website</a></p>', FB_ADM_TEXTDOMAIN );
 			
 			return $contextual_help;
 		}
@@ -150,11 +156,11 @@ if ( !class_exists('AdminerForWP') ) {
 				$db_password = DB_PASSWORD;
 			?>
 			<div class="wrap">
-				<?php //screen_icon('tools'); ?>
+				<?php //screen_icon('tools' ); ?>
 				<?php screen_icon( 'adminer-settings' ); ?>
 				<h2><?php _e( 'Adminer for WordPress', FB_ADM_TEXTDOMAIN ); ?></h2>
 				<img class="alignright" src="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/images/logo.png" alt="Adminer Logo" />
-				<p><a href="http://www.adminer.org/">Adminer</a> <?php _e( '(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server.', FB_ADM_TEXTDOMAIN ); ?></p>
+				<p><a href="http://www.adminer.org/">Adminer</a> <?php _e( '(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server.', FB_ADM_TEXTDOMAIN ); ?> <?php _e( 'Current used version of Plugin', FB_ADM_TEXTDOMAIN ); echo ' ' . self :: get_plugin_data( 'Name' ) . ': ' . self :: get_plugin_data( 'Version' ); ?></p>
 				<br class="clear"/>
 				
 				<p>
@@ -163,7 +169,7 @@ if ( !class_exists('AdminerForWP') ) {
 						var viewportwidth;
 						var viewportheight;
 					
-						if (typeof window.innerWidth != 'undefined') {
+						if (typeof window.innerWidth != 'undefined' ) {
 							viewportwidth = window.innerWidth-80,
 							viewportheight = window.innerHeight-100
 						} else if (typeof document.documentElement != 'undefined'
@@ -173,19 +179,19 @@ if ( !class_exists('AdminerForWP') ) {
 							viewportwidth = document.documentElement.clientWidth,
 							viewportheight = document.documentElement.clientHeight
 						} else { // older versions of IE
-							viewportwidth = document.getElementsByTagName('body')[0].clientWidth,
-							viewportheight = document.getElementsByTagName('body')[0].clientHeight
+							viewportwidth = document.getElementsByTagName('body' )[0].clientWidth,
+							viewportheight = document.getElementsByTagName('body' )[0].clientHeight
 						}
-						//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>');
-						document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/index.php?username=<?php echo DB_USER; ?>&?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&amp;width='+viewportwidth+'" class="thickbox button"><?php _e( 'Start Adminer inside', FB_ADM_TEXTDOMAIN ); ?></a>');
+						//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
+						document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER; ?>&?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&amp;width='+viewportwidth+'" class="thickbox button"><?php _e( 'Start Adminer inside', FB_ADM_TEXTDOMAIN ); ?></a>' );
 						//-->
 					</script>
-					<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/index.php?username=<?php echo DB_USER; ?>" class="button"><?php _e( 'Start Adminer in a new tab', FB_ADM_TEXTDOMAIN ); ?></a>
+					<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER; ?>" class="button"><?php _e( 'Start Adminer in a new tab', FB_ADM_TEXTDOMAIN ); ?></a>
 				</p>
 				<p>&nbsp;</p>
 				
 				<noscript>
-					<iframe src="inc/index.php?username=<?php echo DB_USER; ?>" width="100%" height="600" name="adminer">
+					<iframe src="inc/adminer/loader.php?username=<?php echo DB_USER; ?>" width="100%" height="600" name="adminer">
 						<p><?php _e('Your browser does not support embedded frames.', FB_ADM_TEXTDOMAIN); ?></p>
 					</iframe>
 				</noscript>
@@ -216,6 +222,27 @@ if ( !class_exists('AdminerForWP') ) {
 			
 			</div>
 			<?php
+		}
+		
+		/**
+		 * return plugin comment data
+		 * 
+		 * @uses   get_plugin_data
+		 * @access public
+		 * @since  1.1.0
+		 * @param  $value string, default = 'TextDomain'
+		 *         Name, PluginURI, Version, Description, Author, AuthorURI, TextDomain, DomainPath, Network, Title
+		 * @return string
+		 */
+		private static function get_plugin_data ( $value = 'TextDomain' ) {
+			
+			if ( ! function_exists( 'get_plugin_data' ) )
+				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			
+			$plugin_data  = get_plugin_data ( __FILE__ );
+			$plugin_value = $plugin_data[$value];
+			
+			return $plugin_value;
 		}
 		
 	}
