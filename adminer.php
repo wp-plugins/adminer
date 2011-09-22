@@ -183,10 +183,10 @@ if ( ! class_exists('AdminerForWP' ) ) {
 							viewportheight = document.getElementsByTagName('body' )[0].clientHeight
 						}
 						//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
-						document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER; ?>&?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&amp;width='+viewportwidth+'" class="thickbox button"><?php _e( 'Start Adminer inside', FB_ADM_TEXTDOMAIN ); ?></a>' );
+						document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;TB_iframe=true&amp;height='+viewportheight+'&amp;width='+viewportwidth+'" class="thickbox button"><?php _e( 'Start Adminer inside', FB_ADM_TEXTDOMAIN ); ?></a>' );
 						//-->
 					</script>
-					<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER; ?>" class="button"><?php _e( 'Start Adminer in a new tab', FB_ADM_TEXTDOMAIN ); ?></a>
+					<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . FB_ADM_BASEDIR; ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', FB_ADM_TEXTDOMAIN ); ?></a>
 				</p>
 				<p>&nbsp;</p>
 				
@@ -208,6 +208,10 @@ if ( ! class_exists('AdminerForWP' ) ) {
 						<tr valign="top">
 							<th scope="row"><?php _e('Server', FB_ADM_TEXTDOMAIN); ?></th>
 							<td><?php echo DB_HOST; ?></td>
+						</tr>
+						<tr valign="top">
+							<th scope="row"><?php _e('Database', FB_ADM_TEXTDOMAIN); ?></th>
+							<td><?php echo DB_NAME; ?></td>
 						</tr>
 						<tr valign="top" class="alternate">
 							<th scope="row"><?php _e('User', FB_ADM_TEXTDOMAIN); ?></th>

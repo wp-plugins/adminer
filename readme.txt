@@ -66,6 +66,8 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 == Changelog ==
 = v1.1.1 (09/23/2011) =
 * change function to load wp-load.php
+* add database for see the database on admin
+* add the database as value for open thickbox incl. the right database
 
 = v1.1.0 (09/15/2011) =
 * exclude the minified version of Adminer
