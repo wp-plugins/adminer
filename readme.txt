@@ -4,12 +4,14 @@ Donate link: http://bueltge.de/wunschliste/
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
 Tested up to: 3.3-beta3
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
 == Description ==
-Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPres.
+Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPress.
+
+This plugin supports Multisite Installs only as Network Admin; add an menu item on Settings and also an link to WP Admin Bar to the item Network Admin.
 
 = Localizations =
 * Thanks for german language file to [myself](http://bueltge.de/ "Frank B&uuml;ltge") ;)
@@ -20,8 +22,7 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 * Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
 * Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 * Thanks for japanese translation to [KAZ]
-* Thanks for the spanish language files to [Techfacts](http://www.techfacts.net/)
-* Thanks for the russian language files to [DachaDecor](http://dachadecor.ru)
+* Thanks for the Spanish language files to [Techfacts](http://www.techfacts.net/)
 
 = More Plugins = 
 Please see also my [Premium Plugins](http://wpplugins.com/author/malo.conny/). Maybe you find an solution for your requirement.
@@ -31,7 +32,7 @@ You may also be interested in WordPress tips and tricks at [WP Engineer](http://
 
 == Installation ==
 = Requirements =
-* WordPress version 2.7 and later (tested at 3.2.1)
+* WordPress version 2.7 and later (tested at 3.3-beta3)
 
 = Installation =
 1. Unpack the download-package
@@ -56,8 +57,7 @@ You may also be interested in WordPress tips and tricks at [WP Engineer](http://
 * Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
 * Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 * Thanks for japanese translation to [KAZ]
-* Thanks for the spanish language files to [Techfacts](http://www.techfacts.net/)
-* Thanks for the russian language files to [DachaDecor](http://dachadecor.ru)
+* Thanks for the Spanish language files to [Techfacts](http://www.techfacts.net/)
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
@@ -66,11 +66,15 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
+= v1.2.0 (11/12/2011) =
+* Support for Multisite Network
+* Add menu item to network, if networrk activate
+* Add menu item to WP Admin Bar on Network Admin; only for Super Admins
+
 = v1.1.1 (09/23/2011) =
 * change function to load wp-load.php
 * add database for see the database on admin
 * add the database as value for open thickbox incl. the right database
-* add russian language files
 
 = v1.1.0 (09/15/2011) =
 * exclude the minified version of Adminer
