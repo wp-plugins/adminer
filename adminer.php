@@ -158,7 +158,7 @@ if ( ! class_exists('AdminerForWP' ) ) {
 				$wp_admin_bar -> add_menu( array(
 				'parent' => 'network-admin',
 				'id'     => 'network-adminer',
-				'title'  => '<span class="adminer-icon">&nbsp;</span>' . __( 'Adminer' ),
+				'title'  => __( 'Adminer', FB_ADM_TEXTDOMAIN ),
 				'href'   => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
 				) );
 			}
