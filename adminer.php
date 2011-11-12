@@ -156,10 +156,11 @@ if ( ! class_exists('AdminerForWP' ) ) {
 			
 			if ( is_super_admin() ) {
 				$wp_admin_bar -> add_menu( array(
-				'parent' => 'network-admin',
-				'id'     => 'network-adminer',
-				'title'  => __( 'Adminer', FB_ADM_TEXTDOMAIN ),
-				'href'   => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
+				'parent'    => 'network-admin',
+				'secondary' => FALSE,
+				'id'        => 'network-adminer',
+				'title'     => __( 'Adminer', FB_ADM_TEXTDOMAIN ),
+				'href'      => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
 				) );
 			}
 		}
