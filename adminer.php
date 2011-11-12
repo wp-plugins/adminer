@@ -11,7 +11,7 @@ Text Domain: adminer
 Domain Path: /languages
 Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
 Author: Frank B&uuml;ltge
-Version: 1.2.1
+Version: 1.2.0
 Author URI: http://bueltge.de/
 Donate URI: http://bueltge.de/wunschliste/
 License: Apache License
@@ -157,9 +157,8 @@ if ( ! class_exists('AdminerForWP' ) ) {
 			if ( is_super_admin() ) {
 				$wp_admin_bar -> add_menu( array(
 				'parent' => 'network-admin',
-				'secondary' => FALSE,
 				'id'     => 'network-adminer',
-				'title'  => '<span class="adminer-icon">&nbsp;</span>' . __( 'Adminer' ),
+				'title'  => __( 'Adminer', FB_ADM_TEXTDOMAIN ),
 				'href'   => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
 				) );
 			}
