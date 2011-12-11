@@ -3,7 +3,7 @@ Contributors: Bueltge
 Donate link: http://bueltge.de/wunschliste/
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 3.3-beta3
+Tested up to: 3.3
 Stable tag: 1.2.0
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
@@ -12,17 +12,6 @@ Adminer is a full-featured MySQL management tool written in PHP. This plugin inc
 Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. This plugin include this tool in WordPress for a fast management of your database. [Adminer](http://www.adminer.org/ "Adminer") is also used without this plugin and WordPress.
 
 This plugin supports Multisite Installs only as Network Admin; add an menu item on Settings and also an link to WP Admin Bar to the item Network Admin.
-
-= Localizations =
-* Thanks for german language file to [myself](http://bueltge.de/ "Frank B&uuml;ltge") ;)
-* Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
-* Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
-* Thanks for belorussian language files to [Marcis G.](http://pc.de/)
-* Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
-* Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
-* Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
-* Thanks for japanese translation to [KAZ]
-* Thanks for the Spanish language files to [Techfacts](http://www.techfacts.net/)
 
 = More Plugins = 
 Please see also my [Premium Plugins](http://wpplugins.com/author/malo.conny/). Maybe you find an solution for your requirement.
@@ -58,6 +47,7 @@ You may also be interested in WordPress tips and tricks at [WP Engineer](http://
 * Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 * Thanks for japanese translation to [KAZ]
 * Thanks for the Spanish language files to [Techfacts](http://www.techfacts.net/)
+* Thanks to [Brian Flores](http://www.inmotionhosting.com/) for serbian translation
 
 = Licence =
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
