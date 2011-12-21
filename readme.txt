@@ -1,6 +1,6 @@
 === Adminer ===
 Contributors: Bueltge
-Donate link: http://bueltge.de/wunschliste/
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
 Tested up to: 3.3
@@ -130,7 +130,3 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 
 = v0.1 (21/08/2009) =
 * Write a Plugin based on my ideas
-
-== Frequently Asked Questions ==
-= I love this plugin! How can I show the developer how much I appreciate his work? =
-Please visit [my website](http://bueltge.de/ "bueltge.de") and let him know your care or see the [wishlist](http://bueltge.de/wunschliste/ "Wishlist") of the author or use the donate form.
