@@ -5,4 +5,4 @@
  */
 
 // the path to wp-load.php
-$wp_siteurl = '/var/www/wpbeta';
+$wp_siteurl = ''; // example: '/var/www/wpbeta'
