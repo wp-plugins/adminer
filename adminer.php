@@ -316,13 +316,12 @@ if ( ! class_exists('AdminerForWP' ) ) {
 		static function array_map_recursive( $callback, $array ) {
 			$r = array(); 
 	
-			if ( is_array($array) )
-			{
-				foreach ( $array as $k => $v )
-				{
+			if ( is_array($array) ) {
+				
+				foreach ( $array as $k => $v ) {
 					$r[$k] = is_scalar($v)
 						? $callback($v)
-						: RMQ::array_map_recursive($callback, $v);
+						: AdminerForWP::array_map_recursive($callback, $v);
 				}
 			} 
 			
