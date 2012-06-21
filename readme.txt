@@ -33,7 +33,8 @@ You may also be interested in WordPress tips and tricks at [WP Engineer](http://
 If you use the plugins outside the wp-root or other one install, then you must define the absolute path to `wp-load.php` in the install root of WordPress in the `config.php` inside the plugin folder of Adminer.
 
 	/**
-	 * The path to wp-load.php, if you have the plugin folder not inside the default path
+	 * The path to wp-load.php,
+	 * if you have the plugin folder not inside the default path
 	 * 
 	 * example: '/var/www/wpbeta'
 	 * or on Windows client with XAMPP C:/xampp/htdocs/wpbeta
