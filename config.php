@@ -4,5 +4,10 @@
  * then you must define the absolute path to wp-load.php in the install root of WordPress
  */
 
-// the path to wp-load.php
-$wp_siteurl = 'C:/xampp/htdocs/wpbeta';
+/**
+ * The path to wp-load.php, if you have the plugin folder not inside the default path
+ * 
+ * example: '/var/www/wpbeta'
+ * or on Windows client with XAMPP C:/xampp/htdocs/wpbeta
+ */
+$wp_siteurl = ''; 

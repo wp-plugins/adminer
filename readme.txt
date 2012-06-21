@@ -30,6 +30,16 @@ You may also be interested in WordPress tips and tricks at [WP Engineer](http://
 1. Menu `Tools` -> `Adminer`
 1. Klick button `Start Adminer` for view the database
 
+If you use the plugins outside the wp-root or other one install, then you must define the absolute path to `wp-load.php` in the install root of WordPress in the `config.php` inside the plugin folder of Adminer.
+
+	/**
+	 * The path to wp-load.php, if you have the plugin folder not inside the default path
+	 * 
+	 * example: '/var/www/wpbeta'
+	 * or on Windows client with XAMPP C:/xampp/htdocs/wpbeta
+	 */
+	$wp_siteurl = ''; 
+
 == Screenshots ==
 1. Page in Backend (WordPress 2.9-rare)
 1. Adminer with a database (WordPress 2.9-rare)
