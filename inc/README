@@ -29,7 +29,7 @@ if ( ! class_exists( 'AdminerForWP' ) ) {
 AdminerForWP::gpc_strip_slashes();
 
 ============================================================
-Current: no!
+Remove Magic Quotes
 Filter für $query in inc/adminer/include/functions.inc.php
 	if ($query) {
 >		// filter query via plugin fct.
@@ -37,6 +37,8 @@ Filter für $query in inc/adminer/include/functions.inc.php
 		$sql = $adminer->messageQuery("$query;");
 	}
 
+============================================================
+Current: no!
 Filter of $query for Magic Quotes
 $query = $_POST["query"]; --> $query = stripslashes($_POST["query"]);
 - sql.inc.php
