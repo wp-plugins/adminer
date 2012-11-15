@@ -9,13 +9,13 @@ rename functions:
 - is_adminer_ajax() --> is_adminer_ajax()
 - js_adminer_escape() --> js_adminer_escape()
 
-<body --> without jaavscript for check version, in inc/adminer/include/design.inc.php
+<body --> without javscript for check version, in inc/adminer/include/design.inc.php
 only: <body class="<?php echo lang('ltr'); ?> nojs"<?php echo ($_POST ? "" : " onclick=\"return bodyClick(event, '" . h(js_adminer_escape(DB) . "', '" . js_adminer_escape($_GET["ns"])) . "');\""); // avoid re-post confirmation after refreshing the next page in Google Chrome ?> ">
 
 iframe, in inc/adminer/include/design.inc.php
 remove: header("X-Frame-Options: deny");
 
-sourceforge url, in 3.5 nicht relevant
+sourceforge url, in 3.5 not relevant; in inc/adminer/static/editing.js
 set FALSE to var jushRoot 
 
 ============================================================
