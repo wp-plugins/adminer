@@ -25,13 +25,23 @@ function get_wp_root( $directory ) {
 	return FALSE;
 } // end function to find wp-load.php
 
-if ( ! function_exists( 'add_filter' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	
 	get_wp_root( dirname( dirname(__FILE__) ) );
 	if ( ! empty( $wp_siteurl ) ) {
+		if ( ! file_exists( $wp_siteurl . '/wp-load.php' ) ) {
+			die( 'Cheatin&#8217; or you have the wrong path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
+			exit;
+		}
+		
 		define( 'WP_USE_THEMES', FALSE );
 		include_once( $wp_siteurl . '/wp-load.php' );
 	} else if ( $wp_root ) {
+		if ( ! file_exists( $wp_root . '/wp-load.php' ) ) {
+			die( 'Cheatin&#8217; or the plugin can`t fint the path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
+			exit;
+		}
+		
 		define( 'WP_USE_THEMES', FALSE );
 		include_once( $wp_root . '/wp-load.php' );
 	} else {
@@ -41,9 +51,10 @@ if ( ! function_exists( 'add_filter' ) ) {
 	
 }
 
-if ( ! current_user_can( 'unfiltered_html' ) )
+if ( ! defined( 'ABSPATH' ) ) {
 	wp_die( __('Cheatin&#8217; uh?') );
-
+	exit;
+}
 /**
  * Call Adminer with custom params
  * 

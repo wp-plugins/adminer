@@ -9,4 +9,4 @@
 
 // the path to wp-load.php
 //$wp_siteurl = '/var/www/wpbeta';
-$wp_siteurl = 'C:/xampp/htdocs/wpbeta';
+//$wp_siteurl = 'C:/xampp/htdocs/wpbeta';

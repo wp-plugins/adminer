@@ -45,10 +45,9 @@ if ( ! function_exists( 'add_filter' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 } elseif ( version_compare( phpversion(), '5.0.0', '<' ) ) {
-	$exit_msg = 'The plugin require PHP 5 or newer';
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
-	exit( $exit_msg );
+	exit( 'The plugin require PHP 5 or newer' );
 }
 
 class AdminerForWP {
@@ -89,9 +88,9 @@ class AdminerForWP {
 		
 		// active for MU ?
 		if ( is_multisite() && is_plugin_active_for_network( plugin_basename( __FILE__ ) ) )
-			add_action( 'network_admin_menu', array( &$this, 'on_network_admin_menu' ) );
+			add_action( 'network_admin_menu', array( $this, 'on_network_admin_menu' ) );
 		else
-			add_action( 'admin_menu', array( &$this, 'on_admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'on_admin_menu' ) );
 	}
 	
 	public function text_domain() {
@@ -129,7 +128,7 @@ class AdminerForWP {
 				$menutitle, 
 				'unfiltered_html', 
 				plugin_basename(__FILE__), 
-				array( &$this, 'on_show_page' )
+				array( $this, 'on_show_page' )
 			);
 			
 			add_action( 'load-' . $this -> pagehook, array( $this, 'on_load_page' ) );
@@ -149,10 +148,10 @@ class AdminerForWP {
 				$menutitle, 
 				'unfiltered_html', 
 				plugin_basename(__FILE__), 
-				array( &$this, 'on_show_page' )
+				array( $this, 'on_show_page' )
 			);
 			
-			add_action( 'load-' . $this -> pagehook, array( &$this, 'on_load_page' ) );
+			add_action( 'load-' . $this -> pagehook, array( $this, 'on_load_page' ) );
 		}
 	}
 	
@@ -217,7 +216,7 @@ class AdminerForWP {
 	 * 
 	 * @param   string $callback Callback function to map 
 	 * @param   array, string $value Array to map 
-	 * @source  http://www.sitepoint.com/blogs/2005/03/02/magic-quotes-headaches/ 
+	 * @see     http://www.sitepoint.com/blogs/2005/03/02/magic-quotes-headaches/ 
 	 * @return  array, string
 	 */
 	static function array_map_recursive( $callback, $values ) {
@@ -309,7 +308,7 @@ class AdminerForWP {
 								<li><a href="http://wordpress.org/extend/plugins/adminer/" title="<?php esc_attr_e( 'The Plugin on the WordPress plugin repository', 'adminer' ); ?>"><?php _e( 'Give the plugin a good rating.', 'adminer' ); ?></a></li>
 								<li><a href="http://wordpress.org/support/view/plugin-reviews/adminer" title="<?php esc_attr_e( 'Write a good review on the repository', 'adminer' ); ?>"><?php _e( 'Write a review about the plugin.', 'adminer' ); ?></a></li>
 								<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955" title="<?php esc_attr_e( 'Donate via PayPal', 'adminer' ); ?>"><?php _e( 'Donate a few euros.', 'adminer' ); ?></a></li>
-								<li><a href="http://www.amazon.de/gp/registry/3NTOGEK181L23/ref=wl_s_3" title="<?php esc_attr_e( 'Frank Bültge\'s Amazon Wish List', 'adminer' ); ?>"><?php _e( 'Get me something from my wish list.', 'adminer' ); ?></a></li>
+								<li><a href="http://www.amazon.de/gp/registry/3NTOGEK181L23/ref=wl_s_3" title="<?php esc_attr_e( 'Frank Bï¿½ltge\'s Amazon Wish List', 'adminer' ); ?>"><?php _e( 'Get me something from my wish list.', 'adminer' ); ?></a></li>
 								<li><a href="http://adminer.org" title="<?php _e( 'Adminer website for more informations and versions without WordPress', 'adminer' ); ?>"><?php _e( 'More about Adminer', 'adminer' ); ?></a></li>
 							</ul>
 							
