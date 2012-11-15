@@ -59,6 +59,9 @@ class AdminerForWP {
 		if ( ! is_admin() )
 			return NULL;
 		
+		if ( is_multisite() && ! function_exists( 'is_plugin_active_for_network' ) )
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		
 		add_action( 'init',       array( $this, 'register_styles' ) );
 		add_action( 'init',       array( $this, 'on_init' ) );
 		add_action( 'admin_init', array( $this, 'text_domain' ) );
