@@ -20,6 +20,9 @@ input, textarea, pre, code, samp, kbd, var {
 font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif;
 font-size: 12px;
 }
+input[type='submit']#logout {
+display:none;
+}
 
 pre {
 white-space: pre-wrap;
