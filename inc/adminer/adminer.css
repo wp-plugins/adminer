@@ -1,4 +1,4 @@
-/** 
+/**
  * Alternative style for Adminer by Frank Bueltge
  * @link     http://bueltge.de/
  * @version  09/14/2012
@@ -107,7 +107,7 @@ fieldset, x:-moz-any-link {
 padding-top: 4px;
 }
 fieldset {
-%padding-top: 14px;
+padding-top: 14px;
 }
 legend {
 font-weight: 900; 
@@ -117,9 +117,9 @@ top: -1.666em;
 left: -1em;
 padding: 0 4px;
 }
-input[name='limit'], input[name*='length'] {
+input[name='limit'], input[name='length'] {
 width: 3em; 
-xtext-align: right;
+text-align: right;
 }
 input[name='text_length'] {
 width: 5em;
@@ -392,5 +392,5 @@ border-bottom-left-radius: 5px;
 -moz-border-radius-topright: 5px;
 -khtml-border-top-right-radius: 5px;
 -webkit-border-top-right-radius: 5px;
-border-bottom-top-radius: 5px;
+border-top-right-radius: 5px;
 }
