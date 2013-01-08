@@ -61,6 +61,17 @@ if ( ! isset( $_GET['is_admin'] ) || 'true' !== esc_attr( $_GET['is_admin'] ) ) 
 	exit;
 }
 
+if ( file_exists( ABSPATH . 'wp-admin/admin.php' ) ) {
+	require_once( ABSPATH . 'wp-admin/admin.php' );
+} else {
+	wp_die( __('Cheatin&#8217; uh?') );
+	exit;
+}
+if ( ! is_admin() ) {
+	wp_die( __('Cheatin&#8217; uh?') );
+	exit;
+}
+
 /**
  * Call Adminer with custom params
  * 
