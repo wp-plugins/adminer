@@ -9,7 +9,7 @@
  * Domain Path: /languages
  * Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
  * Author:      Frank B&uuml;ltge
- * Version:     1.2.2
+ * Version:     1.2.3
  * Author URI:  http://bueltge.de/
  * Donate URI:  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6069955
  * License:     Apache License
@@ -18,7 +18,7 @@
  * 
  * License:
  * ==============================================================================
- * Copyright 2009/2012 Frank Bueltge  (email : frank@bueltge.de)
+ * Copyright 2009/2013 Frank Bueltge  (email : frank@bueltge.de)
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * 
  * Requirements:
  * ==============================================================================
- * This plugin requires WordPress >= 2.7 and tested with WP 3.5 and PHP >= 5.3
+ * This plugin requires WordPress >= 2.7 and tested with WP 3.6 and PHP >= 5.3
  */
 
 // avoid direct calls to this file, because now WP core and framework has been used
@@ -285,10 +285,10 @@ class AdminerForWP {
 						viewportheight = document.getElementsByTagName('body' )[0].clientHeight
 					}
 					//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
-					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;is_admin=true&amp;TB_iframe=true&amp;height=' + viewportheight + '&amp;width=' + viewportwidth + '" class="thickbox button"><?php _e( 'Start Adminer inside', 'adminer' ); ?></a>' );
+					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;TB_iframe=true&amp;height=' + viewportheight + '&amp;width=' + viewportwidth + '" class="thickbox button"><?php _e( 'Start Adminer inside', 'adminer' ); ?></a>' );
 					//-->
 				</script>
-				<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?is_admin=true&amp;username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', 'adminer' ); ?></a>
+				<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', 'adminer' ); ?></a>
 			</p>
 			<p>&nbsp;</p>
 			

@@ -2,32 +2,23 @@
 // the path to wp-load.php
 require_once '../../config.php';
 
-// search and include wp-load.php
-function get_wp_root( $directory ) {
-	global $wp_root;
+function fb_find_wp_config_path() {
 	
-	foreach( glob( $directory . "/*" ) as $f ) {
-		
-		if ( 'wp-load.php' == basename($f) ) {
-			$wp_root = str_replace( "\\", "/", dirname($f) );
-			return TRUE;
+	$dir = dirname(__FILE__);
+	
+	do {
+		if( file_exists( $dir . "/wp-config.php" ) ) {
+			return $dir;
+			var_dump($dir);
 		}
-		
-		if ( is_dir($f) )
-			$newdir = dirname( dirname($f) );
-	}
+	} while ( $dir = realpath( "$dir/.." ) );
 	
-	if ( isset($newdir) && $newdir != $directory ) {
-		if ( get_wp_root ( $newdir ) )
-			return FALSE;
-	}
-	
-	return FALSE;
-} // end function to find wp-load.php
+	return NULL;
+}
 
 if ( ! defined( 'ABSPATH' ) ) {
 	
-	get_wp_root( dirname( dirname(__FILE__) ) );
+	//get_wp_root( dirname( dirname(__FILE__) ) );
 	if ( ! empty( $wp_siteurl ) ) {
 		if ( ! file_exists( $wp_siteurl . '/wp-load.php' ) ) {
 			die( 'Cheatin&#8217; or you have the wrong path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
@@ -35,18 +26,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		}
 		
 		define( 'WP_USE_THEMES', FALSE );
-		include_once( $wp_siteurl . '/wp-load.php' );
-	} else if ( $wp_root ) {
-		if ( ! file_exists( $wp_root . '/wp-load.php' ) ) {
-			die( 'Cheatin&#8217; or the plugin can`t fint the path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
-			exit;
-		}
-		
-		define( 'WP_USE_THEMES', FALSE );
-		include_once( $wp_root . '/wp-load.php' );
+		require_once( $wp_siteurl . '/wp-load.php' );
 	} else {
-		die( 'Cheatin&#8217; or you must define the path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
-		exit;
+		define( 'WP_USE_THEMES', FALSE );
+		require_once( fb_find_wp_config_path() . '/wp-config.php' );
 	}
 	
 }
@@ -56,19 +39,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! isset( $_GET['is_admin'] ) || 'true' !== esc_attr( $_GET['is_admin'] ) ) {
-	wp_die( __('Cheatin&#8217; uh?') );
-	exit;
-}
-
-if ( file_exists( ABSPATH . 'wp-admin/admin.php' ) ) {
-	require_once( ABSPATH . 'wp-admin/admin.php' );
-} else {
-	wp_die( __('Cheatin&#8217; uh?') );
-	exit;
-}
-if ( ! is_admin() ) {
-	wp_die( __('Cheatin&#8217; uh?') );
+if ( ! current_user_can( 'unfiltered_html' ) ) {
+	wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this.' ) );
 	exit;
 }
 

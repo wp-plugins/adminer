@@ -8,4 +8,3 @@
  */
 
 // the path to wp-load.php
-$wp_siteurl = FALSE;
