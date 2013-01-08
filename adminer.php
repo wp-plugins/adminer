@@ -13,7 +13,7 @@
  * Author URI:  http://bueltge.de/
  * Donate URI:  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6069955
  * License:     Apache License
- * Last change: 11/09/2012
+ * Last change: 01/08/2013
  * 
  * 
  * License:
@@ -285,10 +285,10 @@ class AdminerForWP {
 						viewportheight = document.getElementsByTagName('body' )[0].clientHeight
 					}
 					//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
-					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;TB_iframe=true&amp;height=' + viewportheight + '&amp;width=' + viewportwidth + '" class="thickbox button"><?php _e( 'Start Adminer inside', 'adminer' ); ?></a>' );
+					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;is_admin=true&amp;TB_iframe=true&amp;height=' + viewportheight + '&amp;width=' + viewportwidth + '" class="thickbox button"><?php _e( 'Start Adminer inside', 'adminer' ); ?></a>' );
 					//-->
 				</script>
-				<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', 'adminer' ); ?></a>
+				<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?is_admin=true&amp;username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', 'adminer' ); ?></a>
 			</p>
 			<p>&nbsp;</p>
 			
