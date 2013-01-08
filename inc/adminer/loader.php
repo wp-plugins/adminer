@@ -55,6 +55,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	wp_die( __('Cheatin&#8217; uh?') );
 	exit;
 }
+
+if ( ! isset( $_GET['is_admin'] ) || 'true' !== esc_attr( $_GET['is_admin'] ) ) {
+	wp_die( __('Cheatin&#8217; uh?') );
+	exit;
+}
+
 /**
  * Call Adminer with custom params
  * 
