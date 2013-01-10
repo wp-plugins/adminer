@@ -55,25 +55,27 @@ function adminer_object() {
 		
 		function name() {
 			
-			return get_option('blogname');
+			return 'Adminer';
 		}
 		
 		function credentials() {
-			global $wpdb;
 			
-			return array(DB_HOST, DB_USER, DB_PASSWORD);
+			return array( DB_HOST, DB_USER, DB_PASSWORD );
 		}
 		
 		function database() {
-			global $wpdb;
 			
 			return DB_NAME;
 		}
 		
-		function login($login, $password) {
-			global $wpdb;
+		function login( $login, $password ) {
 			
-			return ($login == DB_USER);
+			if ( current_user_can( 'unfiltered_html' ) )
+				return ( $login == DB_USER );
+			else {
+				wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this.' ) );
+				exit;
+			}
 		}
 		
 	}
@@ -81,4 +83,4 @@ function adminer_object() {
 	return new AdminerUser;
 }
 
-include_once ( 'index.php' );
+include_once( 'index.php' );
