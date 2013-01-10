@@ -1,6 +1,6 @@
 // Adminer specific functions
 
-var jushRoot = FALSE; // global variable to allow simple customization
+var jushRoot = false; // global variable to allow simple customization
 
 /** Load syntax highlighting
 * @param string first three characters of database system version
