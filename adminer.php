@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Adminer
- * @author Frank B&uuml;ltge
+ * @author Frank Bültge
  * 
  * Plugin Name: Adminer
  * Plugin URI:  http://bueltge.de/adminer-fuer-wordpress/1014/
@@ -9,16 +9,16 @@
  * Domain Path: /languages
  * Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
  * Author:      Frank B&uuml;ltge
- * Version:     1.2.4
+ * Version:     1.3.0
  * Author URI:  http://bueltge.de/
  * Donate URI:  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6069955
  * License:     Apache License
- * Last change: 07/25/2013
+ * Last change: 01/26/2013
  * 
  * 
  * License:
  * ==============================================================================
- * Copyright 2009/2013 Frank Bueltge  (email : frank@bueltge.de)
+ * Copyright 2009/2014 Frank Bueltge  (email : frank@bueltge.de)
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
  * 
  * Requirements:
  * ==============================================================================
- * This plugin requires WordPress >= 2.7 and tested with WP 3.6 and PHP >= 5.3
+ * This plugin requires WordPress >= 3.3 and tested with WP 3.9-alpha and PHP >= 5.3
  */
 
 // avoid direct calls to this file, because now WP core and framework has been used
@@ -50,6 +50,7 @@ if ( ! function_exists( 'add_filter' ) ) {
 	exit( 'The plugin require PHP 5 or newer' );
 }
 
+add_action( 'plugins_loaded', array( 'AdminerForWP', 'get_object' ) );
 class AdminerForWP {
 	
 	static private $classobj;
@@ -103,11 +104,9 @@ class AdminerForWP {
 	
 	public function register_styles() {
 		
-		wp_register_style( 'adminer-menu', plugins_url( 'css/menu.css', __FILE__ ) );
 		wp_register_style( 'adminer-settings', plugins_url( 'css/settings.css', __FILE__ ) );
 		
 		if ( is_multisite() && is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
-			wp_enqueue_style( 'adminer-menu' );
 			add_action( 'admin_bar_menu', array( $this, 'add_wp_admin_bar_item' ), 20 );
 		}
 	}
@@ -124,8 +123,7 @@ class AdminerForWP {
 		if ( current_user_can( 'unfiltered_html' ) ) {
 			wp_enqueue_style( 'adminer-menu' );
 			
-			$menutitle  = '<span class="adminer-icon">&nbsp;</span>';
-			$menutitle .= __( 'Adminer', 'adminer' );
+			$menutitle = __( 'Adminer', 'adminer' );
 			$this->pagehook = add_management_page( 
 				__( 'Adminer', 'adminer' ), 
 				$menutitle, 
@@ -394,4 +392,3 @@ class AdminerForWP {
 	
 } // end class
 
-add_action( 'plugins_loaded', array( 'AdminerForWP', 'get_object' ) );
