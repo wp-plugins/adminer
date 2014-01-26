@@ -90,6 +90,7 @@ function adminer_object() {
 	$plugins = array(
 		// specify enabled plugins here
 		new AdminerDatabaseHide( array( 'information_schema' ) ),
+		new AdminerDumpDate, 
 		new AdminerDumpJson,
 		new AdminerDumpBz2,
 		new AdminerDumpZip,
