@@ -163,7 +163,7 @@ class AdminerForWP {
 			'parent' => 'network-admin',
 			'secondary' => FALSE,
 			'id'     => 'network-adminer',
-			'title'  => '<span class="adminer-icon">&nbsp;</span>' . __( 'Adminer' ),
+			'title'  => __( 'Adminer' ),
 			'href'   => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
 			) );
 		}
