@@ -52,9 +52,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	} elseif ( file_exists( fb_find_wp_config_path() . '/wp-config.php' ) ) {
 		define( 'WP_USE_THEMES', FALSE );
 		require_once( fb_find_wp_config_path() . '/wp-config.php' );
-	} elseif ( file_exists( fb_get_wp_root( dirname( dirname(__FILE__) ) ) . 'wp-config.php' ) ) {
+	} elseif ( file_exists( fb_get_wp_root( dirname( dirname(__FILE__) ) ) . '/wp-config.php' ) ) {
 		define( 'WP_USE_THEMES', FALSE );
-		fb_get_wp_root( dirname( dirname(__FILE__) ) );
+		require_once( fb_get_wp_root( dirname( dirname(__FILE__) ) ) . '/wp-config.php' );
 	} else {
 		die( 'Cheatin&#8217; or you have the wrong path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
 		exit;
