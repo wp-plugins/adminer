@@ -13,7 +13,7 @@
  * Author URI:  http://bueltge.de/
  * Donate URI:  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6069955
  * License:     Apache License
- * Last change: 02/01/2013
+ * Last change: 02/01/2014
  * 
  * 
  * License:
