@@ -35,7 +35,7 @@ function connect_error() {
 			
 			foreach ($databases as $db) {
 				$root = h(ME) . "db=" . urlencode($db);
-				echo "<tr" . odd() . ">" . (support("database") ? "<td>" . checkbox("db[]", $db, in_array($db, (array) $_POST["db"])) : "");
+				echo "<tr" . odd() . ">" . (support("database") ? "<td>" . adminer_checkbox("db[]", $db, in_array($db, (array) $_POST["db"])) : "");
 				echo "<th><a href='$root'>" . h($db) . "</a>";
 				$collation = nbsp(db_collation($db, $collations));
 				echo "<td>" . (support("database") ? "<a href='$root" . ($scheme ? "&amp;ns=" : "") . "&amp;database=' title='" . lang('Alter database') . "'>$collation</a>" : $collation);

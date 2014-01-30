@@ -143,13 +143,13 @@ echo "<tr><th>" . lang('Output') . "<td>" . html_select("output", $adminer->dump
 echo "<tr><th>" . lang('Format') . "<td>" . html_select("format", $adminer->dumpFormat(), $row["format"], 0) . "\n"; // 0 - radio
 
 echo ($jush == "sqlite" ? "" : "<tr><th>" . lang('Database') . "<td>" . html_select('db_style', $db_style, $row["db_style"])
-	. (support("routine") ? checkbox("routines", 1, $row["routines"], lang('Routines')) : "")
-	. (support("event") ? checkbox("events", 1, $row["events"], lang('Events')) : "")
+	. (support("routine") ? adminer_checkbox("routines", 1, $row["routines"], lang('Routines')) : "")
+	. (support("event") ? adminer_checkbox("events", 1, $row["events"], lang('Events')) : "")
 );
 
 echo "<tr><th>" . lang('Tables') . "<td>" . html_select('table_style', $table_style, $row["table_style"])
-	. checkbox("auto_increment", 1, $row["auto_increment"], lang('Auto Increment'))
-	. (support("trigger") ? checkbox("triggers", 1, $row["triggers"], lang('Triggers')) : "")
+	. adminer_checkbox("auto_increment", 1, $row["auto_increment"], lang('Auto Increment'))
+	. (support("trigger") ? adminer_checkbox("triggers", 1, $row["triggers"], lang('Triggers')) : "")
 ;
 
 echo "<tr><th>" . lang('Data') . "<td>" . html_select('data_style', $data_style, $row["data_style"]);
@@ -173,11 +173,11 @@ if (DB != "") {
 	foreach ($tables_list as $name => $type) {
 		$prefix = preg_replace('~_.*~', '', $name);
 		$checked = ($TABLE == "" || $TABLE == (substr($TABLE, -1) == "%" ? "$prefix%" : $name)); //! % may be part of table name
-		$print = "<tr><td>" . checkbox("tables[]", $name, $checked, $name, "checkboxClick(event, this); formUncheck('check-tables');", "block");
+		$print = "<tr><td>" . adminer_checkbox("tables[]", $name, $checked, $name, "checkboxClick(event, this); formUncheck('check-tables');", "block");
 		if ($type !== null && !preg_match('~table~i', $type)) {
 			$views .= "$print\n";
 		} else {
-			echo "$print<td align='right'><label class='block'><span id='Rows-" . h($name) . "'></span>" . checkbox("data[]", $name, $checked, "", "checkboxClick(event, this); formUncheck('check-data');") . "</label>\n";
+			echo "$print<td align='right'><label class='block'><span id='Rows-" . h($name) . "'></span>" . adminer_checkbox("data[]", $name, $checked, "", "checkboxClick(event, this); formUncheck('check-data');") . "</label>\n";
 		}
 		$prefixes[$prefix]++;
 	}
@@ -194,7 +194,7 @@ if (DB != "") {
 		foreach ($databases as $db) {
 			if (!information_schema($db)) {
 				$prefix = preg_replace('~_.*~', '', $db);
-				echo "<tr><td>" . checkbox("databases[]", $db, $TABLE == "" || $TABLE == "$prefix%", $db, "formUncheck('check-databases');", "block") . "\n";
+				echo "<tr><td>" . adminer_checkbox("databases[]", $db, $TABLE == "" || $TABLE == "$prefix%", $db, "formUncheck('check-databases');", "block") . "\n";
 				$prefixes[$prefix]++;
 			}
 		}

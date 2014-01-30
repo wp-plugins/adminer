@@ -98,7 +98,7 @@ function nl_br($string) {
 * @param string
 * @return string
 */
-function checkbox($name, $value, $checked, $label = "", $onclick = "", $class = "") {
+function adminer_checkbox($name, $value, $checked, $label = "", $onclick = "", $class = "") {
 	$return = "<input type='checkbox' name='$name' value='" . h($value) . "'"
 		. ($checked ? " checked" : "")
 		. ($onclick ? ' onclick="' . h($onclick) . '"' : '')

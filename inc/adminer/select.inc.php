@@ -357,7 +357,7 @@ if (!$columns && support("table")) {
 					}
 					$unique_idf .= "&" . ($val !== null ? urlencode("where[" . bracket_escape($key) . "]") . "=" . urlencode($val) : "null%5B%5D=" . urlencode($key));
 				}
-				echo "<tr" . odd() . ">" . (!$group && $select ? "" : "<td>" . checkbox("check[]", substr($unique_idf, 1), in_array(substr($unique_idf, 1), (array) $_POST["check"]), "", "this.form['all'].checked = false; formUncheck('all-page');") . ($is_group || information_schema(DB) ? "" : " <a href='" . h(ME . "edit=" . urlencode($TABLE) . $unique_idf) . "'>" . lang('edit') . "</a>"));
+				echo "<tr" . odd() . ">" . (!$group && $select ? "" : "<td>" . adminer_checkbox("check[]", substr($unique_idf, 1), in_array(substr($unique_idf, 1), (array) $_POST["check"]), "", "this.form['all'].checked = false; formUncheck('all-page');") . ($is_group || information_schema(DB) ? "" : " <a href='" . h(ME . "edit=" . urlencode($TABLE) . $unique_idf) . "'>" . lang('edit') . "</a>"));
 
 				foreach ($row as $key => $val) {
 					if (isset($names[$key])) {
@@ -476,7 +476,7 @@ if (!$columns && support("table")) {
 			echo "<p class='count'>\n";
 			echo ($found_rows !== false ? "(" . ($exact_count ? "" : "~ ") . lang('%d row(s)', $found_rows) . ") " : "");
 			$display_rows = ($exact_count ? "" : "~ ") . $found_rows;
-			echo checkbox("all", 1, 0, lang('whole result'), "var checked = formChecked(this, /check/); selectCount('selected', this.checked ? '$display_rows' : checked); selectCount('selected2', this.checked || !checked ? '$display_rows' : checked);") . "\n";
+			echo adminer_checkbox("all", 1, 0, lang('whole result'), "var checked = formChecked(this, /check/); selectCount('selected', this.checked ? '$display_rows' : checked); selectCount('selected2', this.checked || !checked ? '$display_rows' : checked);") . "\n";
 
 			if ($adminer->selectCommandPrint()) {
 				?>

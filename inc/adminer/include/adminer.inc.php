@@ -99,7 +99,7 @@ username.form['auth[driver]'].onchange();
 </script>
 <?php
 		echo "<p><input type='submit' value='" . lang('Login') . "'>\n";
-		echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
+		echo adminer_checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
 	}
 
 	/** Authorize the user
@@ -274,7 +274,7 @@ username.form['auth[driver]'].onchange();
 			if ($index["type"] == "FULLTEXT") {
 				echo "(<i>" . implode("</i>, <i>", array_map('h', $index["columns"])) . "</i>) AGAINST";
 				echo " <input type='search' name='fulltext[$i]' value='" . h($_GET["fulltext"][$i]) . "' onchange='selectFieldChange(this.form);'>";
-				echo checkbox("boolean[$i]", 1, isset($_GET["boolean"][$i]), "BOOL");
+				echo adminer_checkbox("boolean[$i]", 1, isset($_GET["boolean"][$i]), "BOOL");
 				echo "<br>\n";
 			}
 		}
@@ -304,12 +304,12 @@ username.form['auth[driver]'].onchange();
 		foreach ((array) $_GET["order"] as $key => $val) {
 			if ($val != "") {
 				echo "<div>" . select_input(" name='order[$i]' onchange='selectFieldChange(this.form);'", $columns, $val);
-				echo checkbox("desc[$i]", 1, isset($_GET["desc"][$key]), lang('descending')) . "</div>\n";
+				echo adminer_checkbox("desc[$i]", 1, isset($_GET["desc"][$key]), lang('descending')) . "</div>\n";
 				$i++;
 			}
 		}
 		echo "<div>" . select_input(" name='order[$i]' onchange='selectAddRow(this);'", $columns);
-		echo checkbox("desc[$i]", 1, false, lang('descending')) . "</div>\n";
+		echo adminer_checkbox("desc[$i]", 1, false, lang('descending')) . "</div>\n";
 		echo "</div></fieldset>\n";
 	}
 

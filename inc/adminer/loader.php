@@ -5,15 +5,15 @@ require_once '../../config.php';
 // find wp-config.php
 function fb_find_wp_config_path() {
 	
-	$dir = dirname(__FILE__);
+	$dir = dirname( __FILE__ );
 	
 	do {
-		if( file_exists( $dir . "/wp-config.php" ) ) {
+		if ( file_exists( $dir . "/wp-config.php" ) ) {
 			return $dir;
 		}
 	} while ( $dir = realpath( "$dir/.." ) );
 	
-	return NULL;
+	return FALSE;
 }
 
 // search and include wp-load.php
@@ -27,17 +27,27 @@ function fb_get_wp_root( $directory ) {
 			return $wp_root;
 		}
 		
-		if ( is_dir($f) )
+		if ( is_dir( $f ) ) {
 			$newdir = dirname( dirname($f) );
+			
+			foreach( glob( $f . "/*" ) as $subf ) {
+				
+				if ( 'wp-load.php' == basename($subf) ) {
+					$wp_root = str_replace( "\\", "/", dirname($subf) );
+					return $wp_root;
+				}
+			}
+		}
 	}
 	
 	if ( isset($newdir) && $newdir != $directory ) {
-		if ( fb_get_wp_root( $newdir ) )
-			$wp_root = FALSE;
+		if ( FALSE !== fb_get_wp_root( $newdir ) )
+			$wp_root = fb_get_wp_root( $newdir );
 	}
 	
 	return $wp_root;
 } // end function to find wp-load.php
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	
@@ -49,12 +59,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		
 		define( 'WP_USE_THEMES', FALSE );
 		require_once( $wp_siteurl . '/wp-load.php' );
+	
 	} elseif ( file_exists( fb_find_wp_config_path() . '/wp-config.php' ) ) {
 		define( 'WP_USE_THEMES', FALSE );
 		require_once( fb_find_wp_config_path() . '/wp-config.php' );
+	
 	} elseif ( file_exists( fb_get_wp_root( dirname( dirname(__FILE__) ) ) . '/wp-config.php' ) ) {
 		define( 'WP_USE_THEMES', FALSE );
 		require_once( fb_get_wp_root( dirname( dirname(__FILE__) ) ) . '/wp-config.php' );
+	
 	} else {
 		die( 'Cheatin&#8217; or you have the wrong path to <code>wp-load.php</code>, see the <a href="http://wordpress.org/extend/plugins/adminer/installation/">readme</a>?');
 		exit;

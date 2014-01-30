@@ -118,7 +118,7 @@ foreach ($row["indexes"] as $index) {
 		foreach ($index["columns"] as $key => $column) {
 			echo "<span>" . html_select("indexes[$j][columns][$i]", array(-1 => "") + $fields, $column, ($i == count($index["columns"]) ? "indexesAddColumn" : "indexesChangeColumn") . "(this, '" . js_adminer_escape($jush == "sql" ? "" : $_GET["indexes"] . "_") . "');");
 			echo ($jush == "sql" || $jush == "mssql" ? "<input type='number' name='indexes[$j][lengths][$i]' class='size' value='" . h($index["lengths"][$key]) . "'>" : "");
-			echo ($jush != "sql" ? checkbox("indexes[$j][descs][$i]", 1, $index["descs"][$key], lang('descending')) : "");
+			echo ($jush != "sql" ? adminer_checkbox("indexes[$j][descs][$i]", 1, $index["descs"][$key], lang('descending')) : "");
 			echo " </span>";
 			$i++;
 		}
