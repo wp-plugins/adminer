@@ -70,6 +70,7 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 = v1.3.1 () =
 * Enhance loader for crusome installs ;)
 * Replace another function from Adminer to work with different plugins
+* Hide password in clear text, only via Moudeover readable
 
 = v1.3.0 (01/26/2014) =
 * Fix strict php notice for static method 

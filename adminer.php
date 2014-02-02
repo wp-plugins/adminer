@@ -283,6 +283,16 @@ class AdminerForWP {
 					}
 					//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
 					document.write('<a onclick="return false;" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>&amp;?KeepThis=true&amp;TB_iframe=true&amp;height=' + viewportheight + '&amp;width=' + viewportwidth + '" class="thickbox button"><?php _e( 'Start Adminer inside', 'adminer' ); ?></a>' );
+					
+					// hide and readable password
+					function clear_password() {
+						
+						var input_password = document.getElementById( "dbpassword" ).setAttribute( 'type', 'text' );
+					}
+					function hide_password() {
+						
+						var input_password = document.getElementById( "dbpassword" ).setAttribute( 'type', 'password' );
+					}
 					//-->
 				</script>
 				<a target="_blank" href="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/inc/adminer/loader.php?username=<?php echo DB_USER . '&amp;db=' . DB_NAME; ?>" class="button"><?php _e( 'Start Adminer in a new tab', 'adminer' ); ?></a>
@@ -343,9 +353,9 @@ class AdminerForWP {
 											<th scope="row"><?php _e('User', 'adminer'); ?></th>
 											<td><code><?php echo $db_user; ?></code></td>
 										</tr>
-										<tr valign="top">
+										<tr valign="top" class="password">
 											<th scope="row"><?php _e('Password', 'adminer'); ?></th>
-											<td><code><?php echo $db_password; ?></code></td>
+											<td><input onmouseout="hide_password()" onmouseover="clear_password()" value="<?php echo $db_password; ?>" id="dbpassword" type="password" readonly></td>
 										</tr>
 									</tbody>
 								</table>
