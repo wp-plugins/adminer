@@ -3,7 +3,7 @@ Contributors: Bueltge, inpsyde
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 3.9-alpha
+Tested up to: 3.9
 Stable tag: 1.3.0
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
@@ -18,9 +18,6 @@ This plugin supports Multisite Installs only as Network Admin; add an menu item 
 Have a look at the premium plugins in our [market](http://marketpress.com).
 
 == Installation ==
-= Requirements =
-* WordPress version 2.7 and later (tested at 3.9-alpha)
-
 = Installation =
 1. Unpack the download-package
 1. Upload the file to your plugin-directory, default is `/wp-content/plugins/`
