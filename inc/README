@@ -10,6 +10,7 @@ rename functions:
 - js_escape() --> js_adminer_escape()
 - pagination() --> adminer_pagination()
 - checkbox() --> adminer_checkbox()
+- redirect() -->
 
 <body --> without javscript for check version, in inc/adminer/include/design.inc.php
 only: <body class="<?php echo lang('ltr'); ?> nojs"<?php echo ($_POST ? "" : " onclick=\"return bodyClick(event, '" . h(js_adminer_escape(DB) . "', '" . js_adminer_escape($_GET["ns"])) . "');\""); // avoid re-post confirmation after refreshing the next page in Google Chrome ?> ">
