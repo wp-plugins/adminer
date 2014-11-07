@@ -6,16 +6,18 @@
 function bodyLoad(version) {
 	if (window.jush) {
 		jush.create_links = ' target="_blank" rel="noreferrer"';
-		for (var key in jush.urls) {
-			var obj = jush.urls;
-			if (typeof obj[key] != 'string') {
-				obj = obj[key];
-				key = 0;
+		if (version) {
+			for (var key in jush.urls) {
+				var obj = jush.urls;
+				if (typeof obj[key] != 'string') {
+					obj = obj[key];
+					key = 0;
+				}
+				obj[key] = obj[key]
+					.replace(/\/doc\/mysql/, '/doc/refman/' + version) // MySQL
+					.replace(/\/docs\/current/, '/docs/' + version) // PostgreSQL
+				;
 			}
-			obj[key] = obj[key]
-				.replace(/\/doc\/mysql/, '/doc/refman/' + version) // MySQL
-				.replace(/\/docs\/current/, '/docs/' + version) // PostgreSQL
-			;
 		}
 		if (window.jushLinks) {
 			jush.custom_links = jushLinks;
@@ -64,7 +66,9 @@ function typePassword(el, disable) {
 function loginDriver(driver) {
 	var trs = parentTag(driver, 'table').rows;
 	for (var i=1; i < trs.length - 1; i++) {
-		alterClass(trs[i], 'hidden', /sqlite/.test(driver.value));
+		var disabled = /sqlite/.test(driver.value);
+		alterClass(trs[i], 'hidden', disabled);
+		trs[i].getElementsByTagName('input')[0].disabled = disabled;
 	}
 }
 
@@ -308,7 +312,7 @@ function editingTypeChange(type) {
 			alterClass(el, 'hidden', !/((^|[^o])int|float|double|decimal)$/.test(text));
 		}
 		if (el.name == name + '[on_update]') {
-			alterClass(el, 'hidden', text != 'timestamp');
+			alterClass(el, 'hidden', !/timestamp|datetime/.test(text)); // MySQL supports datetime since 5.6.5
 		}
 		if (el.name == name + '[on_delete]') {
 			alterClass(el, 'hidden', !/`/.test(text));
@@ -433,12 +437,16 @@ function indexesAddRow(field) {
 * @param string name prefix
 */
 function indexesChangeColumn(field, prefix) {
-	var columns = parentTag(field, 'td').getElementsByTagName('select');
 	var names = [];
-	for (var i=0; i < columns.length; i++) {
-		var value = selectValue(columns[i]);
-		if (value) {
-			names.push(value);
+	for (var tag in { 'select': 1, 'input': 1 }) {
+		var columns = parentTag(field, 'td').getElementsByTagName(tag);
+		for (var i=0; i < columns.length; i++) {
+			if (/\[columns\]/.test(columns[i].name)) {
+				var value = selectValue(columns[i]);
+				if (value) {
+					names.push(value);
+				}
+			}
 		}
 	}
 	field.form[field.name.replace(/\].*/, '][name]')].value = prefix + names.join('_');
@@ -460,14 +468,37 @@ function indexesAddColumn(field, prefix) {
 		select.onchange();
 	}
 	var column = cloneNode(field.parentNode);
-	select = column.getElementsByTagName('select')[0];
-	select.name = select.name.replace(/\]\[\d+/, '$&1');
-	select.selectedIndex = 0;
-	var input = column.getElementsByTagName('input')[0];
-	input.name = input.name.replace(/\]\[\d+/, '$&1');
-	input.value = '';
+	var selects = column.getElementsByTagName('select');
+	for (var i = 0; i < selects.length; i++) {
+		select = selects[i];
+		select.name = select.name.replace(/\]\[\d+/, '$&1');
+		select.selectedIndex = 0;
+	}
+	var inputs = column.getElementsByTagName('input');
+	for (var i = 0; i < inputs.length; i++) {
+		var input = inputs[i];
+		input.name = input.name.replace(/\]\[\d+/, '$&1');
+		if (input.type != 'checkbox') {
+			input.value = '';
+		}
+	}
 	parentTag(field, 'td').appendChild(column);
 	field.onchange();
+}
+
+
+
+/** Handle changing trigger time or event
+* @param RegExp
+* @param string
+* @param HTMLFormElement
+*/
+function triggerChange(tableRe, table, form) {
+	var formEvent = selectValue(form['Event']);
+	if (tableRe.test(form['Trigger'].value)) {
+		form['Trigger'].value = table + '_' + (selectValue(form['Timing']).charAt(0) + formEvent.charAt(0)).toLowerCase();
+	}
+	alterClass(form['Of'], 'hidden', formEvent != 'UPDATE OF');
 }
 
 
@@ -549,6 +580,8 @@ function schemaMouseup(ev, db) {
 	}
 }
 
+
+
 var helpOpen, helpIgnore; // when mouse outs <option> then it mouse overs border of <select> - ignore it
 
 /** Display help
@@ -568,8 +601,9 @@ function helpMouseover(el, event, text, side) {
 		jush.highlight_tag([ help ]);
 		alterClass(help, 'hidden');
 		var rect = target.getBoundingClientRect();
-		help.style.top = (rect.top - (side ? (help.offsetHeight - target.offsetHeight) / 2 : help.offsetHeight)) + 'px';
-		help.style.left = (rect.left - (side ? help.offsetWidth : (help.offsetWidth - target.offsetWidth) / 2)) + 'px';
+		var body = document.documentElement;
+		help.style.top = (body.scrollTop + rect.top - (side ? (help.offsetHeight - target.offsetHeight) / 2 : help.offsetHeight)) + 'px';
+		help.style.left = (body.scrollLeft + rect.left - (side ? help.offsetWidth : (help.offsetWidth - target.offsetWidth) / 2)) + 'px';
 	}
 }
 

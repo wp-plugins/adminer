@@ -6,13 +6,13 @@ if ($_POST && !$error) {
 	$link = substr(ME, 0, -1);
 	$name = trim($row["name"]);
 	if ($_POST["drop"]) {
-		query_redirect("DROP SEQUENCE " . idf_escape($SEQUENCE), $link, lang('Sequence has been dropped.'));
+		query_adminer_redirect("DROP SEQUENCE " . idf_escape($SEQUENCE), $link, lang('Sequence has been dropped.'));
 	} elseif ($SEQUENCE == "") {
-		query_redirect("CREATE SEQUENCE " . idf_escape($name), $link, lang('Sequence has been created.'));
+		query_adminer_redirect("CREATE SEQUENCE " . idf_escape($name), $link, lang('Sequence has been created.'));
 	} elseif ($SEQUENCE != $name) {
-		query_redirect("ALTER SEQUENCE " . idf_escape($SEQUENCE) . " RENAME TO " . idf_escape($name), $link, lang('Sequence has been altered.'));
+		query_adminer_redirect("ALTER SEQUENCE " . idf_escape($SEQUENCE) . " RENAME TO " . idf_escape($name), $link, lang('Sequence has been altered.'));
 	} else {
-		redirect($link);
+		adminer_redirect($link);
 	}
 }
 

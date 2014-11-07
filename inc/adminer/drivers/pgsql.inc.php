@@ -439,12 +439,12 @@ ORDER BY conkey, conname") as $row) {
 				//! descending UNIQUE indexes results in syntax error
 				$create[] = ($val[2] == "DROP"
 					? "\nDROP CONSTRAINT " . idf_escape($val[1])
-					: "\nADD" . ($val[1] != "" ? " CONSTRAINT " . idf_escape($val[1]) : "") . " $val[0] " . ($val[0] == "PRIMARY" ? "KEY " : "") . $val[2]
+					: "\nADD" . ($val[1] != "" ? " CONSTRAINT " . idf_escape($val[1]) : "") . " $val[0] " . ($val[0] == "PRIMARY" ? "KEY " : "") . "(" . implode(", ", $val[2]) . ")"
 				);
 			} elseif ($val[2] == "DROP") {
 				$drop[] = idf_escape($val[1]);
 			} else {
-				$queries[] = "CREATE INDEX " . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . table($table) . " $val[2]";
+				$queries[] = "CREATE INDEX " . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . table($table) . " (" . implode(", ", $val[2]) . ")";
 			}
 		}
 		if ($create) {
@@ -507,6 +507,7 @@ ORDER BY conkey, conname") as $row) {
 	function trigger_options() {
 		return array(
 			"Timing" => array("BEFORE", "AFTER"),
+			"Event" => array("INSERT", "UPDATE", "DELETE"),
 			"Type" => array("FOR EACH ROW", "FOR EACH STATEMENT"),
 		);
 	}

@@ -8,7 +8,7 @@ $SCHEMA = ($_GET["schema"] ? $_GET["schema"] : $_COOKIE[($_COOKIE["$name-" . DB]
 preg_match_all('~([^:]+):([-0-9.]+)x([-0-9.]+)(_|$)~', $SCHEMA, $matches, PREG_SET_ORDER);
 foreach ($matches as $i => $match) {
 	$table_pos[$match[1]] = array($match[2], $match[3]);
-	$table_pos_js[] = "\n\t'" . js_adminer_escape($match[1]) . "': [ $match[2], $match[3] ]";
+	$table_pos_js[] = "\n\t'" . is_adminer_escape($match[1]) . "': [ $match[2], $match[3] ]";
 }
 
 $top = 0;
@@ -55,7 +55,7 @@ var tablePos = {<?php echo implode(",", $table_pos_js) . "\n"; ?>};
 var em = document.getElementById('schema').offsetHeight / <?php echo $top; ?>;
 document.onmousemove = schemaMousemove;
 document.onmouseup = function (ev) {
-	schemaMouseup(ev, '<?php echo js_adminer_escape(DB); ?>');
+	schemaMouseup(ev, '<?php echo is_adminer_escape(DB); ?>');
 };
 </script>
 <?php

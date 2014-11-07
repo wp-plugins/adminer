@@ -672,14 +672,14 @@ if (!defined("DRIVER")) {
 
 	/** Run commands to alter indexes
 	* @param string escaped table name
-	* @param array of array("index type", "name", "(columns definition)") or array("index type", "name", "DROP")
+	* @param array of array("index type", "name", array("column definition", ...)) or array("index type", "name", "DROP")
 	* @return bool
 	*/
 	function alter_indexes($table, $alter) {
 		foreach ($alter as $key => $val) {
 			$alter[$key] = ($val[2] == "DROP"
 				? "\nDROP INDEX " . idf_escape($val[1])
-				: "\nADD $val[0] " . ($val[0] == "PRIMARY" ? "KEY " : "") . ($val[1] != "" ? idf_escape($val[1]) . " " : "") . $val[2]
+				: "\nADD $val[0] " . ($val[0] == "PRIMARY" ? "KEY " : "") . ($val[1] != "" ? idf_escape($val[1]) . " " : "") . "(" . implode(", ", $val[2]) . ")"
 			);
 		}
 		return queries("ALTER TABLE " . table($table) . implode(",", $alter));
@@ -734,7 +734,7 @@ if (!defined("DRIVER")) {
 		queries("SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
 		foreach ($tables as $table) {
 			$name = ($target == DB ? table("copy_$table") : idf_escape($target) . "." . table($table));
-			if (!queries("DROP TABLE IF EXISTS $name")
+			if (!queries("\nDROP TABLE IF EXISTS $name")
 				|| !queries("CREATE TABLE $name LIKE " . table($table))
 				|| !queries("INSERT INTO $name SELECT * FROM " . table($table))
 			) {
@@ -755,7 +755,7 @@ if (!defined("DRIVER")) {
 
 	/** Get information about trigger
 	* @param string trigger name
-	* @return array array("Trigger" => , "Timing" => , "Event" => , "Type" => , "Statement" => )
+	* @return array array("Trigger" => , "Timing" => , "Event" => , "Of" => , "Type" => , "Statement" => )
 	*/
 	function trigger($name) {
 		if ($name == "") {
@@ -778,12 +778,12 @@ if (!defined("DRIVER")) {
 	}
 
 	/** Get trigger options
-	* @return array ("Timing" => array(), "Type" => array())
+	* @return array ("Timing" => array(), "Event" => array(), "Type" => array())
 	*/
 	function trigger_options() {
 		return array(
 			"Timing" => array("BEFORE", "AFTER"),
-			// Event is always INSERT, UPDATE, DELETE
+			"Event" => array("INSERT", "UPDATE", "DELETE"),
 			"Type" => array("FOR EACH ROW"),
 		);
 	}
@@ -796,7 +796,7 @@ if (!defined("DRIVER")) {
 	function routine($name, $type) {
 		global $connection, $enum_length, $inout, $types;
 		$aliases = array("bool", "boolean", "integer", "double precision", "real", "dec", "numeric", "fixed", "national char", "national varchar");
-		$type_pattern = "((" . implode("|", array_merge(array_keys($types), $aliases)) . ")\\b(?:\\s*\\(((?:[^'\")]*|$enum_length)++)\\))?\\s*(zerofill\\s*)?(unsigned(?:\\s+zerofill)?)?)(?:\\s*(?:CHARSET|CHARACTER\\s+SET)\\s*['\"]?([^'\"\\s]+)['\"]?)?";
+		$type_pattern = "((" . implode("|", array_merge(array_keys($types), $aliases)) . ")\\b(?:\\s*\\(((?:[^'\")]|$enum_length)++)\\))?\\s*(zerofill\\s*)?(unsigned(?:\\s+zerofill)?)?)(?:\\s*(?:CHARSET|CHARACTER\\s+SET)\\s*['\"]?([^'\"\\s]+)['\"]?)?";
 		$pattern = "\\s*(" . ($type == "FUNCTION" ? "" : $inout) . ")?\\s*(?:`((?:[^`]|``)*)`\\s*|\\b(\\S+)\\s+)$type_pattern";
 		$create = $connection->result("SHOW CREATE $type " . idf_escape($name), 2);
 		preg_match("~\\(((?:$pattern\\s*,?)*)\\)\\s*" . ($type == "FUNCTION" ? "RETURNS\\s+$type_pattern\\s+" : "") . "(.*)~is", $create, $match);

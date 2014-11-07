@@ -9,7 +9,7 @@ if ($_POST && !$error) {
 	$message = lang('View has been altered.');
 	
 	if (!$_POST["drop"] && $TABLE == $name && $jush != "sqlite") {
-		query_redirect(($jush == "mssql" ? "ALTER" : "CREATE OR REPLACE") . " VIEW " . table($name) . $as, $location, $message);
+		query_adminer_redirect(($jush == "mssql" ? "ALTER" : "CREATE OR REPLACE") . " VIEW " . table($name) . $as, $location, $message);
 	} else {
 		$temp_name = $name . "_adminer_" . uniqid();
 		drop_create(

@@ -29,7 +29,7 @@ if ($row["auto_increment_col"]) {
 
 if ($_POST && !process_fields($row["fields"]) && !$error) {
 	if ($_POST["drop"]) {
-		queries_redirect(substr(ME, 0, -1), lang('Table has been dropped.'), drop_tables(array($TABLE)));
+		queries_adminer_redirect(substr(ME, 0, -1), lang('Table has been dropped.'), drop_tables(array($TABLE)));
 	} else {
 		$fields = array();
 		$all_fields = array();
@@ -102,7 +102,7 @@ if ($_POST && !process_fields($row["fields"]) && !$error) {
 		}
 		$name = trim($row["name"]);
 
-		queries_redirect(ME . (support("table") ? "table=" : "select=") . urlencode($name), $message, alter_table(
+		queries_adminer_redirect(ME . (support("table") ? "table=" : "select=") . urlencode($name), $message, alter_table(
 			$TABLE,
 			$name,
 			($jush == "sqlite" && ($use_all_fields || $foreign) ? $all_fields : $fields),

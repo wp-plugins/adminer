@@ -5,9 +5,9 @@ $row = $_POST;
 if ($_POST && !$error) {
 	$link = substr(ME, 0, -1);
 	if ($_POST["drop"]) {
-		query_redirect("DROP TYPE " . idf_escape($TYPE), $link, lang('Type has been dropped.'));
+		query_adminer_redirect("DROP TYPE " . idf_escape($TYPE), $link, lang('Type has been dropped.'));
 	} else {
-		query_redirect("CREATE TYPE " . idf_escape(trim($row["name"])) . " $row[as]", $link, lang('Type has been created.'));
+		query_adminer_redirect("CREATE TYPE " . idf_escape(trim($row["name"])) . " $row[as]", $link, lang('Type has been created.'));
 	}
 }
 

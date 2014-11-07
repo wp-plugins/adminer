@@ -3,8 +3,8 @@ Contributors: Bueltge, inpsyde
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 4.0
-Stable tag: 1.3.0
+Tested up to: 4.1-alpha
+Stable tag: 1.3.1
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
@@ -64,12 +64,15 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
-= v1.3.1 () =
+= v1.3.1 (2014-11-07) =
+* Update to Adminer Core 4.1.0, 2014-04-18
 * Enhance loader for crusome installs ;)
 * Replace another function from Adminer to work with different plugins
-* Hide password in clear text, only via Moudeover readable
+* Hide password in clear text, only via Mouseover readable
+* Update style for more WP feeling since 3.8 - like no radius
+* Check, that the plugin is active for access Adminer
 
-= v1.3.0 (01/26/2014) =
+= v1.3.0 (2014-01-26) =
 * Fix strict php notice for static method
 * Fix different views via stylesheet
 * Fix fatal error on `pagination()` function

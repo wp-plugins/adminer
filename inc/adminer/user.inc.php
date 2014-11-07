@@ -48,7 +48,7 @@ if (isset($_GET["host"]) && ($result = $connection->query("SHOW GRANTS FOR " . q
 if ($_POST && !$error) {
 	$old_user = (isset($_GET["host"]) ? q($USER) . "@" . q($_GET["host"]) : "''");
 	if ($_POST["drop"]) {
-		query_redirect("DROP USER $old_user", ME . "privileges=", lang('User has been dropped.'));
+		query_adminer_redirect("DROP USER $old_user", ME . "privileges=", lang('User has been dropped.'));
 	} else {
 		$new_user = q($_POST["user"]) . "@" . q($_POST["host"]); // if $_GET["host"] is not set then $new_user is always different
 		$pass = $_POST["pass"];
@@ -106,7 +106,7 @@ if ($_POST && !$error) {
 			}
 		}
 
-		queries_redirect(ME . "privileges=", (isset($_GET["host"]) ? lang('User has been altered.') : lang('User has been created.')), !$error);
+		queries_adminer_redirect(ME . "privileges=", (isset($_GET["host"]) ? lang('User has been altered.') : lang('User has been created.')), !$error);
 
 		if ($created) {
 			// delete new user in case of an error

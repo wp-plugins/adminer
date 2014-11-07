@@ -11,7 +11,7 @@ $history_all = &get_session("queries");
 $history = &$history_all[DB];
 if (!$error && $_POST["clear"]) {
 	$history = array();
-	redirect(remove_from_uri("history"));
+	adminer_redirect(remove_from_uri("history"));
 }
 
 page_header((isset($_GET["import"]) ? lang('Import') : lang('SQL command')), $error);
@@ -39,13 +39,13 @@ if (!$error && $_POST) {
 			$q = $query . (preg_match("~;[ \t\r\n]*\$~", $query) ? "" : ";"); //! doesn't work with DELIMITER |
 			if (!$history || reset(end($history)) != $q) { // no repeated queries
 				restart_session();
-				$history[] = array($q, time());
+				$history[] = array($q, time()); //! add elapsed time
 				set_session("queries", $history_all); // required because reference is unlinked by stop_session()
 				stop_session();
 			}
 		}
 
-		$space = "(?:\\s|/\\*.*\\*/|(?:#|-- )[^\n]*\n|--\n)";
+		$space = "(?:\\s|/\\*.*\\*/|(?:#|-- )[^\n]*\n|--\r?\n)";
 		$delimiter = ";";
 		$offset = 0;
 		$empty = true;
@@ -108,8 +108,7 @@ if (!$error && $_POST) {
 
 						do {
 							$result = $connection->store_result();
-							$end = microtime(true);
-							$time = " <span class='time'>(" . format_time($start, $end) . ")</span>"
+							$time = " <span class='time'>(" . format_time($start) . ")</span>"
 								. (strlen($q) < 1000 ? " <a href='" . h(ME) . "sql=" . urlencode(trim($q)) . "'>" . lang('Edit') . "</a>" : "") // 1000 - maximum length of encoded URL in IE is 2083 characters
 							;
 
@@ -156,7 +155,7 @@ if (!$error && $_POST) {
 								}
 							}
 
-							$start = $end;
+							$start = microtime(true);
 						} while ($connection->next_result());
 
 						$line += substr_count($q.$found, "\n");
@@ -172,7 +171,7 @@ if (!$error && $_POST) {
 			echo "<p class='message'>" . lang('No commands to execute.') . "\n";
 		} elseif ($_POST["only_errors"]) {
 			echo "<p class='message'>" . lang('%d query(s) executed OK.', $commands - count($errors));
-			echo " <span class='time'>(" . format_time($total_start, microtime(true)) . ")</span>\n";
+			echo " <span class='time'>(" . format_time($total_start) . ")</span>\n";
 		} elseif ($errors && $commands > 1) {
 			echo "<p class='error'>" . lang('Error in query') . ": " . implode("", $errors) . "\n";
 		}
@@ -217,15 +216,20 @@ if (!isset($_GET["import"])) {
 }
 
 echo adminer_checkbox("error_stops", 1, ($_POST ? $_POST["error_stops"] : isset($_GET["import"])), lang('Stop on error')) . "\n";
-echo adminer_checkbox("only_errors", 1, $_POST["only_errors"], lang('Show only errors')) . "\n";
+echo adminer_checkbox("only_errors", 1, ($_POST ? $_POST["only_errors"] : isset($_GET["import"])), lang('Show only errors')) . "\n";
 echo "<input type='hidden' name='token' value='$token'>\n";
 
 if (!isset($_GET["import"]) && $history) {
 	print_fieldset("history", lang('History'), $_GET["history"] != "");
 	for ($val = end($history); $val; $val = prev($history)) { // not array_reverse() to save memory
 		$key = key($history);
-		list($q, $time) = $val;
-		echo '<a href="' . h(ME . "sql=&history=$key") . '">' . lang('Edit') . "</a> <span class='time' title='" . @date('Y-m-d', $time) . "'>" . @date("H:i:s", $time) . "</span> <code class='jush-$jush'>" . shorten_utf8(ltrim(str_replace("\n", " ", str_replace("\r", "", preg_replace('~^(#|-- ).*~m', '', $q)))), 80, "</code>") . "<br>\n"; // @ - time zone may be not set
+		list($q, $time, $elapsed) = $val;
+		echo '<a href="' . h(ME . "sql=&history=$key") . '">' . lang('Edit') . "</a>"
+			. " <span class='time' title='" . @date('Y-m-d', $time) . "'>" . @date("H:i:s", $time) . "</span>" // @ - time zone may be not set
+			. " <code class='jush-$jush'>" . shorten_utf8(ltrim(str_replace("\n", " ", str_replace("\r", "", preg_replace('~^(#|-- ).*~m', '', $q)))), 80, "</code>")
+			. ($elapsed ? " <span class='time'>($elapsed)</span>" : "")
+			. "<br>\n"
+		;
 	}
 	echo "<input type='submit' name='clear' value='" . lang('Clear') . "'>\n";
 	echo "<a href='" . h(ME . "sql=&history=all") . "'>" . lang('Edit all') . "</a>\n";

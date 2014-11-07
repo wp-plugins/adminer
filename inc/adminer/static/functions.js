@@ -5,7 +5,9 @@
 * @param [bool]
 */
 function alterClass(el, className, enable) {
-	el.className = el.className.replace(RegExp('(^|\\s)' + className + '(\\s|$)'), '$2') + (enable ? ' ' + className : '');
+	if (el) {
+		el.className = el.className.replace(RegExp('(^|\\s)' + className + '(\\s|$)'), '$2') + (enable ? ' ' + className : '');
+	}
 }
 
 /** Toggle visibility
@@ -95,7 +97,7 @@ function parentTag(el, tag) {
 function trCheck(el) {
 	var tr = parentTag(el, 'tr');
 	alterClass(tr, 'checked', el.checked);
-	if (el.form && el.form['all']) {
+	if (el.form && el.form['all'] && el.form['all'].onclick) { // Opera treats form.all as document.all
 		el.form['all'].onclick();
 	}
 }
@@ -476,6 +478,20 @@ function keyupChange() {
 		this.onchange();
 		this.setAttribute('value', this.value);
 	}
+}
+
+/** Add new field in schema-less edit
+* @param HTMLInputElement
+*/
+function fieldChange(field) {
+	var row = cloneNode(parentTag(field, 'tr'));
+	var inputs = row.getElementsByTagName('input');
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].value = '';
+	}
+	// keep value in <select> (function)
+	parentTag(field, 'table').appendChild(row);
+	field.onchange = function () { };
 }
 
 

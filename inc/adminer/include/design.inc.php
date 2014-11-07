@@ -7,7 +7,7 @@
 * @return null
 */
 function page_header($title, $error = "", $breadcrumb = array(), $title2 = "") {
-	global $LANG, $VERSION, $adminer, $connection, $drivers, $jush;
+	global $LANG, $VERSION, $adminer, $drivers, $jush;
 	page_headers();
 	$title_all = $title . ($title2 != "" ? ": $title2" : "");
 	$title_page = strip_tags($title_all . (SERVER != "" && SERVER != "localhost" ? h(" - " . SERVER) : "") . " - " . $adminer->name());
@@ -29,7 +29,7 @@ function page_header($title, $error = "", $breadcrumb = array(), $title2 = "") {
 <?php } ?>
 <?php } ?>
 
-<body class="<?php echo lang('ltr'); ?> nojs" onkeydown="bodyKeydown(event);" onclick="bodyClick(event);" onload="bodyLoad('<?php echo (is_object($connection) ? substr($connection->server_info, 0, 3) : ""); ?>');">
+<body class="<?php echo lang('ltr'); ?> nojs" onkeydown="bodyKeydown(event);" onclick="bodyClick(event);">
 <script type="text/javascript">
 document.body.className = document.body.className.replace(/ nojs/, ' js');
 </script>
@@ -83,7 +83,6 @@ function page_headers() {
 	header("Content-Type: text/html; charset=utf-8");
 	header("Cache-Control: no-cache");
 	if ($adminer->headers()) {
-		//header("X-Frame-Options: deny"); // ClickJacking protection in IE8, Safari 4, Chrome 2, Firefox 3.6.9
 		header("X-XSS-Protection: 0"); // prevents introducing XSS in IE8 by removing safe parts of the page
 	}
 }

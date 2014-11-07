@@ -4,7 +4,7 @@ header("Content-Type: text/javascript; charset=utf-8");
 if ($_GET["script"] == "db") {
 	$sums = array("Data_length" => 0, "Index_length" => 0, "Data_free" => 0);
 	foreach (table_status() as $name => $table_status) {
-		$id = js_adminer_escape($name);
+		$id = is_adminer_escape($name);
 		json_row("Comment-$id", nbsp($table_status["Comment"]));
 		if (!is_view($table_status)) {
 			foreach (array("Engine", "Collation") as $key) {
@@ -12,7 +12,7 @@ if ($_GET["script"] == "db") {
 			}
 			foreach ($sums + array("Auto_increment" => 0, "Rows" => 0) as $key => $val) {
 				if ($table_status[$key] != "") {
-					$val = number_format($table_status[$key], 0, '.', lang(','));
+					$val = format_number($table_status[$key]);
 					json_row("$key-$id", ($key == "Rows" && $val && $table_status["Engine"] == ($sql == "pgsql" ? "table" : "InnoDB")
 						? "~ $val"
 						: $val
@@ -28,7 +28,7 @@ if ($_GET["script"] == "db") {
 		}
 	}
 	foreach ($sums as $key => $val) {
-		json_row("sum-$key", number_format($val, 0, '.', lang(',')));
+		json_row("sum-$key", format_number($val));
 	}
 	json_row("");
 
@@ -37,7 +37,8 @@ if ($_GET["script"] == "db") {
 
 } else { // connect
 	foreach (count_tables($adminer->databases()) as $db => $val) {
-		json_row("tables-" . js_adminer_escape($db), $val);
+		json_row("tables-$db", $val);
+		json_row("size-$db", db_size($db));
 	}
 	json_row("");
 }

@@ -1,19 +1,22 @@
 <?php
 /**
- * @package Adminer
- * @author Frank Bültge
+ * @package    WordPress
+ * @subpackage Adminer
+ * @author Frank Bültge <frank@bueltge.de>
+ *
+ * PHP Version 5.2
  * 
  * Plugin Name: Adminer
  * Plugin URI:  http://bueltge.de/adminer-fuer-wordpress/1014/
  * Text Domain: adminer
  * Domain Path: /languages
  * Description: <a href="http://www.adminer.org/en/">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database.
- * Author:      Frank B&uuml;ltge
+ * Author:      Frank Bültge
  * Version:     1.3.1
  * Author URI:  http://bueltge.de/
  * Donate URI:  https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6069955
  * License:     Apache License
- * Last change: 02/01/2014
+ * Last change: 2014-11-07
  * 
  * 
  * License:
@@ -50,16 +53,20 @@ if ( ! function_exists( 'add_filter' ) ) {
 	exit( 'The plugin require PHP 5 or newer' );
 }
 
+define( 'ADMINER_BASE_FILE', plugin_basename( __FILE__ ) );
+
 add_action( 'plugins_loaded', array( 'AdminerForWP', 'get_object' ) );
 class AdminerForWP {
-	
-	static private $classobj;
-	
+
+	private static $classobj;
+
+	protected $pagehook;
+
 	public function __construct() {
-		
+
 		if ( ! is_admin() )
 			return NULL;
-		
+
 		if ( is_multisite() && ! function_exists( 'is_plugin_active_for_network' ) )
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		
@@ -67,13 +74,13 @@ class AdminerForWP {
 		add_action( 'init',       array( $this, 'on_init' ) );
 		add_action( 'admin_init', array( $this, 'text_domain' ) );
 	}
-	
+
 	/**
 	 * Handler for the action 'init'. Instantiates this class.
 	 *
 	 * @since   1.2.2
 	 * @access  public
-	 * @return  $classobj
+	 * @return \AdminerForWP $classobj
 	 */
 	public static function get_object() {
 		
@@ -158,13 +165,14 @@ class AdminerForWP {
 	public function add_wp_admin_bar_item( $wp_admin_bar ) {
 		
 		if ( is_super_admin() ) {
-			$wp_admin_bar -> add_menu( array(
-			'parent' => 'network-admin',
-			'secondary' => FALSE,
-			'id'     => 'network-adminer',
-			'title'  => __( 'Adminer' ),
-			'href'   => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
-			) );
+			$args = array(
+				'parent'    => 'network-admin',
+				'secondary' => FALSE,
+				'id'        => 'network-adminer',
+				'title'     => __( 'Adminer' ),
+				'href'      => network_admin_url( 'settings.php?page=adminer/adminer.php' ),
+			);
+			$wp_admin_bar->add_node( $args );
 		}
 	}
 	
@@ -185,16 +193,16 @@ class AdminerForWP {
 		
 		return $contextual_help;
 	}
-	
+
 	/**
 	 * Strip slashes for different var
-	 * 
-	 * @param    $value optional Array, String
-	 * @return   void
+	 *
+	 * @param   array|string $value optional
+	 * @return  array|null   $value
 	 */
 	static function gpc_strip_slashes( $value = NULL ) {
 		
-		// cracy check, WP change the rules and also Adminer core
+		// crazy check, WP change the rules and also Adminer core
 		// result; we must check wrong to the php doc
 		if ( ! get_magic_quotes_gpc() ) {
 			
@@ -220,7 +228,8 @@ class AdminerForWP {
 	 * @return  array, string
 	 */
 	static function array_map_recursive( $callback, $values ) {
-		
+
+		$r = NULL;
 		if ( is_string( $values ) ) {
 			$r = $callback( $values );
 		} elseif ( is_array( $values ) ) {
@@ -242,8 +251,7 @@ class AdminerForWP {
 	 * @return   void
 	 */
 	public function on_show_page() {
-		global $wpdb;
-		
+
 		if ( '' == DB_USER )
 			$db_user = __( 'empty', 'adminer' );
 		else
@@ -255,8 +263,6 @@ class AdminerForWP {
 			$db_password = DB_PASSWORD;
 		?>
 		<div class="wrap">
-			<?php //screen_icon('tools' ); ?>
-			<?php screen_icon( 'adminer-settings' ); ?>
 			<h2><?php _e( 'Adminer for WordPress', 'adminer' ); ?></h2>
 			<img class="alignright" src="<?php echo WP_PLUGIN_URL . '/' . dirname( plugin_basename(__FILE__) ); ?>/images/logo.png" alt="Adminer Logo" />
 			<p><a href="http://www.adminer.org/">Adminer</a> <?php _e( '(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP.', 'adminer' ); ?><br><?php _e( 'Current used version of Plugin', 'adminer' ); echo ' ' . self :: get_plugin_data( 'Name' ) . ': ' . self :: get_plugin_data( 'Version' ); ?></p>
@@ -269,16 +275,16 @@ class AdminerForWP {
 					    viewportheight;
 					
 					if (typeof window.innerWidth != 'undefined' ) {
-						viewportwidth = window.innerWidth-80,
+						viewportwidth = window.innerWidth-80;
 						viewportheight = window.innerHeight-100
 					} else if (typeof document.documentElement != 'undefined'
 						&& typeof document.documentElement.clientWidth !=
 						'undefined' && document.documentElement.clientWidth != 0)
 					{
-						viewportwidth = document.documentElement.clientWidth,
+						viewportwidth = document.documentElement.clientWidth;
 						viewportheight = document.documentElement.clientHeight
 					} else { // older versions of IE
-						viewportwidth = document.getElementsByTagName('body' )[0].clientWidth,
+						viewportwidth = document.getElementsByTagName('body' )[0].clientWidth;
 						viewportheight = document.getElementsByTagName('body' )[0].clientHeight
 					}
 					//document.write('<p class="textright">Your viewport width is '+viewportwidth+'x'+viewportheight+'</p>' );
@@ -287,11 +293,11 @@ class AdminerForWP {
 					// hide and readable password
 					function clear_password() {
 						
-						var input_password = document.getElementById( "dbpassword" ).setAttribute( 'type', 'text' );
+						document.getElementById( "dbpassword" ).setAttribute( 'type', 'text' );
 					}
 					function hide_password() {
 						
-						var input_password = document.getElementById( "dbpassword" ).setAttribute( 'type', 'password' );
+						document.getElementById( "dbpassword" ).setAttribute( 'type', 'password' );
 					}
 					//-->
 				</script>
@@ -301,7 +307,7 @@ class AdminerForWP {
 			
 			<noscript>
 				<iframe src="inc/adminer/loader.php?username=<?php echo DB_USER; ?>" width="100%" height="600" name="adminer">
-					<p><?php _e('Your browser does not support embedded frames.', 'adminer'); ?></p>
+					<?php _e('Your browser does not support embedded frames.', 'adminer'); ?>
 				</iframe>
 			</noscript>
 			
@@ -341,7 +347,7 @@ class AdminerForWP {
 										</tr>
 									</thead>
 									<tbody>
-										<tr valign="top">
+										<tr valign="top" class="alternate">
 											<th scope="row"><?php _e('Server', 'adminer'); ?></th>
 											<td><code><?php echo DB_HOST; ?></code></td>
 										</tr>
@@ -354,7 +360,7 @@ class AdminerForWP {
 											<td><code><?php echo $db_user; ?></code></td>
 										</tr>
 										<tr valign="top" class="password">
-											<th scope="row"><?php _e('Password', 'adminer'); ?></th>
+											<th scope="row"><label for="dbpassword"><?php _e('Password', 'adminer'); ?></label></th>
 											<td><input onmouseout="hide_password()" onmouseover="clear_password()" value="<?php echo $db_password; ?>" id="dbpassword" type="password" readonly></td>
 										</tr>
 									</tbody>
@@ -394,7 +400,6 @@ class AdminerForWP {
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		
 		$plugin_data  = get_plugin_data( __FILE__ );
-		$plugin_value = $plugin_data[$value];
 		
 		return empty ( $plugin_data[ $value ] ) ? '' : $plugin_data[ $value ];
 	}

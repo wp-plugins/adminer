@@ -159,7 +159,7 @@ function html_select($name, $options, $value = "", $onchange = true) {
 function select_input($attrs, $options, $value = "", $placeholder = "") {
 	return ($options
 		? "<select$attrs><option value=''>$placeholder" . optionlist($options, $value, true) . "</select>"
-		: "<input$attrs value='" . h($value) . "' placeholder='$placeholder'>"
+		: "<input$attrs size='10' value='" . h($value) . "' placeholder='$placeholder'>"
 	);
 }
 
@@ -206,7 +206,7 @@ function odd($return = ' class="odd"') {
 * @param string
 * @return string
 */
-function js_adminer_escape($string) {
+function is_adminer_escape($string) {
 	return addcslashes($string, "\r\n'\\/"); // slash for <script>
 }
 
@@ -249,13 +249,41 @@ function sid() {
 	return $return;
 }
 
-/** Shortcut for $connection->quote($string)
+/** Set password to session
+* @param string
+* @param string
+* @param string
+* @param string
+* @return null
+*/
+function set_password($vendor, $server, $username, $password) {
+	$_SESSION["pwds"][$vendor][$server][$username] = ($_COOKIE["adminer_key"] && is_string($password)
+		? array(encrypt_string($password, $_COOKIE["adminer_key"]))
+		: $password
+	);
+}
+
+/** Get password from session
+* @return string
+*/
+function get_password() {
+	$return = get_session("pwds");
+	if (is_array($return)) {
+		$return = ($_COOKIE["adminer_key"]
+			? decrypt_string($return[0], $_COOKIE["adminer_key"])
+			: false
+		);
+	}
+	return $return;
+}
+
+/** Shortcut for $driver->quote($string)
 * @param string
 * @return string
 */
 function q($string) {
-	global $connection;
-	return $connection->quote($string);
+	global $driver;
+	return $driver->quote($string);
 }
 
 /** Get list of values from database
@@ -357,7 +385,7 @@ function where($where, $fields = array()) {
 				: " = " . unconvert_field($fields[$key], q($val))
 			) // LIKE because of floats but slow with ints, in MS SQL because of text
 		; //! enum and set
-		if ($jush == "sql" && preg_match("~[^ -@]~", $val)) { // not just [a-z] to catch non-ASCII characters
+		if ($jush == "sql" && preg_match('~char|text~', $fields[$key]["type"]) && preg_match("~[^ -@]~", $val)) { // not just [a-z] to catch non-ASCII characters
 			$return[] = "$column = " . q($val) . " COLLATE utf8_bin";
 		}
 	}
@@ -497,7 +525,7 @@ function is_adminer_ajax() {
 * @param string
 * @return null
 */
-function redirect($location, $message = null) {
+function adminer_redirect($location, $message = null) {
 	if ($message !== null) {
 		restart_session();
 		$_SESSION["messages"][preg_replace('~^[^?]*~', '', ($location !== null ? $location : $_SERVER["REQUEST_URI"]))][] = $message;
@@ -520,46 +548,46 @@ function redirect($location, $message = null) {
 * @param bool
 * @return bool
 */
-function query_redirect($query, $location, $message, $redirect = true, $execute = true, $failed = false) {
+function query_adminer_redirect($query, $location, $message, $redirect = true, $execute = true, $failed = false, $time = "") {
 	global $connection, $error, $adminer;
-	$time = "";
 	if ($execute) {
 		$start = microtime(true);
 		$failed = !$connection->query($query);
-		$time = "; -- " . format_time($start, microtime(true));
+		$time = format_time($start);
 	}
 	$sql = "";
 	if ($query) {
 		// filter query via plugin fct.
 		$query = AdminerForWP::array_map_recursive( 'stripslashes', $query );
-		$sql = $adminer->messageQuery($query . $time);
+		$sql = $adminer->messageQuery($query, $time);
 	}
 	if ($failed) {
 		$error = error() . $sql;
 		return false;
 	}
 	if ($redirect) {
-		redirect($location, $message . $sql);
+		adminer_redirect($location, $message . $sql);
 	}
 	return true;
 }
 
 /** Execute and remember query
-* @param string null to return remembered queries, end with ';' to use DELIMITER
-* @return Min_Result
+* @param string or null to return remembered queries, end with ';' to use DELIMITER
+* @return Min_Result or array($queries, $time) if $query = null
 */
-function queries($query = null) {
+function queries($query) {
 	global $connection;
 	static $queries = array();
-	if ($query === null) {
-		// return executed queries without parameter
-		return implode("\n", $queries);
+	static $start;
+	if (!$start) {
+		$start = microtime(true);
 	}
-	$start = microtime(true);
-	$return = $connection->query($query);
-	$queries[] = (preg_match('~;$~', $query) ? "DELIMITER ;;\n$query;\nDELIMITER " : $query)
-		. "; -- " . format_time($start, microtime(true));
-	return $return;
+	if ($query === null) {
+		// return executed queries
+		return array(implode("\n", $queries), format_time($start));
+	}
+	$queries[] = (preg_match('~;$~', $query) ? "DELIMITER ;;\n$query;\nDELIMITER " : $query) . ";";
+	return $connection->query($query);
 }
 
 /** Apply command to all array items
@@ -583,17 +611,17 @@ function apply_queries($query, $tables, $escape = 'table') {
 * @param bool
 * @return bool
 */
-function queries_redirect($location, $message, $redirect) {
-	return query_redirect(queries(), $location, $message, $redirect, false, !$redirect);
+function queries_adminer_redirect($location, $message, $redirect) {
+	list($queries, $time) = queries(null);
+	return query_adminer_redirect($queries, $location, $message, $redirect, false, !$redirect, $time);
 }
 
-/** Format time difference
-* @param string output of microtime(true)
-* @param string output of microtime(true)
+/** Format elapsed time
+* @param float output of microtime(true)
 * @return string HTML code
 */
-function format_time($start, $end) {
-	return lang('%.3f s', max(0, $end - $start));
+function format_time($start) {
+	return lang('%.3f s', max(0, microtime(true) - $start));
 }
 
 /** Remove parameter from query string
@@ -604,7 +632,7 @@ function remove_from_uri($param = "") {
 	return substr(preg_replace("~(?<=[?&])($param" . (SID ? "" : "|" . session_name()) . ")=[^&]*&~", '', "$_SERVER[REQUEST_URI]&"), 0, -1);
 }
 
-/** Generate page number for pagination
+/** Generate page number for adminer_pagination
 * @param int
 * @param int
 * @return string
@@ -697,6 +725,14 @@ function shorten_utf8($string, $length = 80, $suffix = "") {
 	return h($match[1]) . $suffix . (isset($match[2]) ? "" : "<i>...</i>");
 }
 
+/** Format decimal number
+* @param int
+* @return string
+*/
+function format_number($val) {
+  return strtr(number_format($val, 0, ".", lang(',')), preg_split('~~u', lang('0123456789'), -1, PREG_SPLIT_NO_EMPTY));
+}
+
 /** Generate friendly URL
 * @param string
 * @return string
@@ -713,12 +749,14 @@ function friendly_url($val) {
 */
 function hidden_fields($process, $ignore = array()) {
 	while (list($key, $val) = each($process)) {
-		if (is_array($val)) {
-			foreach ($val as $k => $v) {
-				$process[$key . "[$k]"] = $v;
+		if (!in_array($key, $ignore)) {
+			if (is_array($val)) {
+				foreach ($val as $k => $v) {
+					$process[$key . "[$k]"] = $v;
+				}
+			} else {
+				echo '<input type="hidden" name="' . h($key) . '" value="' . h($val) . '">';
 			}
-		} elseif (!in_array($key, $ignore)) {
-			echo '<input type="hidden" name="' . h($key) . '" value="' . h($val) . '">';
 		}
 	}
 }
@@ -811,7 +849,7 @@ function input($field, $value, $function) {
 			}
 			$first++;
 		}
-		$onchange = ($first ? " onchange=\"var f = this.form['function[" . h(js_adminer_escape(bracket_escape($field["field"]))) . "]']; if ($first > f.selectedIndex) f.selectedIndex = $first;\" onkeyup='keyupChange.call(this);'" : "");
+		$onchange = ($first ? " onchange=\"var f = this.form['function[" . h(is_adminer_escape(bracket_escape($field["field"]))) . "]']; if ($first > f.selectedIndex) f.selectedIndex = $first;\" onkeyup='keyupChange.call(this);'" : "");
 		$attrs .= $onchange;
 		$has_function = (in_array($function, $functions) || isset($functions[$function]));
 		echo (count($functions) > 1
@@ -882,7 +920,7 @@ function process_input($field) {
 		return ($field["on_update"] == "CURRENT_TIMESTAMP" ? idf_escape($field["field"]) : false);
 	}
 	if ($function == "NULL") {
-		return "NULL";
+		$value = null;
 	}
 	if ($field["type"] == "set") {
 		return array_sum((array) $value);
@@ -903,6 +941,31 @@ function process_input($field) {
 		return q($file);
 	}
 	return $adminer->processInput($field, $value, $function);
+}
+
+/** Compute fields() from $_POST edit data
+* @return array
+*/
+function fields_from_edit() {
+	global $driver;
+	$return = array();
+	foreach ((array) $_POST["field_keys"] as $key => $val) {
+		if ($val != "") {
+			$val = bracket_escape($val);
+			$_POST["function"][$val] = $_POST["field_funs"][$key];
+			$_POST["fields"][$val] = $_POST["field_vals"][$key];
+		}
+	}
+	foreach ((array) $_POST["fields"] as $key => $val) {
+		$name = bracket_escape($key, 1); // 1 - back
+		$return[$name] = array(
+			"field" => $name,
+			"privileges" => array("insert" => 1, "update" => 1),
+			"null" => 1,
+			"auto_increment" => ($key == $driver->primary),
+		);
+	}
+	return $return;
 }
 
 /** Print results of search in all tables
@@ -973,26 +1036,33 @@ function apply_sql_function($function, $column) {
 	return ($function ? ($function == "unixepoch" ? "DATETIME($column, '$function')" : ($function == "count distinct" ? "COUNT(DISTINCT " : strtoupper("$function(")) . "$column)") : $column);
 }
 
-/** Read password from file adminer.key in temporary directory or create one
-* @param bool
-* @return string or false if the file can not be created
+/** Get path of the temporary directory
+* @return string
 */
-function password_file($create) {
-	$dir = ini_get("upload_tmp_dir"); // session_save_path() may contain other storage path
-	if (!$dir) {
+function get_adminer_temp_dir() {
+	$return = ini_get("upload_tmp_dir"); // session_save_path() may contain other storage path
+	if (!$return) {
 		if (function_exists('sys_get_temp_dir')) {
-			$dir = sys_get_temp_dir();
+			$return = sys_get_adminer_temp_dir();
 		} else {
 			$filename = @tempnam("", ""); // @ - temp directory can be disabled by open_basedir
 			if (!$filename) {
 				return false;
 			}
-			$dir = dirname($filename);
+			$return = dirname($filename);
 			unlink($filename);
 		}
 	}
-	$filename = "$dir/adminer.key";
-	$return = @file_get_contents($filename); // @ - can not exist
+	return $return;
+}
+
+/** Read password from file adminer.key in temporary directory or create one
+* @param bool
+* @return string or false if the file can not be created
+*/
+function password_file($create) {
+	$filename = get_adminer_temp_dir() . "/adminer.key";
+	$return = @file_get_contents($filename); // @ - may not exist
 	if ($return || !$create) {
 		return $return;
 	}
@@ -1039,9 +1109,9 @@ function select_value($val, $link, $field, $text_length) {
 			$link = "mailto:$val";
 		}
 		if ($protocol = is_url($val)) {
-			$link = ($protocol == "http" && $HTTPS
+			$link = (($protocol == "http" && $HTTPS) || preg_match('~WebKit~i', $_SERVER["HTTP_USER_AGENT"]) // WebKit supports noreferrer since 2009
 				? $val // HTTP links from HTTPS pages don't receive Referer automatically
-				: "$protocol://www.adminer.org/redirect/?url=" . urlencode($val) // intermediate page to hide Referer, may be changed to rel="noreferrer" in HTML5
+				: "$protocol://www.adminer.org/redirect/?url=" . urlencode($val) // intermediate page to hide Referer
 			);
 		}
 	}
@@ -1115,7 +1185,7 @@ function slow_query($query) {
 		?>
 <script type="text/javascript">
 var timeout = setTimeout(function () {
-	ajax('<?php echo js_adminer_escape(ME); ?>script=kill', function () {
+	ajax('<?php echo is_adminer_escape(ME); ?>script=kill', function () {
 	}, 'token=<?php echo $token; ?>&kill=<?php echo $kill; ?>');
 }, <?php echo 1000 * $timeout; ?>);
 </script>
@@ -1195,4 +1265,102 @@ function lzw_decompress($binary) {
 */
 function on_help($command, $side = 0) {
 	return " onmouseover='helpMouseover(this, event, " . h($command) . ", $side);' onmouseout='helpMouseout(this, event);'";
+}
+
+/** Print edit data form
+* @param string
+* @param array
+* @param mixed
+* @param bool
+* @return null
+*/
+function edit_form($TABLE, $fields, $row, $update) {
+	global $adminer, $jush, $token, $error;
+	$table_name = $adminer->tableName(table_status1($TABLE, true));
+	page_header(
+		($update ? lang('Edit') : lang('Insert')),
+		$error,
+		array("select" => array($TABLE, $table_name)),
+		$table_name
+	);
+	if ($row === false) {
+		echo "<p class='error'>" . lang('No rows.') . "\n";
+	}
+	?>
+<div id="message"></div>
+<form action="" method="post" enctype="multipart/form-data" id="form">
+<?php
+	if (!$fields) {
+		echo "<p class='error'>" . lang('You have no privileges to update this table.') . "\n";
+	} else {
+		echo "<table cellspacing='0' onkeydown='return editingKeydown(event);'>\n";
+
+		foreach ($fields as $name => $field) {
+			echo "<tr><th>" . $adminer->fieldName($field);
+			$default = $_GET["set"][bracket_escape($name)];
+			if ($default === null) {
+				$default = $field["default"];
+				if ($field["type"] == "bit" && preg_match("~^b'([01]*)'\$~", $default, $regs)) {
+					$default = $regs[1];
+				}
+			}
+			$value = ($row !== null
+				? ($row[$name] != "" && $jush == "sql" && preg_match("~enum|set~", $field["type"])
+					? (is_array($row[$name]) ? array_sum($row[$name]) : +$row[$name])
+					: $row[$name]
+				)
+				: (!$update && $field["auto_increment"]
+					? ""
+					: (isset($_GET["select"]) ? false : $default)
+				)
+			);
+			if (!$_POST["save"] && is_string($value)) {
+				$value = $adminer->editVal($value, $field);
+			}
+			$function = ($_POST["save"]
+				? (string) $_POST["function"][$name]
+				: ($update && $field["on_update"] == "CURRENT_TIMESTAMP"
+					? "now"
+					: ($value === false ? null : ($value !== null ? '' : 'NULL'))
+				)
+			);
+			if (preg_match("~time~", $field["type"]) && $value == "CURRENT_TIMESTAMP") {
+				$value = "";
+				$function = "now";
+			}
+			input($field, $value, $function);
+			echo "\n";
+		}
+		if (!support("table")) {
+			echo "<tr>"
+				. "<th><input name='field_keys[]' onkeyup='keyupChange.call(this);' onchange='fieldChange(this);' value=''>" // needs empty value for keyupChange()
+				. "<td class='function'>" . html_select("field_funs[]", $adminer->editFunctions(array("null" => isset($_GET["select"]))))
+				. "<td><input name='field_vals[]'>"
+				. "\n"
+			;
+		}
+		echo "</table>\n";
+	}
+	echo "<p>\n";
+	if ($fields) {
+		echo "<input type='submit' value='" . lang('Save') . "'>\n";
+		if (!isset($_GET["select"])) {
+			echo "<input type='submit' name='insert' value='" . ($update
+				? lang('Save and continue edit') . "' onclick='return !ajaxForm(this.form, \"" . lang('Saving') . '...", this)'
+				: lang('Save and insert next')
+			) . "' title='Ctrl+Shift+Enter'>\n";
+		}
+	}
+	echo ($update ? "<input type='submit' name='delete' value='" . lang('Delete') . "'" . confirm() . ">\n"
+		: ($_POST || !$fields ? "" : "<script type='text/javascript'>focus(document.getElementById('form').getElementsByTagName('td')[1].firstChild);</script>\n")
+	);
+	if (isset($_GET["select"])) {
+		hidden_fields(array("check" => (array) $_POST["check"], "clone" => $_POST["clone"], "all" => $_POST["all"]));
+	}
+	?>
+<input type="hidden" name="referer" value="<?php echo h(isset($_POST["referer"]) ? $_POST["referer"] : $_SERVER["HTTP_REFERER"]); ?>">
+<input type="hidden" name="save" value="1">
+<input type="hidden" name="token" value="<?php echo $token; ?>">
+</form>
+<?php
 }
