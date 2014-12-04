@@ -3,12 +3,12 @@
 require_once '../../config.php';
 
 // find wp-config.php
-function fb_find_wp_config_path() {
+function adminer_get_wp_load_path() {
 
 	$dir = dirname( __FILE__ );
 
 	do {
-		if ( file_exists( $dir . "/wp-config.php" ) ) {
+		if ( file_exists( $dir . "/wp-load.php" ) ) {
 			return $dir;
 		}
 	} while ( $dir = realpath( "$dir/.." ) );
@@ -17,7 +17,7 @@ function fb_find_wp_config_path() {
 }
 
 // search and include wp-load.php
-function fb_get_wp_root( $directory ) {
+function adminer_get_wp_root_path( $directory ) {
 
 	$wp_root = FALSE;
 	foreach ( glob( $directory . "/*" ) as $f ) {
@@ -43,14 +43,13 @@ function fb_get_wp_root( $directory ) {
 	}
 
 	if ( isset( $newdir ) && $newdir != $directory ) {
-		if ( FALSE !== fb_get_wp_root( $newdir ) ) {
-			$wp_root = fb_get_wp_root( $newdir );
+		if ( FALSE !== adminer_get_wp_root_path( $newdir ) ) {
+			$wp_root = adminer_get_wp_root_path( $newdir );
 		}
 	}
 
 	return $wp_root;
 } // end function to find wp-load.php
-
 
 if ( ! defined( 'ABSPATH' ) ) {
 
@@ -64,15 +63,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		define( 'WP_USE_THEMES', FALSE );
 		require_once( $wp_siteurl . '/wp-load.php' );
 
-	} elseif ( file_exists( fb_find_wp_config_path() . '/wp-config.php' ) ) {
+	} elseif ( file_exists( adminer_get_wp_load_path() . '/wp-load.php' ) ) {
 
 		define( 'WP_USE_THEMES', FALSE );
-		require_once( fb_find_wp_config_path() . '/wp-config.php' );
+		require_once( adminer_get_wp_load_path() . '/wp-load.php' );
 
-	} elseif ( file_exists( fb_get_wp_root( dirname( dirname( __FILE__ ) ) ) . '/wp-config.php' ) ) {
+	} elseif ( file_exists( adminer_get_wp_root_path( dirname( dirname( __FILE__ ) ) ) . '/wp-load.php' ) ) {
 
 		define( 'WP_USE_THEMES', FALSE );
-		require_once( fb_get_wp_root( dirname( dirname( __FILE__ ) ) ) . '/wp-config.php' );
+		require_once( adminer_get_wp_root_path( dirname( dirname( __FILE__ ) ) ) . '/wp-load.php' );
 
 	} else {
 
@@ -92,17 +91,17 @@ if ( ! function_exists( 'is_plugin_active' ) )
 	require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
 if ( ! defined( 'ADMINER_BASE_FILE' ) || ! is_plugin_active( ADMINER_BASE_FILE ) ) {
-	wp_die( __( 'Cheatin&#8217; uh? The plugin is not active.' ) );
+	wp_die( __( 'Cheatin&#8217; uh? The plugin is not active or can`t found the WordPress configuration file.' ) );
 	exit;
 }
 
 if ( ! is_user_logged_in() ) {
-	wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this.' ) );
+	wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this or can`t found the WordPress configuration file.' ) );
 	exit;
 }
 
 if ( ! current_user_can( 'unfiltered_html' ) ) {
-	wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this.' ) );
+	wp_die( __( 'Cheatin&#8217; uh? You do not have permission to use this or can`t found the WordPress configuration file.' ) );
 	exit;
 }
 

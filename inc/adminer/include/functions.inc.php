@@ -1043,7 +1043,7 @@ function get_adminer_temp_dir() {
 	$return = ini_get("upload_tmp_dir"); // session_save_path() may contain other storage path
 	if (!$return) {
 		if (function_exists('sys_get_temp_dir')) {
-			$return = sys_get_adminer_temp_dir();
+			$return = sys_get_temp_dir();
 		} else {
 			$filename = @tempnam("", ""); // @ - temp directory can be disabled by open_basedir
 			if (!$filename) {
