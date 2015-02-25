@@ -13,9 +13,9 @@ Adminer (formerly phpMinAdmin) is a full-featured MySQL management tool written 
 
 This plugin supports Multisite Installs only as Network Admin; add an menu item on Settings and also an link to WP Admin Bar to the item Network Admin.
 
-**Made by [Inpsyde](http://inpsyde.com) &middot; We love WordPress**
+**Crafted by [Inpsyde](http://inpsyde.com) · Engineering the web since 2006.**
 
-Have a look at the premium plugins in our [market](http://marketpress.com).
+Yes, we also run that [marketplace for premium WordPress plugins and themes](http://marketpress.com).
 
 == Installation ==
 = Installation =
