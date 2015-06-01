@@ -32,7 +32,7 @@ $order = $adminer->selectOrderProcess($fields, $indexes);
 $limit = $adminer->selectLimitProcess();
 $from = ($select ? implode(", ", $select) : "*" . ($oid ? ", $oid" : ""))
 	. convert_fields($columns, $fields, $select)
-	. "\nFROM " . table($TABLE);
+	. "\nFROM " . adminer_table($TABLE);
 $group_by = ($group && $is_group ? "\nGROUP BY " . implode(", ", $group) : "") . ($order ? "\nORDER BY " . implode(", ", $order) : "");
 
 if ($_GET["val"] && is_adminer_ajax()) {
@@ -106,7 +106,7 @@ if ($_POST && !$error) {
 			}
 			if ($_POST["delete"] || $set) {
 				if ($_POST["clone"]) {
-					$query = "INTO " . table($TABLE) . " (" . implode(", ", array_keys($set)) . ")\nSELECT " . implode(", ", $set) . "\nFROM " . table($TABLE);
+					$query = "INTO " . adminer_table($TABLE) . " (" . implode(", ", array_keys($set)) . ")\nSELECT " . implode(", ", $set) . "\nFROM " . adminer_table($TABLE);
 				}
 				if ($_POST["all"] || ($unselected === array() && is_array($_POST["check"])) || $is_group) {
 					$result = ($_POST["delete"]
@@ -298,7 +298,7 @@ if (!$columns && support("table")) {
 			$backward_keys = $adminer->backwardKeys($TABLE, $table_name);
 
 			echo "<table id='table' cellspacing='0' class='nowrap checkable' onclick='tableClick(event);' ondblclick='tableClick(event, true);' onkeydown='return editingKeydown(event);'>\n";
-			echo "<thead><tr>" . (!$group && $select ? "" : "<td><input type='checkbox' id='all-page' onclick='formCheck(this, /check/);'> <a href='" . h($_GET["modify"] ? remove_from_uri("modify") : $_SERVER["REQUEST_URI"] . "&modify=1") . "'>" . lang('Modify') . "</a>");
+			echo "<thead><tr>" . (!$group && $select ? "" : "<td><input type='adminer_checkbox' id='all-page' onclick='formCheck(this, /check/);'> <a href='" . h($_GET["modify"] ? remove_from_uri("modify") : $_SERVER["REQUEST_URI"] . "&modify=1") . "'>" . lang('Modify') . "</a>");
 			$names = array();
 			$functions = array();
 			reset($select);
@@ -320,7 +320,7 @@ if (!$columns && support("table")) {
 						echo "<span class='column hidden'>";
 						echo "<a href='" . h($href . $desc) . "' title='" . lang('descending') . "' class='text'> ↓</a>";
 						if (!$val["fun"]) {
-							echo '<a href="#fieldset-search" onclick="selectSearch(\'' . h(is_adminer_escape($key)) . '\'); return false;" title="' . lang('Search') . '" class="text jsonly"> =</a>';
+							echo '<a href="#fieldset-search" onclick="selectSearch(\'' . h(js_adminer_escape($key)) . '\'); return false;" title="' . lang('Search') . '" class="text jsonly"> =</a>';
 						}
 						echo "</span>";
 					}
@@ -360,7 +360,8 @@ if (!$columns && support("table")) {
 				$unique_idf = "";
 				foreach ($unique_array as $key => $val) {
 					if (($jush == "sql" || $jush == "pgsql") && strlen($val) > 64) {
-						$key = "MD5(" . (strpos($key, '(') ? $key : idf_escape($key)) . ")"; //! columns looking like functions
+						$key = (strpos($key, '(') ? $key : idf_escape($key)); //! columns looking like functions
+						$key = "MD5(" . ($jush == 'sql' && preg_match("~^utf8_~", $fields[$key]["collation"]) ? $key : "CONVERT($key USING " . charset($connection) . ")") . ")";
 						$val = md5($val);
 					}
 					$unique_idf .= "&" . ($val !== null ? urlencode("where[" . bracket_escape($key) . "]") . "=" . urlencode($val) : "null%5B%5D=" . urlencode($key));
@@ -404,7 +405,7 @@ if (!$columns && support("table")) {
 								$link .= where_link($i++, $k, $v);
 							}
 						}
-						
+
 						$val = select_value($val, $link, $field, $text_length);
 						$id = h("val[$unique_idf][" . bracket_escape($key) . "]");
 						$value = $_POST["val"][$unique_idf][bracket_escape($key)];

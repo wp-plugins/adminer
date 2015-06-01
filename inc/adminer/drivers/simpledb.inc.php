@@ -143,7 +143,7 @@ if (isset($_GET["simpledb"])) {
 			if (preg_match_all("~itemName\(\) = (('[^']*+')+)~", $queryWhere, $matches)) {
 				$return = array_map('idf_unescape', $matches[1]);
 			} else {
-				foreach (sdb_request_all('Select', 'Item', array('SelectExpression' => 'SELECT itemName() FROM ' . table($table) . $queryWhere . ($limit ? " LIMIT 1" : ""))) as $item) {
+				foreach (sdb_request_all('Select', 'Item', array('SelectExpression' => 'SELECT itemName() FROM ' . adminer_table($table) . $queryWhere . ($limit ? " LIMIT 1" : ""))) as $item) {
 					$return[] = $item->Name;
 				}
 			}
@@ -331,7 +331,7 @@ if (isset($_GET["simpledb"])) {
 		return array();
 	}
 
-	function table($idf) {
+	function adminer_table($idf) {
 		return idf_escape($idf);
 	}
 

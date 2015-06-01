@@ -150,7 +150,7 @@ if (isset($_GET["oracle"])) {
 		return '"' . str_replace('"', '""', $idf) . '"';
 	}
 
-	function table($idf) {
+	function adminer_table($idf) {
 		return idf_escape($idf);
 	}
 
@@ -299,7 +299,7 @@ ORDER BY uc.constraint_type, uic.column_position", $connection2) as $row) {
 		foreach ($fields as $field) {
 			$val = $field[1];
 			if ($val && $field[0] != "" && idf_escape($field[0]) != $val[0]) {
-				queries("ALTER TABLE " . table($table) . " RENAME COLUMN " . idf_escape($field[0]) . " TO $val[0]");
+				queries("ALTER TABLE " . adminer_table($table) . " RENAME COLUMN " . idf_escape($field[0]) . " TO $val[0]");
 			}
 			if ($val) {
 				$alter[] = ($table != "" ? ($field[0] != "" ? "MODIFY (" : "ADD (") : "  ") . implode($val) . ($table != "" ? ")" : ""); //! error with name change only
@@ -308,16 +308,38 @@ ORDER BY uc.constraint_type, uic.column_position", $connection2) as $row) {
 			}
 		}
 		if ($table == "") {
-			return queries("CREATE TABLE " . table($name) . " (\n" . implode(",\n", $alter) . "\n)");
+			return queries("CREATE TABLE " . adminer_table($name) . " (\n" . implode(",\n", $alter) . "\n)");
 		}
-		return (!$alter || queries("ALTER TABLE " . table($table) . "\n" . implode("\n", $alter)))
-			&& (!$drop || queries("ALTER TABLE " . table($table) . " DROP (" . implode(", ", $drop) . ")"))
-			&& ($table == $name || queries("ALTER TABLE " . table($table) . " RENAME TO " . table($name)))
+		return (!$alter || queries("ALTER TABLE " . adminer_table($table) . "\n" . implode("\n", $alter)))
+			&& (!$drop || queries("ALTER TABLE " . adminer_table($table) . " DROP (" . implode(", ", $drop) . ")"))
+			&& ($table == $name || queries("ALTER TABLE " . adminer_table($table) . " RENAME TO " . adminer_table($name)))
 		;
 	}
 
 	function foreign_keys($table) {
-		return array(); //!
+		$return = array();
+		$query = "SELECT c_list.CONSTRAINT_NAME as NAME,
+c_src.COLUMN_NAME as SRC_COLUMN,
+c_dest.OWNER as DEST_DB,
+c_dest.TABLE_NAME as DEST_TABLE,
+c_dest.COLUMN_NAME as DEST_COLUMN,
+c_list.DELETE_RULE as ON_DELETE
+FROM ALL_CONSTRAINTS c_list, ALL_CONS_COLUMNS c_src, ALL_CONS_COLUMNS c_dest
+WHERE c_list.CONSTRAINT_NAME = c_src.CONSTRAINT_NAME
+AND c_list.R_CONSTRAINT_NAME = c_dest.CONSTRAINT_NAME
+AND c_list.CONSTRAINT_TYPE = 'R'
+AND c_src.TABLE_NAME = " . q($table);
+		foreach (get_rows($query) as $row) {
+			$return[$row['NAME']] = array(
+				"db" => $row['DEST_DB'],
+				"table" => $row['DEST_TABLE'],
+				"source" => array($row['SRC_COLUMN']),
+				"target" => array($row['DEST_COLUMN']),
+				"on_delete" => $row['ON_DELETE'],
+				"on_update" => null,
+			);
+		}
+		return $return;
 	}
 
 	function truncate_tables($tables) {

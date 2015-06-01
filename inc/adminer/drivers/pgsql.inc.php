@@ -164,8 +164,8 @@ if (isset($_GET["pgsql"])) {
 						$where[] = "$key = $val";
 					}
 				}
-				if (!(($where && queries("UPDATE " . table($table) . " SET " . implode(", ", $update) . " WHERE " . implode(" AND ", $where)) && $connection->affected_rows)
-					|| queries("INSERT INTO " . table($table) . " (" . implode(", ", array_keys($set)) . ") VALUES (" . implode(", ", $set) . ")")
+				if (!(($where && queries("UPDATE " . adminer_table($table) . " SET " . implode(", ", $update) . " WHERE " . implode(" AND ", $where)) && $connection->affected_rows)
+					|| queries("INSERT INTO " . adminer_table($table) . " (" . implode(", ", array_keys($set)) . ") VALUES (" . implode(", ", $set) . ")")
 				)) {
 					return false;
 				}
@@ -181,7 +181,7 @@ if (isset($_GET["pgsql"])) {
 		return '"' . str_replace('"', '""', $idf) . '"';
 	}
 
-	function table($idf) {
+	function adminer_table($idf) {
 		return idf_escape($idf);
 	}
 
@@ -225,7 +225,17 @@ if (isset($_GET["pgsql"])) {
 	}
 
 	function tables_list() {
-		return get_key_vals("SELECT table_name, table_type FROM information_schema.tables WHERE table_schema = current_schema() ORDER BY table_name");
+		$query = "SELECT table_name, table_type FROM information_schema.tables WHERE table_schema = current_schema()";
+		if (support('materializedview')) {
+			$query .= "
+UNION ALL
+SELECT matviewname, 'MATERIALIZED VIEW'
+FROM pg_matviews
+WHERE schemaname = current_schema()";
+		}
+		$query .= "
+ORDER BY 1";
+		return get_key_vals($query);
 	}
 
 	function count_tables($databases) {
@@ -234,9 +244,9 @@ if (isset($_GET["pgsql"])) {
 
 	function table_status($name = "") {
 		$return = array();
-		foreach (get_rows("SELECT relname AS \"Name\", CASE relkind WHEN 'r' THEN 'table' ELSE 'view' END AS \"Engine\", pg_relation_size(oid) AS \"Data_length\", pg_total_relation_size(oid) - pg_relation_size(oid) AS \"Index_length\", obj_description(oid, 'pg_class') AS \"Comment\", relhasoids::int AS \"Oid\", reltuples as \"Rows\"
+		foreach (get_rows("SELECT relname AS \"Name\", CASE relkind WHEN 'r' THEN 'table' WHEN 'mv' THEN 'materialized view' WHEN 'f' THEN 'foreign table' ELSE 'view' END AS \"Engine\", pg_relation_size(oid) AS \"Data_length\", pg_total_relation_size(oid) - pg_relation_size(oid) AS \"Index_length\", obj_description(oid, 'pg_class') AS \"Comment\", relhasoids::int AS \"Oid\", reltuples as \"Rows\"
 FROM pg_class
-WHERE relkind IN ('r','v')
+WHERE relkind IN ('r','v','mv','f')
 AND relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = current_schema())
 " . ($name != "" ? "AND relname = " . q($name) : "ORDER BY relname")
 		) as $row) { //! Index_length, Auto_increment
@@ -246,7 +256,7 @@ AND relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = current_schema(
 	}
 
 	function is_view($table_status) {
-		return $table_status["Engine"] == "view";
+		return in_array($table_status["Engine"], array("view", "materialized view"));
 	}
 
 	function fk_support($table_status) {
@@ -271,11 +281,17 @@ AND a.attnum > 0
 ORDER BY a.attnum"
 		) as $row) {
 			//! collation, primary
-			preg_match('~([^([]+)(\((.*)\))?((\[[0-9]*])*)$~', $row["full_type"], $match);
-			list(, $type, $length, $row["length"], $array) = $match;
+			preg_match('~([^([]+)(\((.*)\))?([a-z ]+)?((\[[0-9]*])*)$~', $row["full_type"], $match);
+			list(, $type, $length, $row["length"], $addon, $array) = $match;
 			$row["length"] .= $array;
-			$row["type"] = ($aliases[$type] ? $aliases[$type] : $type);
-			$row["full_type"] = $row["type"] . $length . $array;
+			$check_type = $type . $addon;
+			if (isset($aliases[$check_type])) {
+				$row["type"] = $aliases[$check_type];
+				$row["full_type"] = $row["type"] . $length . $array;
+			} else {
+				$row["type"] = $type;
+				$row["full_type"] = $row["type"] . $length . $addon . $array;
+			}
 			$row["null"] = !$row["attnotnull"];
 			$row["auto_increment"] = preg_match('~^nextval\\(~i', $row["default"]);
 			$row["privileges"] = array("insert" => 1, "select" => 1, "update" => 1);
@@ -394,7 +410,7 @@ ORDER BY conkey, conname") as $row) {
 					$alter[] = ($table != "" ? "ADD " : "  ") . implode($val);
 				} else {
 					if ($column != $val[0]) {
-						$queries[] = "ALTER TABLE " . table($table) . " RENAME $column TO $val[0]";
+						$queries[] = "ALTER TABLE " . adminer_table($table) . " RENAME $column TO $val[0]";
 					}
 					$alter[] = "ALTER $column TYPE$val[1]";
 					if (!$val[6]) {
@@ -403,21 +419,21 @@ ORDER BY conkey, conname") as $row) {
 					}
 				}
 				if ($field[0] != "" || $val5 != "") {
-					$queries[] = "COMMENT ON COLUMN " . table($table) . ".$val[0] IS " . ($val5 != "" ? substr($val5, 9) : "''");
+					$queries[] = "COMMENT ON COLUMN " . adminer_table($table) . ".$val[0] IS " . ($val5 != "" ? substr($val5, 9) : "''");
 				}
 			}
 		}
 		$alter = array_merge($alter, $foreign);
 		if ($table == "") {
-			array_unshift($queries, "CREATE TABLE " . table($name) . " (\n" . implode(",\n", $alter) . "\n)");
+			array_unshift($queries, "CREATE TABLE " . adminer_table($name) . " (\n" . implode(",\n", $alter) . "\n)");
 		} elseif ($alter) {
-			array_unshift($queries, "ALTER TABLE " . table($table) . "\n" . implode(",\n", $alter));
+			array_unshift($queries, "ALTER TABLE " . adminer_table($table) . "\n" . implode(",\n", $alter));
 		}
 		if ($table != "" && $table != $name) {
-			$queries[] = "ALTER TABLE " . table($table) . " RENAME TO " . table($name);
+			$queries[] = "ALTER TABLE " . adminer_table($table) . " RENAME TO " . adminer_table($name);
 		}
 		if ($table != "" || $comment != "") {
-			$queries[] = "COMMENT ON TABLE " . table($name) . " IS " . q($comment);
+			$queries[] = "COMMENT ON TABLE " . adminer_table($name) . " IS " . q($comment);
 		}
 		if ($auto_increment != "") {
 			//! $queries[] = "SELECT setval(pg_get_serial_sequence(" . q($name) . ", ), $auto_increment)";
@@ -444,11 +460,11 @@ ORDER BY conkey, conname") as $row) {
 			} elseif ($val[2] == "DROP") {
 				$drop[] = idf_escape($val[1]);
 			} else {
-				$queries[] = "CREATE INDEX " . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . table($table) . " (" . implode(", ", $val[2]) . ")";
+				$queries[] = "CREATE INDEX " . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . adminer_table($table) . " (" . implode(", ", $val[2]) . ")";
 			}
 		}
 		if ($create) {
-			array_unshift($queries, "ALTER TABLE " . table($table) . implode(",", $create));
+			array_unshift($queries, "ALTER TABLE " . adminer_table($table) . implode(",", $create));
 		}
 		if ($drop) {
 			array_unshift($queries, "DROP INDEX " . implode(", ", $drop));
@@ -467,21 +483,23 @@ ORDER BY conkey, conname") as $row) {
 	}
 
 	function drop_views($views) {
-		return queries("DROP VIEW " . implode(", ", array_map('table', $views)));
+		return drop_tables($views);
 	}
 
 	function drop_tables($tables) {
-		return queries("DROP TABLE " . implode(", ", array_map('table', $tables)));
+		foreach ($tables as $table) {
+		    $status = table_status($table);
+				if (!queries("DROP " . strtoupper($status["Engine"]) . " " . adminer_table($table))) {
+					return false;
+				}
+		}
+		return true;
 	}
 
 	function move_tables($tables, $views, $target) {
-		foreach ($tables as $table) {
-			if (!queries("ALTER TABLE " . table($table) . " SET SCHEMA " . idf_escape($target))) {
-				return false;
-			}
-		}
-		foreach ($views as $table) {
-			if (!queries("ALTER VIEW " . table($table) . " SET SCHEMA " . idf_escape($target))) {
+		foreach (array_merge($tables, $views) as $table) {
+			$status = table_status($table);
+			if (!queries("ALTER " . strtoupper($status["Engine"]) . " " . adminer_table($table) . " SET SCHEMA " . idf_escape($target))) {
 				return false;
 			}
 		}
@@ -612,7 +630,8 @@ AND typelem = 0"
 	}
 
 	function support($feature) {
-		return preg_match('~^(database|table|columns|sql|indexes|comment|view|scheme|processlist|sequence|trigger|type|variables|drop_col)$~', $feature); //! routine|
+		global $connection;
+		return preg_match('~^(database|table|columns|sql|indexes|comment|view|' . ($connection->server_info >= 9.3 ? 'materializedview|' : '') . 'scheme|processlist|sequence|trigger|type|variables|drop_col)$~', $feature); //! routine|
 	}
 
 	$jush = "pgsql";
@@ -630,7 +649,7 @@ AND typelem = 0"
 		$structured_types[$key] = array_keys($val);
 	}
 	$unsigned = array();
-	$operators = array("=", "<", ">", "<=", ">=", "!=", "~", "!~", "LIKE", "LIKE %%", "IN", "IS NULL", "NOT LIKE", "NOT IN", "IS NOT NULL"); // no "SQL" to avoid SQL injection
+	$operators = array("=", "<", ">", "<=", ">=", "!=", "~", "!~", "LIKE", "LIKE %%", "ILIKE", "ILIKE %%", "IN", "IS NULL", "NOT LIKE", "NOT IN", "IS NOT NULL"); // no "SQL" to avoid SQL injection
 	$functions = array("char_length", "lower", "round", "to_hex", "to_timestamp", "upper");
 	$grouping = array("avg", "count", "count distinct", "max", "min", "sum");
 	$edit_functions = array(

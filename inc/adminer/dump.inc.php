@@ -39,6 +39,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 		$adminer->dumpDatabase($db);
 		if ($connection->select_db($db)) {
 			if ($is_sql && preg_match('~CREATE~', $style) && ($create = $connection->result("SHOW CREATE DATABASE " . idf_escape($db), 1))) {
+				set_utf8mb4($create);
 				if ($style == "DROP+CREATE") {
 					echo "DROP DATABASE IF EXISTS " . idf_escape($db) . ";\n";
 				}
@@ -53,16 +54,18 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 				if ($_POST["routines"]) {
 					foreach (array("FUNCTION", "PROCEDURE") as $routine) {
 						foreach (get_rows("SHOW $routine STATUS WHERE Db = " . q($db), null, "-- ") as $row) {
-							$out .= ($style != 'DROP+CREATE' ? "DROP $routine IF EXISTS " . idf_escape($row["Name"]) . ";;\n" : "")
-							. remove_definer($connection->result("SHOW CREATE $routine " . idf_escape($row["Name"]), 2)) . ";;\n\n";
+							$create = remove_definer($connection->result("SHOW CREATE $routine " . idf_escape($row["Name"]), 2));
+							set_utf8mb4($create);
+							$out .= ($style != 'DROP+CREATE' ? "DROP $routine IF EXISTS " . idf_escape($row["Name"]) . ";;\n" : "") . "$create;;\n\n";
 						}
 					}
 				}
 
 				if ($_POST["events"]) {
 					foreach (get_rows("SHOW EVENTS", null, "-- ") as $row) {
-						$out .= ($style != 'DROP+CREATE' ? "DROP EVENT IF EXISTS " . idf_escape($row["Name"]) . ";;\n" : "")
-						. remove_definer($connection->result("SHOW CREATE EVENT " . idf_escape($row["Name"]), 3)) . ";;\n\n";
+						$create = remove_definer($connection->result("SHOW CREATE EVENT " . idf_escape($row["Name"]), 3));
+						set_utf8mb4($create);
+						$out .= ($style != 'DROP+CREATE' ? "DROP EVENT IF EXISTS " . idf_escape($row["Name"]) . ";;\n" : "") . "$create;;\n\n";
 					}
 				}
 
@@ -87,7 +90,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 							$views[] = $name;
 						} elseif ($data) {
 							$fields = fields($name);
-							$adminer->dumpData($name, $_POST["data_style"], "SELECT *" . convert_fields($fields, $fields) . " FROM " . table($name));
+							$adminer->dumpData($name, $_POST["data_style"], "SELECT *" . convert_fields($fields, $fields) . " FROM " . adminer_table($name));
 						}
 						if ($is_sql && $_POST["triggers"] && $table && ($triggers = trigger_sql($name, $_POST["table_style"]))) {
 							echo "\nDELIMITER ;;\n$triggers\nDELIMITER ;\n";
@@ -166,8 +169,8 @@ $prefixes = array();
 if (DB != "") {
 	$checked = ($TABLE != "" ? "" : " checked");
 	echo "<thead><tr>";
-	echo "<th style='text-align: left;'><label class='block'><input type='checkbox' id='check-tables'$checked onclick='formCheck(this, /^tables\\[/);'>" . lang('Tables') . "</label>";
-	echo "<th style='text-align: right;'><label class='block'>" . lang('Data') . "<input type='checkbox' id='check-data'$checked onclick='formCheck(this, /^data\\[/);'></label>";
+	echo "<th style='text-align: left;'><label class='block'><input type='adminer_checkbox' id='check-tables'$checked onclick='formCheck(this, /^tables\\[/);'>" . lang('Tables') . "</label>";
+	echo "<th style='text-align: right;'><label class='block'>" . lang('Data') . "<input type='adminer_checkbox' id='check-data'$checked onclick='formCheck(this, /^data\\[/);'></label>";
 	echo "</thead>\n";
 
 	$views = "";
@@ -175,22 +178,22 @@ if (DB != "") {
 	foreach ($tables_list as $name => $type) {
 		$prefix = preg_replace('~_.*~', '', $name);
 		$checked = ($TABLE == "" || $TABLE == (substr($TABLE, -1) == "%" ? "$prefix%" : $name)); //! % may be part of table name
-		$print = "<tr><td>" . adminer_checkbox("tables[]", $name, $checked, $name, "checkboxClick(event, this); formUncheck('check-tables');", "block");
+		$print = "<tr><td>" . adminer_checkbox("tables[]", $name, $checked, $name, "adminer_checkboxClick(event, this); formUncheck('check-tables');", "block");
 		if ($type !== null && !preg_match('~table~i', $type)) {
 			$views .= "$print\n";
 		} else {
-			echo "$print<td align='right'><label class='block'><span id='Rows-" . h($name) . "'></span>" . adminer_checkbox("data[]", $name, $checked, "", "checkboxClick(event, this); formUncheck('check-data');") . "</label>\n";
+			echo "$print<td align='right'><label class='block'><span id='Rows-" . h($name) . "'></span>" . adminer_checkbox("data[]", $name, $checked, "", "adminer_checkboxClick(event, this); formUncheck('check-data');") . "</label>\n";
 		}
 		$prefixes[$prefix]++;
 	}
 	echo $views;
 
 	if ($tables_list) {
-		echo "<script type='text/javascript'>ajaxSetHtml('" . is_adminer_escape(ME) . "script=db');</script>\n";
+		echo "<script type='text/javascript'>ajaxSetHtml('" . js_adminer_escape(ME) . "script=db');</script>\n";
 	}
 
 } else {
-	echo "<thead><tr><th style='text-align: left;'><label class='block'><input type='checkbox' id='check-databases'" . ($TABLE == "" ? " checked" : "") . " onclick='formCheck(this, /^databases\\[/);'>" . lang('Database') . "</label></thead>\n";
+	echo "<thead><tr><th style='text-align: left;'><label class='block'><input type='adminer_checkbox' id='check-databases'" . ($TABLE == "" ? " checked" : "") . " onclick='formCheck(this, /^databases\\[/);'>" . lang('Database') . "</label></thead>\n";
 	$databases = $adminer->databases();
 	if ($databases) {
 		foreach ($databases as $db) {

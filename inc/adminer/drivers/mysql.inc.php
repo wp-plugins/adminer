@@ -24,14 +24,16 @@ if (!defined("DRIVER")) {
 					(is_numeric($port) ? $port : ini_get("mysqli.default_port")),
 					(!is_numeric($port) ? $port : null)
 				);
-				if ($return) {
-					if (method_exists($this, 'set_charset')) {
-						$this->set_charset("utf8");
-					} else {
-						$this->query("SET NAMES utf8");
-					}
-				}
 				return $return;
+			}
+
+			function set_charset($charset) {
+				if (parent::set_charset($charset)) {
+					return true;
+				}
+				// the client library may not support utf8mb4
+				parent::set_charset('utf8');
+				return $this->query("SET NAMES $charset");
 			}
 
 			function result($query, $field = 0) {
@@ -42,7 +44,7 @@ if (!defined("DRIVER")) {
 				$row = $result->fetch_array();
 				return $row[$field];
 			}
-
+			
 			function quote($string) {
 				return "'" . $this->escape_string($string) . "'";
 			}
@@ -75,15 +77,25 @@ if (!defined("DRIVER")) {
 				);
 				if ($this->_link) {
 					$this->server_info = mysql_get_server_info($this->_link);
-					if (function_exists('mysql_set_charset')) {
-						mysql_set_charset("utf8", $this->_link);
-					} else {
-						$this->query("SET NAMES utf8");
-					}
 				} else {
 					$this->error = mysql_error();
 				}
 				return (bool) $this->_link;
+			}
+
+			/** Sets the client character set
+			* @param string
+			* @return bool
+			*/
+			function set_charset($charset) {
+				if (function_exists('mysql_set_charset')) {
+					if (mysql_set_charset($charset, $this->_link)) {
+						return true;
+					}
+					// the client library may not support utf8mb4
+					mysql_set_charset('utf8', $this->_link);
+				}
+				return $this->query("SET NAMES $charset");
 			}
 
 			/** Quote string to use in SQL
@@ -212,8 +224,11 @@ if (!defined("DRIVER")) {
 
 			function connect($server, $username, $password) {
 				$this->dsn("mysql:charset=utf8;host=" . str_replace(":", ";unix_socket=", preg_replace('~:(\\d)~', ';port=\\1', $server)), $username, $password);
-				$this->query("SET NAMES utf8"); // charset in DSN is ignored before PHP 5.3.6
 				return true;
+			}
+
+			function set_charset($charset) {
+				$this->query("SET NAMES $charset"); // charset in DSN is ignored before PHP 5.3.6
 			}
 
 			function select_db($database) {
@@ -234,12 +249,12 @@ if (!defined("DRIVER")) {
 	class Min_Driver extends Min_SQL {
 
 		function insert($table, $set) {
-			return ($set ? parent::insert($table, $set) : queries("INSERT INTO " . table($table) . " ()\nVALUES ()"));
+			return ($set ? parent::insert($table, $set) : queries("INSERT INTO " . adminer_table($table) . " ()\nVALUES ()"));
 		}
 
 		function insertUpdate($table, $rows, $primary) {
 			$columns = array_keys(reset($rows));
-			$prefix = "INSERT INTO " . table($table) . " (" . implode(", ", $columns) . ") VALUES\n";
+			$prefix = "INSERT INTO " . adminer_table($table) . " (" . implode(", ", $columns) . ") VALUES\n";
 			$values = array();
 			foreach ($columns as $key) {
 				$values[$key] = "$key = VALUES($key)";
@@ -278,7 +293,7 @@ if (!defined("DRIVER")) {
 	* @param string
 	* @return string
 	*/
-	function table($idf) {
+	function adminer_table($idf) {
 		return idf_escape($idf);
 	}
 
@@ -290,6 +305,7 @@ if (!defined("DRIVER")) {
 		$connection = new Min_DB;
 		$credentials = $adminer->credentials();
 		if ($connection->connect($credentials[0], $credentials[1], $credentials[2])) {
+			$connection->set_charset(charset($connection)); // available in MySQLi since PHP 5.0.5
 			$connection->query("SET sql_quote_show_create = 1, autocommit = 1");
 			return $connection;
 		}
@@ -444,7 +460,9 @@ if (!defined("DRIVER")) {
 	* @return bool
 	*/
 	function fk_support($table_status) {
-		return preg_match('~InnoDB|IBMDB2I~i', $table_status["Engine"]);
+		global $connection;
+		return preg_match('~InnoDB|IBMDB2I~i', $table_status["Engine"])
+			|| (preg_match('~NDB~i', $table_status["Engine"]) && version_compare($connection->server_info, '5.6') >= 0);
 	}
 
 	/** Get information about fields
@@ -453,7 +471,7 @@ if (!defined("DRIVER")) {
 	*/
 	function fields($table) {
 		$return = array();
-		foreach (get_rows("SHOW FULL COLUMNS FROM " . table($table)) as $row) {
+		foreach (get_rows("SHOW FULL COLUMNS FROM " . adminer_table($table)) as $row) {
 			preg_match('~^([^( ]+)(?:\\((.+)\\))?( unsigned)?( zerofill)?$~', $row["Type"], $match);
 			$return[$row["Field"]] = array(
 				"field" => $row["Field"],
@@ -481,7 +499,7 @@ if (!defined("DRIVER")) {
 	*/
 	function indexes($table, $connection2 = null) {
 		$return = array();
-		foreach (get_rows("SHOW INDEX FROM " . table($table), $connection2) as $row) {
+		foreach (get_rows("SHOW INDEX FROM " . adminer_table($table), $connection2) as $row) {
 			$return[$row["Key_name"]]["type"] = ($row["Key_name"] == "PRIMARY" ? "PRIMARY" : ($row["Index_type"] == "FULLTEXT" ? "FULLTEXT" : ($row["Non_unique"] ? "INDEX" : "UNIQUE")));
 			$return[$row["Key_name"]]["columns"][] = $row["Column_name"];
 			$return[$row["Key_name"]]["lengths"][] = $row["Sub_part"];
@@ -498,9 +516,9 @@ if (!defined("DRIVER")) {
 		global $connection, $on_actions;
 		static $pattern = '`(?:[^`]|``)+`';
 		$return = array();
-		$create_table = $connection->result("SHOW CREATE TABLE " . table($table), 1);
+		$create_table = $connection->result("SHOW CREATE TABLE " . adminer_table($table), 1);
 		if ($create_table) {
-			preg_match_all("~CONSTRAINT ($pattern) FOREIGN KEY \\(((?:$pattern,? ?)+)\\) REFERENCES ($pattern)(?:\\.($pattern))? \\(((?:$pattern,? ?)+)\\)(?: ON DELETE ($on_actions))?(?: ON UPDATE ($on_actions))?~", $create_table, $matches, PREG_SET_ORDER);
+			preg_match_all("~CONSTRAINT ($pattern) FOREIGN KEY ?\\(((?:$pattern,? ?)+)\\) REFERENCES ($pattern)(?:\\.($pattern))? \\(((?:$pattern,? ?)+)\\)(?: ON DELETE ($on_actions))?(?: ON UPDATE ($on_actions))?~", $create_table, $matches, PREG_SET_ORDER);
 			foreach ($matches as $match) {
 				preg_match_all("~$pattern~", $match[2], $source);
 				preg_match_all("~$pattern~", $match[5], $target);
@@ -523,7 +541,7 @@ if (!defined("DRIVER")) {
 	*/
 	function view($name) {
 		global $connection;
-		return array("select" => preg_replace('~^(?:[^`]|`[^`]*`)*\\s+AS\\s+~isU', '', $connection->result("SHOW CREATE VIEW " . table($name), 1)));
+		return array("select" => preg_replace('~^(?:[^`]|`[^`]*`)*\\s+AS\\s+~isU', '', $connection->result("SHOW CREATE VIEW " . adminer_table($name), 1)));
 	}
 
 	/** Get sorted grouped list of collations
@@ -579,7 +597,6 @@ if (!defined("DRIVER")) {
 	* @return string
 	*/
 	function create_database($db, $collation) {
-		set_session("dbs", null);
 		return queries("CREATE DATABASE " . idf_escape($db) . ($collation ? " COLLATE " . q($collation) : ""));
 	}
 
@@ -588,9 +605,10 @@ if (!defined("DRIVER")) {
 	* @return bool
 	*/
 	function drop_databases($databases) {
+		$return = apply_queries("DROP DATABASE", $databases, 'idf_escape');
 		restart_session();
 		set_session("dbs", null);
-		return apply_queries("DROP DATABASE", $databases, 'idf_escape');
+		return $return;
 	}
 
 	/** Rename database from DB
@@ -599,18 +617,21 @@ if (!defined("DRIVER")) {
 	* @return bool
 	*/
 	function rename_database($name, $collation) {
+		$return = false;
 		if (create_database($name, $collation)) {
 			//! move triggers
 			$rename = array();
 			foreach (tables_list() as $table => $type) {
-				$rename[] = table($table) . " TO " . idf_escape($name) . "." . table($table);
+				$rename[] = adminer_table($table) . " TO " . idf_escape($name) . "." . adminer_table($table);
 			}
-			if (!$rename || queries("RENAME TABLE " . implode(", ", $rename))) {
+			$return = (!$rename || queries("RENAME TABLE " . implode(", ", $rename)));
+			if ($return) {
 				queries("DROP DATABASE " . idf_escape(DB));
-				return true;
 			}
+			restart_session();
+			set_session("dbs", null);
 		}
-		return false;
+		return $return;
 	}
 
 	/** Generate modifier for auto increment column
@@ -641,7 +662,7 @@ if (!defined("DRIVER")) {
 	* @param string
 	* @param string
 	* @param string
-	* @param int
+	* @param string number
 	* @param string
 	* @return bool
 	*/
@@ -654,20 +675,21 @@ if (!defined("DRIVER")) {
 			);
 		}
 		$alter = array_merge($alter, $foreign);
-		$status = "COMMENT=" . q($comment)
+		$status = ($comment !== null ? " COMMENT=" . q($comment) : "")
 			. ($engine ? " ENGINE=" . q($engine) : "")
 			. ($collation ? " COLLATE " . q($collation) : "")
 			. ($auto_increment != "" ? " AUTO_INCREMENT=$auto_increment" : "")
-			. $partitioning
 		;
 		if ($table == "") {
-			return queries("CREATE TABLE " . table($name) . " (\n" . implode(",\n", $alter) . "\n) $status");
+			return queries("CREATE TABLE " . adminer_table($name) . " (\n" . implode(",\n", $alter) . "\n)$status$partitioning");
 		}
 		if ($table != $name) {
-			$alter[] = "RENAME TO " . table($name);
+			$alter[] = "RENAME TO " . adminer_table($name);
 		}
-		$alter[] = $status;
-		return queries("ALTER TABLE " . table($table) . "\n" . implode(",\n", $alter));
+		if ($status) {
+			$alter[] = ltrim($status);
+		}
+		return ($alter || $partitioning ? queries("ALTER TABLE " . adminer_table($table) . "\n" . implode(",\n", $alter) . $partitioning) : true);
 	}
 
 	/** Run commands to alter indexes
@@ -682,7 +704,7 @@ if (!defined("DRIVER")) {
 				: "\nADD $val[0] " . ($val[0] == "PRIMARY" ? "KEY " : "") . ($val[1] != "" ? idf_escape($val[1]) . " " : "") . "(" . implode(", ", $val[2]) . ")"
 			);
 		}
-		return queries("ALTER TABLE " . table($table) . implode(",", $alter));
+		return queries("ALTER TABLE " . adminer_table($table) . implode(",", $alter));
 	}
 
 	/** Run commands to truncate tables
@@ -718,7 +740,7 @@ if (!defined("DRIVER")) {
 	function move_tables($tables, $views, $target) {
 		$rename = array();
 		foreach (array_merge($tables, $views) as $table) { // views will report SQL error
-			$rename[] = table($table) . " TO " . idf_escape($target) . "." . table($table);
+			$rename[] = adminer_table($table) . " TO " . idf_escape($target) . "." . adminer_table($table);
 		}
 		return queries("RENAME TABLE " . implode(", ", $rename));
 		//! move triggers
@@ -733,16 +755,16 @@ if (!defined("DRIVER")) {
 	function copy_tables($tables, $views, $target) {
 		queries("SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO'");
 		foreach ($tables as $table) {
-			$name = ($target == DB ? table("copy_$table") : idf_escape($target) . "." . table($table));
+			$name = ($target == DB ? adminer_table("copy_$table") : idf_escape($target) . "." . adminer_table($table));
 			if (!queries("\nDROP TABLE IF EXISTS $name")
-				|| !queries("CREATE TABLE $name LIKE " . table($table))
-				|| !queries("INSERT INTO $name SELECT * FROM " . table($table))
+				|| !queries("CREATE TABLE $name LIKE " . adminer_table($table))
+				|| !queries("INSERT INTO $name SELECT * FROM " . adminer_table($table))
 			) {
 				return false;
 			}
 		}
 		foreach ($views as $table) {
-			$name = ($target == DB ? table("copy_$table") : idf_escape($target) . "." . table($table));
+			$name = ($target == DB ? adminer_table("copy_$table") : idf_escape($target) . "." . adminer_table($table));
 			$view = view($table);
 			if (!queries("DROP VIEW IF EXISTS $name")
 				|| !queries("CREATE VIEW $name AS $view[select]") //! USE to avoid db.table
@@ -796,7 +818,7 @@ if (!defined("DRIVER")) {
 	function routine($name, $type) {
 		global $connection, $enum_length, $inout, $types;
 		$aliases = array("bool", "boolean", "integer", "double precision", "real", "dec", "numeric", "fixed", "national char", "national varchar");
-		$type_pattern = "((" . implode("|", array_merge(array_keys($types), $aliases)) . ")\\b(?:\\s*\\(((?:[^'\")]|$enum_length)++)\\))?\\s*(zerofill\\s*)?(unsigned(?:\\s+zerofill)?)?)(?:\\s*(?:CHARSET|CHARACTER\\s+SET)\\s*['\"]?([^'\"\\s]+)['\"]?)?";
+		$type_pattern = "((" . implode("|", array_merge(array_keys($types), $aliases)) . ")\\b(?:\\s*\\(((?:[^'\")]|$enum_length)++)\\))?\\s*(zerofill\\s*)?(unsigned(?:\\s+zerofill)?)?)(?:\\s*(?:CHARSET|CHARACTER\\s+SET)\\s*['\"]?([^'\"\\s,]+)['\"]?)?";
 		$pattern = "\\s*(" . ($type == "FUNCTION" ? "" : $inout) . ")?\\s*(?:`((?:[^`]|``)*)`\\s*|\\b(\\S+)\\s+)$type_pattern";
 		$create = $connection->result("SHOW CREATE $type " . idf_escape($name), 2);
 		preg_match("~\\(((?:$pattern\\s*,?)*)\\)\\s*" . ($type == "FUNCTION" ? "RETURNS\\s+$type_pattern\\s+" : "") . "(.*)~is", $create, $match);
@@ -902,7 +924,7 @@ if (!defined("DRIVER")) {
 	*/
 	function create_sql($table, $auto_increment) {
 		global $connection;
-		$return = $connection->result("SHOW CREATE TABLE " . table($table), 1);
+		$return = $connection->result("SHOW CREATE TABLE " . adminer_table($table), 1);
 		if (!$auto_increment) {
 			$return = preg_replace('~ AUTO_INCREMENT=\\d+~', '', $return); //! skip comments
 		}
@@ -914,7 +936,7 @@ if (!defined("DRIVER")) {
 	* @return string
 	*/
 	function truncate_sql($table) {
-		return "TRUNCATE " . table($table);
+		return "TRUNCATE " . adminer_table($table);
 	}
 
 	/** Get SQL command to change database
@@ -934,7 +956,7 @@ if (!defined("DRIVER")) {
 		$return = "";
 		foreach (get_rows("SHOW TRIGGERS LIKE " . q(addcslashes($table, "%_\\")), null, "-- ") as $row) {
 			$return .= "\n" . ($style == 'CREATE+ALTER' ? "DROP TRIGGER IF EXISTS " . idf_escape($row["Trigger"]) . ";;\n" : "")
-			. "CREATE TRIGGER " . idf_escape($row["Trigger"]) . " $row[Timing] $row[Event] ON " . table($row["Table"]) . " FOR EACH ROW\n$row[Statement];;\n";
+			. "CREATE TRIGGER " . idf_escape($row["Trigger"]) . " $row[Timing] $row[Event] ON " . adminer_table($row["Table"]) . " FOR EACH ROW\n$row[Statement];;\n";
 		}
 		return $return;
 	}
@@ -995,7 +1017,7 @@ if (!defined("DRIVER")) {
 	}
 
 	/** Check whether a feature is supported
-	* @param string "comment", "copy", "database", "drop_col", "dump", "event", "kill", "partitioning", "privileges", "procedure", "processlist", "routine", "scheme", "sequence", "status", "table", "trigger", "type", "variables", "view", "view_trigger"
+	* @param string "comment", "copy", "database", "drop_col", "dump", "event", "kill", "materializedview", "partitioning", "privileges", "procedure", "processlist", "routine", "scheme", "sequence", "status", "table", "trigger", "type", "variables", "view", "view_trigger"
 	* @return bool
 	*/
 	function support($feature) {

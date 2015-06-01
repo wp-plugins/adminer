@@ -1,8 +1,8 @@
 Changes on ADMINER
 
 add files:
-- loader.php
-- adminer.css
+- adminer/loader.php
+- adminer/adminer.css
 
 rename functions:
 - is_mail() --> is_adminer_mail()
@@ -10,8 +10,9 @@ rename functions:
 - js_escape() --> js_adminer_escape()
 - pagination() --> adminer_pagination()
 - checkbox() --> adminer_checkbox()
-- redirect() inkl. *redirect() --> adminer_redirect()
+- redirect() inkl. *redirect() --> *adminer_redirect()
 - get_temp_dir() --> get_adminer_temp_dir()
+- table() --> adminer_table()
 
 <body --> without javascript for check version, in inc/adminer/include/design.inc.php
 only: <body class="<?php echo lang('ltr'); ?> nojs"<?php echo ($_POST ? "" : " onclick=\"return bodyClick(event, '" . h(js_adminer_escape(DB) . "', '" . js_adminer_escape($_GET["ns"])) . "');\""); // avoid re-post confirmation after refreshing the next page in Google Chrome ?> ">
@@ -44,6 +45,6 @@ Filter of $query for Magic Quotes
 $query = $_POST["query"]; --> $query = stripslashes($_POST["query"]);
 - sql.inc.php
 
-unnecessary since Adminer 4.0.2 
+unnecessary since Adminer 4.0.2
 sourceforge url, in 3.5 not relevant; in inc/adminer/static/editing.js
-set FALSE to var jushRoot 
+set FALSE to var jushRoot

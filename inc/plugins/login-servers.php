@@ -44,7 +44,7 @@ class AdminerLoginServers {
 </table>
 <p><input type="submit" value="<?php echo lang('Login'); ?>">
 <?php
-		echo checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
+		echo adminer_checkbox("auth[permanent]", 1, $_COOKIE["adminer_permanent"], lang('Permanent login')) . "\n";
 		return true;
 	}
 	

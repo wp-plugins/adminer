@@ -66,6 +66,9 @@ if (isset($_GET["mssql"])) {
 				if (!$result) {
 					$result = $this->_result;
 				}
+				if (!$result) {
+					return false;
+				}
 				if (sqlsrv_field_metadata($result)) {
 					return new Min_Result($result);
 				}
@@ -74,7 +77,7 @@ if (isset($_GET["mssql"])) {
 			}
 
 			function next_result() {
-				return sqlsrv_next_result($this->_result);
+				return $this->_result ? sqlsrv_next_result($this->_result) : null;
 			}
 
 			function result($query, $field = 0) {
@@ -248,7 +251,7 @@ if (isset($_GET["mssql"])) {
 					}
 				}
 				//! can use only one query for all rows
-				if (!queries("MERGE " . table($table) . " USING (VALUES(" . implode(", ", $set) . ")) AS source (c" . implode(", c", range(1, count($set))) . ") ON " . implode(" AND ", $where) //! source, c1 - possible conflict
+				if (!queries("MERGE " . adminer_table($table) . " USING (VALUES(" . implode(", ", $set) . ")) AS source (c" . implode(", c", range(1, count($set))) . ") ON " . implode(" AND ", $where) //! source, c1 - possible conflict
 					. " WHEN MATCHED THEN UPDATE SET " . implode(", ", $update)
 					. " WHEN NOT MATCHED THEN INSERT (" . implode(", ", array_keys($set)) . ") VALUES (" . implode(", ", $set) . ");" // ; is mandatory
 				)) {
@@ -270,7 +273,7 @@ if (isset($_GET["mssql"])) {
 		return "[" . str_replace("]", "]]", $idf) . "]";
 	}
 
-	function table($idf) {
+	function adminer_table($idf) {
 		return ($_GET["ns"] != "" ? idf_escape($_GET["ns"]) . "." : "") . idf_escape($idf);
 	}
 
@@ -427,7 +430,7 @@ WHERE OBJECT_NAME(i.object_id) = " . q($table)
 	}
 
 	function auto_increment() {
-		return " IDENTITY" . ($_POST["Auto_increment"] != "" ? "(" . (+$_POST["Auto_increment"]) . ",1)" : "") . " PRIMARY KEY";
+		return " IDENTITY" . ($_POST["Auto_increment"] != "" ? "(" . number($_POST["Auto_increment"]) . ",1)" : "") . " PRIMARY KEY";
 	}
 
 	function alter_table($table, $name, $fields, $foreign, $comment, $engine, $collation, $auto_increment, $partitioning) {
@@ -444,17 +447,17 @@ WHERE OBJECT_NAME(i.object_id) = " . q($table)
 				} else {
 					unset($val[6]); //! identity can't be removed
 					if ($column != $val[0]) {
-						queries("EXEC sp_rename " . q(table($table) . ".$column") . ", " . q(idf_unescape($val[0])) . ", 'COLUMN'");
+						queries("EXEC sp_rename " . q(adminer_table($table) . ".$column") . ", " . q(idf_unescape($val[0])) . ", 'COLUMN'");
 					}
 					$alter["ALTER COLUMN " . implode("", $val)][] = "";
 				}
 			}
 		}
 		if ($table == "") {
-			return queries("CREATE TABLE " . table($name) . " (" . implode(",", (array) $alter["ADD"]) . "\n)");
+			return queries("CREATE TABLE " . adminer_table($name) . " (" . implode(",", (array) $alter["ADD"]) . "\n)");
 		}
 		if ($table != $name) {
-			queries("EXEC sp_rename " . q(table($table)) . ", " . q($name));
+			queries("EXEC sp_rename " . q(adminer_table($table)) . ", " . q($name));
 		}
 		if ($foreign) {
 			$alter[""] = $foreign;
@@ -475,17 +478,17 @@ WHERE OBJECT_NAME(i.object_id) = " . q($table)
 				if ($val[0] == "PRIMARY") { //! sometimes used also for UNIQUE
 					$drop[] = idf_escape($val[1]);
 				} else {
-					$index[] = idf_escape($val[1]) . " ON " . table($table);
+					$index[] = idf_escape($val[1]) . " ON " . adminer_table($table);
 				}
 			} elseif (!queries(($val[0] != "PRIMARY"
-				? "CREATE $val[0] " . ($val[0] != "INDEX" ? "INDEX " : "") . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . table($table)
-				: "ALTER TABLE " . table($table) . " ADD PRIMARY KEY"
+				? "CREATE $val[0] " . ($val[0] != "INDEX" ? "INDEX " : "") . idf_escape($val[1] != "" ? $val[1] : uniqid($table . "_")) . " ON " . adminer_table($table)
+				: "ALTER TABLE " . adminer_table($table) . " ADD PRIMARY KEY"
 			) . " (" . implode(", ", $val[2]) . ")")) {
 				return false;
 			}
 		}
 		return (!$index || queries("DROP INDEX " . implode(", ", $index)))
-			&& (!$drop || queries("ALTER TABLE " . table($table) . " DROP " . implode(", ", $drop)))
+			&& (!$drop || queries("ALTER TABLE " . adminer_table($table) . " DROP " . implode(", ", $drop)))
 		;
 	}
 

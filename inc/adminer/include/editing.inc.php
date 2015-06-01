@@ -3,9 +3,10 @@
 * @param Min_Result
 * @param Min_DB connection to examine indexes
 * @param array
+* @param int
 * @return array $orgtables
 */
-function select($result, $connection2 = null, $orgtables = array()) {
+function select($result, $connection2 = null, $orgtables = array(), $limit = 0) {
 	global $jush;
 	$links = array(); // colno => orgtable - create links from these columns
 	$indexes = array(); // orgtable => array(column => colno) - primary keys
@@ -14,7 +15,7 @@ function select($result, $connection2 = null, $orgtables = array()) {
 	$types = array(); // colno => type - display char in <code>
 	$return = array(); // table => orgtable - mapping to use in EXPLAIN
 	odd(''); // reset odd for each result
-	for ($i=0; $row = $result->fetch_row(); $i++) {
+	for ($i=0; (!$limit || $i < $limit) && ($row = $result->fetch_row()); $i++) {
 		if (!$i) {
 			echo "<table cellspacing='0' class='nowrap'>\n";
 			echo "<thead><tr>";
@@ -196,6 +197,7 @@ function process_field($field, $type_field) {
 		($field["null"] ? " NULL" : " NOT NULL"), // NULL for timestamp
 		(isset($default) ? " DEFAULT " . (
 			(preg_match('~time~', $field["type"]) && preg_match('~^CURRENT_TIMESTAMP$~i', $default))
+			|| ($jush == "sqlite" && preg_match('~^CURRENT_(TIME|TIMESTAMP|DATE)$~i', $default))
 			|| ($field["type"] == "bit" && preg_match("~^([0-9]+|b'[0-1]+')\$~", $default))
 			|| ($jush == "pgsql" && preg_match("~^[a-z]+\\(('[^']*')+\\)\$~", $default))
 			? $default : q($default)) : ""),
@@ -247,7 +249,7 @@ function edit_fields($fields, $collations, $type = "TABLE", $foreign_keys = arra
 	'pgsql' => "datatype.html#DATATYPE-SERIAL",
 	'mssql' => "ms186775.aspx",
 )); ?>
-<td><?php echo lang('Default values'); ?>
+<td><?php echo lang('Default value'); ?>
 <?php echo (support("comment") ? "<td" . ($comments ? "" : " class='hidden'") . ">" . lang('Comment') : ""); ?>
 <?php } ?>
 <td><?php echo "<input type='image' class='icon' name='add[" . (support("move_col") ? 0 : count($fields)) . "]' src='../adminer/static/plus.gif' alt='+' title='" . lang('Add next') . "'>"; ?><script type="text/javascript">row_count = <?php echo count($fields); ?>;</script>
@@ -365,7 +367,7 @@ function grant($grant, $privileges, $columns, $on) {
 * @param string
 * @param string
 * @param string
-* @return null redirect in success
+* @return null adminer_redirect in success
 */
 function drop_create($drop, $create, $drop_created, $test, $drop_test, $location, $message_drop, $message_alter, $message_create, $old_name, $new_name) {
 	if ($_POST["drop"]) {
@@ -442,7 +444,7 @@ function remove_definer($query) {
 */
 function format_foreign_key($foreign_key) {
 	global $on_actions;
-	return " FOREIGN KEY (" . implode(", ", array_map('idf_escape', $foreign_key["source"])) . ") REFERENCES " . table($foreign_key["table"])
+	return " FOREIGN KEY (" . implode(", ", array_map('idf_escape', $foreign_key["source"])) . ") REFERENCES " . adminer_table($foreign_key["table"])
 		. " (" . implode(", ", array_map('idf_escape', $foreign_key["target"])) . ")" //! reuse $name - check in older MySQL versions
 		. (preg_match("~^($on_actions)\$~", $foreign_key["on_delete"]) ? " ON DELETE $foreign_key[on_delete]" : "")
 		. (preg_match("~^($on_actions)\$~", $foreign_key["on_update"]) ? " ON UPDATE $foreign_key[on_update]" : "")
@@ -520,4 +522,17 @@ function db_size($db) {
 		$return += $table_status["Data_length"] + $table_status["Index_length"];
 	}
 	return format_number($return);
+}
+
+/** Print SET NAMES if utf8mb4 might be needed
+* @param string
+* @return null
+*/
+function set_utf8mb4($create) {
+  global $connection;
+	static $set = false;
+	if (!$set && preg_match('~\butf8mb4~i', $create)) { // possible false positive
+		$set = true;
+		echo "SET NAMES " . charset($connection) . ";\n\n";
+	}
 }

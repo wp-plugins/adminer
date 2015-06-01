@@ -412,7 +412,7 @@ username.form['auth[driver]'].onchange();
 	* @return array expressions to join by AND
 	*/
 	function selectSearchProcess($fields, $indexes) {
-		global $jush;
+		global $connection, $jush;
 		$return = array();
 		foreach ($indexes as $i => $index) {
 			if ($index["type"] == "FULLTEXT" && $_GET["fulltext"][$i] != "") {
@@ -429,6 +429,8 @@ username.form['auth[driver]'].onchange();
 					$cond = " $val[val]"; // SQL injection
 				} elseif ($val["op"] == "LIKE %%") {
 					$cond = " LIKE " . $this->processInput($fields[$val["col"]], "%$val[val]%");
+				} elseif ($val["op"] == "ILIKE %%") {
+					$cond = " ILIKE " . $this->processInput($fields[$val["col"]], "%$val[val]%");
 				} elseif (!preg_match('~NULL$~', $val["op"])) {
 					$cond .= " " . $this->processInput($fields[$val["col"]], $val["val"]);
 				}
@@ -443,7 +445,7 @@ username.form['auth[driver]'].onchange();
 							&& (!preg_match("~[\x80-\xFF]~", $val["val"]) || $is_text)
 						) {
 							$name = idf_escape($name);
-							$cols[] = ($jush == "sql" && $is_text && !preg_match('~^utf8~', $field["collation"]) ? "CONVERT($name USING utf8)" : $name);
+							$cols[] = ($jush == "sql" && $is_text && !preg_match("~^utf8_~", $field["collation"]) ? "CONVERT($name USING " . charset($connection) . ")" : $name);
 						}
 					}
 					$return[] = ($cols ? "(" . implode("$cond OR ", $cols) . "$cond)" : "0");
@@ -635,19 +637,20 @@ username.form['auth[driver]'].onchange();
 			if ($style) {
 				dump_csv(array_keys(fields($table)));
 			}
-		} elseif ($style) {
+		} else {
 			if ($is_view == 2) {
 				$fields = array();
 				foreach (fields($table) as $name => $field) {
 					$fields[] = idf_escape($name) . " $field[full_type]";
 				}
-				$create = "CREATE TABLE " . table($table) . " (" . implode(", ", $fields) . ")";
+				$create = "CREATE TABLE " . adminer_table($table) . " (" . implode(", ", $fields) . ")";
 			} else {
 				$create = create_sql($table, $_POST["auto_increment"]);
 			}
-			if ($create) {
+			set_utf8mb4($create);
+			if ($style && $create) {
 				if ($style == "DROP+CREATE" || $is_view == 1) {
-					echo "DROP " . ($is_view == 2 ? "VIEW" : "TABLE") . " IF EXISTS " . table($table) . ";\n";
+					echo "DROP " . ($is_view == 2 ? "VIEW" : "TABLE") . " IF EXISTS " . adminer_table($table) . ";\n";
 				}
 				if ($is_view == 1) {
 					$create = remove_definer($create);
@@ -699,7 +702,7 @@ username.form['auth[driver]'].onchange();
 						dump_csv($row);
 					} else {
 						if (!$insert) {
-							$insert = "INSERT INTO " . table($table) . " (" . implode(", ", array_map('idf_escape', $keys)) . ") VALUES";
+							$insert = "INSERT INTO " . adminer_table($table) . " (" . implode(", ", array_map('idf_escape', $keys)) . ") VALUES";
 						}
 						foreach ($row as $key => $val) {
 							$field = $fields[$key];
@@ -814,7 +817,7 @@ username.form['auth[driver]'].onchange();
 					foreach ($tables as $table => $type) {
 						$links[] = preg_quote($table, '/');
 					}
-					echo "var jushLinks = { $jush: [ '" . is_adminer_escape(ME) . (support("table") ? "table=" : "select=") . "\$&', /\\b(" . implode("|", $links) . ")\\b/g ] };\n";
+					echo "var jushLinks = { $jush: [ '" . js_adminer_escape(ME) . (support("table") ? "table=" : "select=") . "\$&', /\\b(" . implode("|", $links) . ")\\b/g ] };\n";
 					foreach (array("bac", "bra", "sqlite_quo", "mssql_bra") as $val) {
 						echo "jushLinks.$val = jushLinks.$jush;\n";
 					}
@@ -828,7 +831,7 @@ bodyLoad('<?php echo (is_object($connection) ? substr($connection->server_info, 
 			if (DB == "" || !$missing) {
 				echo "<p class='links'>" . (support("sql") ? "<a href='" . h(ME) . "sql='" . bold(isset($_GET["sql"]) && !isset($_GET["import"])) . ">" . lang('SQL command') . "</a>\n<a href='" . h(ME) . "import='" . bold(isset($_GET["import"])) . ">" . lang('Import') . "</a>\n" : "") . "";
 				if (support("dump")) {
-					echo "<a href='" . h(ME) . "dump=" . urlencode(isset($_GET["table"]) ? $_GET["table"] : $_GET["select"]) . "' id='dump'" . bold(isset($_GET["dump"])) . ">" . lang('Dump') . "</a>\n";
+					echo "<a href='" . h(ME) . "dump=" . urlencode(isset($_GET["table"]) ? $_GET["table"] : $_GET["select"]) . "' id='dump'" . bold(isset($_GET["dump"])) . ">" . lang('Export') . "</a>\n";
 				}
 			}
 			if ($_GET["ns"] !== "" && !$missing && DB != "") {
@@ -883,10 +886,12 @@ bodyLoad('<?php echo (is_object($connection) ? substr($connection->server_info, 
 	function tablesPrint($tables) {
 		echo "<p id='tables' onmouseover='menuOver(this, event);' onmouseout='menuOut(this);'>\n";
 		foreach ($tables as $table => $status) {
-			echo '<a href="' . h(ME) . 'select=' . urlencode($table) . '"' . bold($_GET["select"] == $table || $_GET["edit"] == $table) . ">" . lang('select') . "</a> ";
+			echo '<a href="' . h(ME) . 'select=' . urlencode($table) . '"' . bold($_GET["select"] == $table || $_GET["edit"] == $table, "select") . ">" . lang('select') . "</a> ";
 			$name = $this->tableName($status);
 			echo (support("table") || support("indexes")
-				? '<a href="' . h(ME) . 'table=' . urlencode($table) . '"' . bold(in_array($table, array($_GET["table"], $_GET["create"], $_GET["indexes"], $_GET["foreign"], $_GET["trigger"])), (is_view($status) ? "view" : "")) . " title='" . lang('Show structure') . "'>$name</a>"
+				? '<a href="' . h(ME) . 'table=' . urlencode($table) . '"'
+					. bold(in_array($table, array($_GET["table"], $_GET["create"], $_GET["indexes"], $_GET["foreign"], $_GET["trigger"])), (is_view($status) ? "view" : ""), "structure")
+					. " title='" . lang('Show structure') . "'>$name</a>"
 				: "<span>$name</span>"
 			) . "<br>\n";
 		}

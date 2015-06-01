@@ -8,7 +8,7 @@ function connect_error() {
 		if ($_POST["db"] && !$error) {
 			queries_adminer_redirect(substr(ME, 0, -1), lang('Databases have been dropped.'), drop_databases($_POST["db"]));
 		}
-		
+
 		page_header(lang('Select database'), $error, false);
 		echo "<p class='links'>\n";
 		foreach (array(
@@ -35,12 +35,12 @@ function connect_error() {
 				. "<th>" . lang('Database') . " - <a href='" . h(ME) . "refresh=1'>" . lang('Refresh') . "</a>"
 				. "<td>" . lang('Collation')
 				. "<td>" . lang('Tables')
-				. "<td>" . lang('Size') . " - <a href='" . h(ME) . "dbsize=1' onclick=\"return !ajaxSetHtml('" . is_adminer_escape(ME) . "script=connect');\">" . lang('Compute') . "</a>"
+				. "<td>" . lang('Size') . " - <a href='" . h(ME) . "dbsize=1' onclick=\"return !ajaxSetHtml('" . js_adminer_escape(ME) . "script=connect');\">" . lang('Compute') . "</a>"
 				. "</thead>\n"
 			;
-			
+
 			$databases = ($_GET["dbsize"] ? count_tables($databases) : array_flip($databases));
-			
+
 			foreach ($databases as $db => $tables) {
 				$root = h(ME) . "db=" . urlencode($db);
 				echo "<tr" . odd() . ">" . (support("database") ? "<td>" . adminer_checkbox("db[]", $db, in_array($db, (array) $_POST["db"])) : "");
@@ -51,7 +51,7 @@ function connect_error() {
 				echo "<td align='right' id='size-" . h($db) . "'>" . ($_GET["dbsize"] ? db_size($db) : "?");
 				echo "\n";
 			}
-			
+
 			echo "</table>\n";
 			echo (support("database")
 				? "<fieldset><legend>" . lang('Selected') . " <span id='selected'></span></legend><div>\n"
@@ -65,7 +65,7 @@ function connect_error() {
 			echo "</form>\n";
 		}
 	}
-	
+
 	page_footer("db");
 }
 

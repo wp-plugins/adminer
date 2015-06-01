@@ -7,7 +7,7 @@ $row = (array) trigger($name) + array("Trigger" => $TABLE . "_bi");
 if ($_POST) {
 	if (!$error && in_array($_POST["Timing"], $trigger_options["Timing"]) && in_array($_POST["Event"], $trigger_options["Event"]) && in_array($_POST["Type"], $trigger_options["Type"])) {
 		// don't use drop_create() because there may not be more triggers for the same action
-		$on = " ON " . table($TABLE);
+		$on = " ON " . adminer_table($TABLE);
 		$drop = "DROP TRIGGER " . idf_escape($name) . ($jush == "pgsql" ? $on : "");
 		$location = ME . "table=" . urlencode($TABLE);
 		if ($_POST["drop"]) {
@@ -34,7 +34,7 @@ page_header(($name != "" ? lang('Alter trigger') . ": " . h($name) : lang('Creat
 
 <form action="" method="post" id="form">
 <table cellspacing="0">
-<tr><th><?php echo lang('Time'); ?><td><?php echo html_select("Timing", $trigger_options["Timing"], $row["Timing"], "triggerChange(/^" . preg_quote($TABLE, "/") . "_[ba][iud]$/, '" . is_adminer_escape($TABLE) . "', this.form);"); ?>
+<tr><th><?php echo lang('Time'); ?><td><?php echo html_select("Timing", $trigger_options["Timing"], $row["Timing"], "triggerChange(/^" . preg_quote($TABLE, "/") . "_[ba][iud]$/, '" . js_adminer_escape($TABLE) . "', this.form);"); ?>
 <tr><th><?php echo lang('Event'); ?><td><?php echo html_select("Event", $trigger_options["Event"], $row["Event"], "this.form['Timing'].onchange();"); ?>
 <?php echo (in_array("UPDATE OF", $trigger_options["Event"]) ? " <input name='Of' value='" . h($row["Of"]) . "' class='hidden'>": ""); ?>
 <tr><th><?php echo lang('Type'); ?><td><?php echo html_select("Type", $trigger_options["Type"], $row["Type"]); ?>

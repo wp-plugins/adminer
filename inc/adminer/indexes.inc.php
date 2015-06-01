@@ -103,7 +103,7 @@ if ($primary) {
 	echo "<tr><td>PRIMARY<td>";
 	foreach ($primary["columns"] as $key => $column) {
 		echo select_input(" disabled", $fields, $column);
-		echo "<label><input disabled type='checkbox'>" . lang('descending') . "</label> ";
+		echo "<label><input disabled type='adminer_checkbox'>" . lang('descending') . "</label> ";
 	}
 	echo "<td><td>\n";
 }
@@ -117,7 +117,7 @@ foreach ($row["indexes"] as $index) {
 		$i = 1;
 		foreach ($index["columns"] as $key => $column) {
 			echo "<span>" . select_input(
-				" name='indexes[$j][columns][$i]' onchange=\"" . ($i == count($index["columns"]) ? "indexesAddColumn" : "indexesChangeColumn") . "(this, '" . is_adminer_escape($jush == "sql" ? "" : $_GET["indexes"] . "_") . "');\"",
+				" name='indexes[$j][columns][$i]' onchange=\"" . ($i == count($index["columns"]) ? "indexesAddColumn" : "indexesChangeColumn") . "(this, '" . js_adminer_escape($jush == "sql" ? "" : $_GET["indexes"] . "_") . "');\"",
 				($fields ? array_combine($fields, $fields) : $fields),
 				$column
 			);
