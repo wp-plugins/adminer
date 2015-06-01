@@ -3,8 +3,8 @@ Contributors: Bueltge, inpsyde
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6069955
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
-Tested up to: 4.2
-Stable tag: 1.3.2
+Tested up to: 4.2.2
+Stable tag: 1.4.0
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
@@ -46,11 +46,11 @@ If you use the plugins outside the wp-root or other one install, then you must d
 == Other Notes ==
 = Acknowledgements =
 * Thanks for german language file to [myself](http://bueltge.de/ "Frank B&uuml;ltge") ;)
-* Thanks to [J&uuml;rgen Toth](http://www.relijoc.ro/ "J&uuml;rgen Toth") for romanian language file
-* Thanks for italien language files to [Gianni Diurno](http://gidibao.net/)
+* Thanks to [Jürgen Toth](http://www.relijoc.ro/ "Jürgen Toth") for romanian language file
+* Thanks for italian language files to [Gianni Diurno](http://gidibao.net/)
 * Thanks for belorussian language files to [Marcis G.](http://pc.de/)
-* Thanks for ukrainian language files to [F&ouml;rderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
-* Thanks for chech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
+* Thanks for ukrainian language files to [Förderkreis Saporoshje e.V](http://foerderkreis-saporoshje.de/)
+* Thanks for czech language files to [Peter Kahoun](http://kahi.cz/wordpress/)
 * Thanks for dutch translation to [Renè](http://wpwebshop.com/premium-wordpress-themes/ "WP webshop")
 * Thanks for japanese translation to [KAZ]
 * Thanks for the spanish language files to [Jose Manuel Aguado](http://www.anunciosgoogle.net/)
@@ -64,9 +64,9 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
-= v1.4.0 (???) =
+= v1.4.0 (2015-06-01) =
 * Update spanish language files
-* Include the Adminer 4.2.0 release, see his [Changelog](http://sourceforge.net/p/adminer/news/2015/02/adminer-420-released/)
+* Include the Adminer 4.2.1 release, see his [Changelog](https://github.com/vrana/adminer/blob/master/changes.txt)
 
 = v1.3.2 (2014-12-07) =
 * Bugfix wrong function name [issue 1435](https://wordpress.org/support/topic/fatal-error-1435?replies=1)
