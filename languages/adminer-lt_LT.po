@@ -1,0 +1,154 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Adminer v0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-03-10 16:18+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#@ adminer
+#. translators: plugin header field 'Description'
+#: adminer.php:0
+msgid "<a href=\"http://www.adminer.org/en/\">Adminer</a> (formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress for a fast management of your database."
+msgstr "<a href=\"http://www.adminer.org/en/\">Adminer</a> (anksčiau vadintas phpMinAdmin) yra funkcionalus MySQL duomenų bazių valdymo įrankis, sukurtas PHP programavimo aplinkoje. Šis spartaus Jūsų duomenų bazės valdymo įrankis yra įtrauktas į Adminer papildinį."
+
+#@ default
+#: inc/adminer/loader.php:30
+msgid "Cheatin&#8217; uh?"
+msgstr "Bandote sukčiauti, ar ne?"
+
+#@ adminer
+#. translators: plugin header field 'Name'
+#: adminer.php:0
+#: adminer.php:115
+#: adminer.php:117
+msgid "Adminer"
+msgstr "Adminer"
+
+#@ adminer
+#: adminer.php:149
+#: adminer.php:154
+msgid "empty"
+msgstr "tuščia"
+
+#@ adminer
+#: adminer.php:161
+msgid "Adminer for WordPress"
+msgstr "Adminer papildinys WordPress sistemai"
+
+#@ adminer
+#: adminer.php:163
+msgid "(formerly phpMinAdmin) is a full-featured MySQL management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server."
+msgstr "(anksčiau vadintas phpMinAdmin) yra funkcionalus MySQL duomenų bazių valdymo įrankis, sukurtas PHP programavimo aplinkioje.  Priešingai nei phpMyAdmin, šis papildinys susidarytas iš vienos rinkmenos, dislokuotos paskirties serveryje."
+
+#@ adminer
+#: adminer.php:199
+msgid "Your Datebase data"
+msgstr "Jūsų Duomenų bazės duomenys"
+
+#@ adminer
+#: adminer.php:209
+msgid "Server"
+msgstr "Serveris"
+
+#@ adminer
+#: adminer.php:213
+msgid "User"
+msgstr "Vartotojas"
+
+#@ adminer
+#: adminer.php:217
+msgid "Password"
+msgstr "Slaptažodis"
+
+#@ adminer
+#: adminer.php:195
+msgid "Your browser does not support embedded frames."
+msgstr "Jūsų naršyklė nepalaiko įterptų fragmentų."
+
+#@ adminer
+#: adminer.php:203
+msgid "Typ"
+msgstr "Tipas"
+
+#@ adminer
+#: adminer.php:204
+msgid "Value"
+msgstr "Reikšmė"
+
+#@ adminer
+#. translators: plugin header field 'PluginURI'
+#: adminer.php:0
+msgid "http://bueltge.de/adminer-fuer-wordpress/1014/"
+msgstr "http://bueltge.de/adminer-fuer-wordpress/1014/"
+
+#@ adminer
+#. translators: plugin header field 'Author'
+#: adminer.php:0
+msgid "Frank B&uuml;ltge"
+msgstr "Frank B&uuml;ltge"
+
+#@ adminer
+#. translators: plugin header field 'AuthorURI'
+#: adminer.php:0
+msgid "http://bueltge.de/"
+msgstr "http://bueltge.de/"
+
+#@ adminer
+#: adminer.php:134
+msgid "Start the Thickbox inside the Adminer-tool with the button &rsaquo;<em>Start Adminer inside</em>&lsaquo;."
+msgstr "Paleiskite Thickbox Adminer įrankio viduje, spragteldami mygtuką &rsaquo;<em>Paleisti Adminer viduje</em>&lsaquo;."
+
+#@ adminer
+#: adminer.php:136
+msgid "Alternatively, you can use the button for use &rsaquo;<em>Adminer in a new Tab</em>&lsaquo;."
+msgstr "Jūs taip pat galite naudoti mygtuką, kad iškviestumėte &rsaquo;<em>Adminer papildinį naujoje kortelėje</em>&lsaquo;."
+
+#@ adminer
+#: adminer.php:140
+msgid "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
+msgstr "<a href=\"http://www.adminer.org/\">Adminer tinklapis</a></p>"
+
+#@ adminer
+#: adminer.php:186
+msgid "Start Adminer inside"
+msgstr "Paleisti Adminer viduje"
+
+#@ adminer
+#: adminer.php:189
+msgid "Start Adminer in a new tab"
+msgstr "Paleisti Adminer naujoje kortelėje"
+
+#@ adminer
+#. translators: plugin header field 'Version'
+#: adminer.php:0
+msgid "1.1.0"
+msgstr "1.1.0"
+
+#@ adminer
+#: adminer.php:138
+msgid "<a href=\"http://wordpress.org/extend/plugins/adminer/\">Documentation on Plugin Directory</a>"
+msgstr "<a href=\\\"http://wordpress.org/extend/plugins/adminer/\\\">Dokumentacija Papildinio Kataloge</a>"
+
+#@ adminer
+#: adminer.php:139
+msgid "<a href=\"http://bueltge.de/\">Blog of Plugin author</a>"
+msgstr "<a href=\\\"http://bueltge.de/\\\">Papildinio autoriaus tinklaraštis</a>"
+
+#@ adminer
+#: adminer.php:163
+msgid "Current used version of Plugin"
+msgstr "Dabar naudojama papildinio versija"
+
