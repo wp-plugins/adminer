@@ -1,0 +1,202 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Adminer v0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-18 18:36+0100\n"
+"PO-Revision-Date: 2015-02-18 18:39+0100\n"
+"Last-Translator: Anuncios Google <info@anunciosgoogle.net>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ adminer
+#: adminer.php:133 adminer.php:135 adminer.php:151 adminer.php:154
+#: adminer.php:172
+msgid "Adminer"
+msgstr "Adminer"
+
+# @ adminer
+#: adminer.php:185
+msgid ""
+"Start the Thickbox inside the Adminer-tool with the button &rsaquo;<em>Start "
+"Adminer inside</em>&lsaquo;."
+msgstr ""
+"Usar esta herramienta dentro de la misma página usando el botón &rsaquo;"
+"<em>Iniciar Adminer en pop up</em>&lsaquo;."
+
+# @ adminer
+#: adminer.php:187
+msgid ""
+"Alternatively, you can use the button for use &rsaquo;<em>Adminer in a new "
+"Tab</em>&lsaquo;."
+msgstr ""
+"También puede usar el botón  &rsaquo;<em>Iniciar Adminer en nueva pestaña</"
+"em>&lsaquo;"
+
+# @ adminer
+#: adminer.php:189
+msgid ""
+"<a href=\"http://wordpress.org/extend/plugins/adminer/\">Documentation on "
+"Plugin Directory</a>"
+msgstr ""
+"<a href=\"http://wordpress.org/extend/plugins/adminer/\">Repositorio oficial "
+"del Plugin</a></p>"
+
+#: adminer.php:190
+msgid ""
+"<a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;"
+"hosted_button_id=6069955\">Donate</a>"
+msgstr ""
+"<a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;"
+"hosted_button_id=6069955\" title=\"Haz una donacion con Paypal\">Donar</a>"
+
+#: adminer.php:191
+msgid "<a href=\"http://bueltge.de/\">Blog of Plugin author</a>"
+msgstr "<a href=\"http://bueltge.de/\">Blog del autor del Plugin</a>"
+
+# @ adminer
+#: adminer.php:192
+msgid "<a href=\"http://www.adminer.org/\">Adminer website</a></p>"
+msgstr "<a href=\"http://www.adminer.org/\">sitio web de Adminer</a></p>"
+
+# @ adminer
+#: adminer.php:256 adminer.php:261
+msgid "empty"
+msgstr "vacio"
+
+# @ adminer
+#: adminer.php:266
+msgid "Adminer for WordPress"
+msgstr "Adminer para WordPress"
+
+# @ adminer
+#: adminer.php:268
+msgid ""
+"(formerly phpMinAdmin) is a full-featured MySQL management tool written in "
+"PHP."
+msgstr ""
+"(antes phpMinAdmin) es una completa herramienta de administración de bases "
+"de datos MySQL escrita en PHP. Desde un único lugar te permite una gestión "
+"fácil y eficiente de la base de datos en tu servidor."
+
+#: adminer.php:268
+msgid "Current used version of Plugin"
+msgstr "Versión actual del Plugin"
+
+# @ adminer
+#: adminer.php:291
+msgid "Start Adminer inside"
+msgstr "Iniciar Adminer en popup"
+
+# @ adminer
+#: adminer.php:304
+msgid "Start Adminer in a new tab"
+msgstr "Iniciar Adminer en una nueva pestaña"
+
+# @ adminer
+#: adminer.php:310
+msgid "Your browser does not support embedded frames."
+msgstr "Su navegador no puede mostrar frames incluidos."
+
+#: adminer.php:319
+msgid "Like this plugin?"
+msgstr "¿Te gusta este plugin?"
+
+#: adminer.php:322
+msgid "Here's how you can give back:"
+msgstr "Puedes ayudarnos de varias formas:"
+
+#: adminer.php:324
+msgid "Give the plugin a good rating."
+msgstr "Puedes darnos una buena puntuación."
+
+#: adminer.php:325
+msgid "Write a review about the plugin."
+msgstr "Escribe una reseña sobre el plugin."
+
+#: adminer.php:326
+msgid "Donate a few euros."
+msgstr "Podrías donarme unos eurillos (5€ estarían bien)."
+
+#: adminer.php:327
+msgid "Get me something from my wish list."
+msgstr "Comprame algo de mi lista de deseos."
+
+#: adminer.php:328
+msgid "Adminer website for more informations and versions without WordPress"
+msgstr ""
+"Web oficial del proyecto Adminer para más información y todas las versiones "
+"además de la de Wordpress"
+
+#: adminer.php:328
+msgid "More about Adminer"
+msgstr "Pincha aquí para saber más sobre el proyecto Adminer."
+
+# @ adminer
+#: adminer.php:339
+msgid "Your Database Data"
+msgstr "Su Base de Datos"
+
+# @ adminer
+#: adminer.php:345
+msgid "Typ"
+msgstr "Tipo"
+
+# @ adminer
+#: adminer.php:346
+msgid "Value"
+msgstr "Valor"
+
+# @ adminer
+#: adminer.php:351
+msgid "Server"
+msgstr "Servidor"
+
+#: adminer.php:355
+msgid "Database"
+msgstr "Base de datos"
+
+# @ adminer
+#: adminer.php:359
+msgid "User"
+msgstr "Usuario"
+
+# @ adminer
+#: adminer.php:363
+msgid "Password"
+msgstr "Contraseña"
+
+# @ default
+#: inc/adminer/loader.php:86
+msgid "Cheatin&#8217; uh?"
+msgstr "Intentando hacer trampas?"
+
+#: inc/adminer/loader.php:94
+msgid ""
+"Cheatin&#8217; uh? The plugin is not active or can`t found the WordPress "
+"configuration file."
+msgstr ""
+"Intentando hacer trampas? El plugin no está activo o el archivo de "
+"configuración de Wordpress no está disponible."
+
+#: inc/adminer/loader.php:99 inc/adminer/loader.php:104
+msgid ""
+"Cheatin&#8217; uh? You do not have permission to use this or can`t found the "
+"WordPress configuration file."
+msgstr ""
+"Intentando hacer trampas? No tienes permiso para hacer eso o el archivo de "
+"configuración de Wordpress no está disponible."
+
+#: inc/adminer/loader.php:168
+msgid "Cheatin&#8217; uh? You do not have permission to use this."
+msgstr "Intentando hacer trampas? No tienes permiso para hacer eso."
