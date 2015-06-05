@@ -41,7 +41,7 @@ if ($_GET["val"] && is_adminer_ajax()) {
 		$as = convert_field($fields[key($row)]);
 		$select = array($as ? $as : idf_escape(key($row)));
 		$where[] = where_check($unique_idf, $fields);
-		$return = $driver->select($TABLE, $select, $where, $select);
+		$return = $driver->adminer_select($TABLE, $select, $where, $select);
 		if ($return) {
 			echo reset($return->fetch_row());
 		}
@@ -269,7 +269,7 @@ if (!$columns && support("table")) {
 	if ($convert_fields) {
 		$select2[] = substr($convert_fields, 2);
 	}
-	$result = $driver->select($TABLE, $select2, $where, $group, $order, $limit, $page, true);
+	$result = $driver->adminer_select($TABLE, $select2, $where, $group, $order, $limit, $page, true);
 
 	if (!$result) {
 		echo "<p class='error'>" . error() . "\n";
@@ -298,7 +298,7 @@ if (!$columns && support("table")) {
 			$backward_keys = $adminer->backwardKeys($TABLE, $table_name);
 
 			echo "<table id='table' cellspacing='0' class='nowrap checkable' onclick='tableClick(event);' ondblclick='tableClick(event, true);' onkeydown='return editingKeydown(event);'>\n";
-			echo "<thead><tr>" . (!$group && $select ? "" : "<td><input type='adminer_checkbox' id='all-page' onclick='formCheck(this, /check/);'> <a href='" . h($_GET["modify"] ? remove_from_uri("modify") : $_SERVER["REQUEST_URI"] . "&modify=1") . "'>" . lang('Modify') . "</a>");
+			echo "<thead><tr>" . (!$group && $select ? "" : "<td><input type='checkbox' id='all-page' onclick='formCheck(this, /check/);'> <a href='" . h($_GET["modify"] ? remove_from_uri("modify") : $_SERVER["REQUEST_URI"] . "&modify=1") . "'>" . lang('Modify') . "</a>");
 			$names = array();
 			$functions = array();
 			reset($select);

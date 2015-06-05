@@ -115,7 +115,7 @@ function nl_br($string) {
 * @return string
 */
 function adminer_checkbox($name, $value, $checked, $label = "", $onclick = "", $class = "") {
-	$return = "<input type='adminer_checkbox' name='$name' value='" . h($value) . "'"
+	$return = "<input type='checkbox' name='$name' value='" . h($value) . "'"
 		. ($checked ? " checked" : "")
 		. ($onclick ? ' onclick="' . h($onclick) . '"' : '')
 		. ">"
@@ -823,7 +823,7 @@ function column_foreign_keys($table) {
 }
 
 /** Print enum input field
-* @param string "radio"|"adminer_checkbox"
+* @param string "radio"|"checkbox"
 * @param string
 * @param array
 * @param mixed int|string|array
@@ -891,7 +891,7 @@ function input($field, $value, $function) {
 			foreach ($matches[1] as $i => $val) {
 				$val = stripcslashes(str_replace("''", "'", $val));
 				$checked = (is_int($value) ? ($value >> $i) & 1 : in_array($val, explode(",", $value), true));
-				echo " <label><input type='adminer_checkbox' name='fields[$name][$i]' value='" . (1 << $i) . "'" . ($checked ? ' checked' : '') . "$onchange>" . h($adminer->editVal($val, $field)) . '</label>';
+				echo " <label><input type='checkbox' name='fields[$name][$i]' value='" . (1 << $i) . "'" . ($checked ? ' checked' : '') . "$onchange>" . h($adminer->editVal($val, $field)) . '</label>';
 			}
 		} elseif (preg_match('~blob|bytea|raw|file~', $field["type"]) && ini_bool("file_uploads")) {
 			echo "<input type='file' name='fields-$name'$onchange>";

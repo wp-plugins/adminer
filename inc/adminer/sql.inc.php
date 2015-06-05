@@ -122,7 +122,7 @@ if (!$error && $_POST) {
 
 							} elseif (is_object($result)) {
 								$limit = $_POST["limit"];
-								$orgtables = select($result, $connection2, array(), $limit);
+								$orgtables = adminer_select($result, $connection2, array(), $limit);
 								if (!$_POST["only_errors"]) {
 									echo "<form action='' method='post'>\n";
 									$num_rows = $result->num_rows;
@@ -139,7 +139,7 @@ if (!$error && $_POST) {
 										$id = "explain-$commands";
 										echo ", <a href='#$id' onclick=\"return !toggle('$id');\">EXPLAIN</a>$export";
 										echo "<div id='$id' class='hidden'>\n";
-										select($explain, $connection2, $orgtables);
+										adminer_select($explain, $connection2, $orgtables);
 										echo "</div>\n";
 									} else {
 										echo $export;

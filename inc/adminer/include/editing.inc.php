@@ -6,7 +6,7 @@
 * @param int
 * @return array $orgtables
 */
-function select($result, $connection2 = null, $orgtables = array(), $limit = 0) {
+function adminer_select($result, $connection2 = null, $orgtables = array(), $limit = 0) {
 	global $jush;
 	$links = array(); // colno => orgtable - create links from these columns
 	$indexes = array(); // orgtable => array(column => colno) - primary keys

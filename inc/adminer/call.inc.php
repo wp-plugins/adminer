@@ -43,14 +43,14 @@ if (!$error && $_POST) {
 		do {
 			$result = $connection->store_result();
 			if (is_object($result)) {
-				select($result, $connection2);
+				adminer_select($result, $connection2);
 			} else {
 				echo "<p class='message'>" . lang('Routine has been called, %d row(s) affected.', $connection->affected_rows) . "\n";
 			}
 		} while ($connection->next_result());
 		
 		if ($out) {
-			select($connection->query("SELECT " . implode(", ", $out)));
+			adminer_select($connection->query("SELECT " . implode(", ", $out)));
 		}
 	}
 }

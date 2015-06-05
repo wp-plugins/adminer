@@ -116,7 +116,7 @@ if (isset($_GET["mongo"])) {
 	class Min_Driver extends Min_SQL {
 		public $primary = "_id";
 		
-		function select($table, $select, $where, $group, $order = array(), $limit = 1, $page = 0, $print = false) {
+		function adminer_select($table, $select, $where, $group, $order = array(), $limit = 1, $page = 0, $print = false) {
 			$select = ($select == array("*")
 				? array()
 				: array_fill_keys($select, true)

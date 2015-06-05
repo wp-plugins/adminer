@@ -103,7 +103,7 @@ if ($primary) {
 	echo "<tr><td>PRIMARY<td>";
 	foreach ($primary["columns"] as $key => $column) {
 		echo select_input(" disabled", $fields, $column);
-		echo "<label><input disabled type='adminer_checkbox'>" . lang('descending') . "</label> ";
+		echo "<label><input disabled type='checkbox'>" . lang('descending') . "</label> ";
 	}
 	echo "<td><td>\n";
 }

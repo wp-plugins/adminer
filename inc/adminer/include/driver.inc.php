@@ -21,7 +21,7 @@
 	* @param bool whether to print the query
 	* @return Min_Result
 	*/
-	function select($table, $select, $where, $group, $order = array(), $limit = 1, $page = 0, $print = false) {
+	function adminer_select($table, $select, $where, $group, $order = array(), $limit = 1, $page = 0, $print = false) {
 		global $adminer, $jush;
 		$is_group = (count($group) < count($select));
 		$query = $adminer->selectQueryBuild($select, $where, $group, $order, $limit, $page);

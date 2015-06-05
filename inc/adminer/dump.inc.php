@@ -169,8 +169,8 @@ $prefixes = array();
 if (DB != "") {
 	$checked = ($TABLE != "" ? "" : " checked");
 	echo "<thead><tr>";
-	echo "<th style='text-align: left;'><label class='block'><input type='adminer_checkbox' id='check-tables'$checked onclick='formCheck(this, /^tables\\[/);'>" . lang('Tables') . "</label>";
-	echo "<th style='text-align: right;'><label class='block'>" . lang('Data') . "<input type='adminer_checkbox' id='check-data'$checked onclick='formCheck(this, /^data\\[/);'></label>";
+	echo "<th style='text-align: left;'><label class='block'><input type='checkbox' id='check-tables'$checked onclick='formCheck(this, /^tables\\[/);'>" . lang('Tables') . "</label>";
+	echo "<th style='text-align: right;'><label class='block'>" . lang('Data') . "<input type='checkbox' id='check-data'$checked onclick='formCheck(this, /^data\\[/);'></label>";
 	echo "</thead>\n";
 
 	$views = "";
@@ -193,7 +193,7 @@ if (DB != "") {
 	}
 
 } else {
-	echo "<thead><tr><th style='text-align: left;'><label class='block'><input type='adminer_checkbox' id='check-databases'" . ($TABLE == "" ? " checked" : "") . " onclick='formCheck(this, /^databases\\[/);'>" . lang('Database') . "</label></thead>\n";
+	echo "<thead><tr><th style='text-align: left;'><label class='block'><input type='checkbox' id='check-databases'" . ($TABLE == "" ? " checked" : "") . " onclick='formCheck(this, /^databases\\[/);'>" . lang('Database') . "</label></thead>\n";
 	$databases = $adminer->databases();
 	if ($databases) {
 		foreach ($databases as $db) {
