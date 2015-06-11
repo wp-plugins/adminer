@@ -64,7 +64,7 @@ Good news, this plugin is free for everyone! Since it's released under the GPL, 
 The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all definitions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
-= v2.4.2 (2015-06-11) =
+= v1.4.2 (2015-06-11) =
 * Fix some trouble with SVN, now all files inside the repository
 * Add .htaccess for trouble to scan php files with third plugins.
 
