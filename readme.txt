@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: adminer, debug, sql, analyse, tuning, performance, database, queries, query, phpMyAdmin, admin, database management
 Requires at least: 2.7
 Tested up to: 4.2.2
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 Adminer is a full-featured MySQL management tool written in PHP. This plugin include this tool in WordPress.
 
@@ -23,7 +23,7 @@ Yes, we also run that [marketplace for premium WordPress plugins and themes](htt
 1. Upload the file to your plugin-directory, default is `/wp-content/plugins/`
 1. Activate the plugin through the 'Plugins' menu in WordPress or alternative Network Activation
 1. Menu `Tools` -> `Adminer`
-1. Klick button `Start Adminer` for view the database
+1. Click button `Start Adminer` for view the database
 
 If you use the plugins outside the wp-root or other one install, then you must define the absolute path to `wp-load.php` in the install root of WordPress in the `config.php` inside the plugin folder of Adminer.
 
@@ -61,9 +61,13 @@ If you use the plugins outside the wp-root or other one install, then you must d
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog. But if you enjoy this plugin, you can thank me and leave a [small donation](http://bueltge.de/wunschliste/ "Wishliste and Donate") for the time I've spent writing and supporting this plugin. And I really don't want to know how many hours of my life this plugin has already eaten ;)
 
 = Translations =
-The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all defintions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
+The plugin comes with various translations, please refer to the [WordPress Codex](http://codex.wordpress.org/Installing_WordPress_in_Your_Language "Installing WordPress in Your Language") for more information about activating the translation. If you want to help to translate the plugin to your language, please have a look at the .pot file which contains all definitions and may be used with a [gettext](http://www.gnu.org/software/gettext/) editor like [Poedit](http://www.poedit.net/) (Windows) or plugin for WordPress [Localization](http://wordpress.org/extend/plugins/codestyling-localization/).
 
 == Changelog ==
+= v2.4.2 (2015-06-11) =
+* Fix some trouble with SVN, now all files inside the repository
+* Add .htaccess for trouble to scan php files with third plugins.
+
 = v1.4.1 (2015-06-05) =
 * Bugfix for the checkbox problem
 * Prefix of `select` function
@@ -77,9 +81,9 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 
 = v1.3.1 (2014-11-07) =
 * Update to Adminer Core 4.1.0, 2014-04-18
-* Enhance loader for crusome installs ;)
+* Enhance loader for greepy installs ;)
 * Replace another function from Adminer to work with different plugins
-* Hide password in clear text, only via Mouseover readable
+* Hide password in clear text, only via mouse over readable
 * Update style for more WP feeling since 3.8 - like no radius
 * Check, that the plugin is active for access Adminer
 
@@ -120,9 +124,9 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 
 = v1.1.0 (09/15/2011) =
 * exclude the minified version of Adminer
-* include open source files for dont use obfuscated code
+* include open source files for don't use obfuscated code
 * fix for use sql-strings with magic quotes, see [bug description in forum](http://wordpress.org/support/topic/plugin-adminer-sql-command-doesnt-work)
-* add fucntion to search and include the wp-load.php
+* add function to search and include the wp-load.php
 * Test in WP 3.3-aortic-dissection
 
 = v1.0.5 (06/13/2011) =
@@ -134,9 +138,9 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 * maintenance: change readme
 
 = v1.0.3 (02/02/2011) =
-* maintenance: change onlload on Adminer
-* changes: checke check for rights
-* changes: chaneg init of text-domain and styles now only on admin_init
+* maintenance: change on load on Adminer
+* changes: check for rights
+* changes: change init of text-domain and styles now only on admin_init
 
 = v1.0.2 (10/20/2010) =
 * bugfix: adminer-js onload fixed
@@ -163,7 +167,7 @@ The plugin comes with various translations, please refer to the [WordPress Codex
 * change string to multilanguage
 * small changes on source
 * include now, when hook start to load plugins
-* add chez language files
+* add czech language files
 
 = v0.2.5 (04/23/2010) =
 * New Adminer Version 2.3.2 include
